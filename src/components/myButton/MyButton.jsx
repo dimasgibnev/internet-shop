@@ -13,7 +13,7 @@ const MyButtonContainer = ({ className, children, onClick }) => {
 export const MyButton = styled(MyButtonContainer)`
 	width: ${({ width = '150px' }) => width};
 	margin-right: 10px;
-	height: 100%;
+	height: ${({height= '50px'}) => height};
 	cursor: pointer;
 	&:last-child {
 		margin-right: 0;

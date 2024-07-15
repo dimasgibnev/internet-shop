@@ -7,6 +7,8 @@ const PageContainer = ({ className, children }) => {
 
 export const Page = styled(PageContainer)`
 	display: flex;
+	justify-content: center;
+	padding: 40px 20px;
 	width: 100%;
 	min-height: 550px;
 	margin-bottom: 20px;
