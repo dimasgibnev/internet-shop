@@ -1,26 +1,33 @@
-import jwt from "jsonwebtoken";
 import { UserModel } from "../models/User.js";
+import "dotenv/config";
+import { verify } from "../utils/token.js";
 
 export const authenticated = async (req, res, next) => {
-  const token = req.headers.token;
-
-  if (!token) {
+  if (!req.headers?.authorization) {
     return res.status(401).json({
       message: "Пользователь не авторизован",
     });
   }
 
-  const data = jwt.verify(token, "secret123");
+  const token = req.headers.authorization.replace("Bearer ", "");
 
-  const user = await UserModel.findOne(data.id);
+  try {
+    const data = verify(token);
 
-  if (!user) {
+    const user = await UserModel.findOne(data.id);
+
+    if (!user) {
+      return res.status(401).json({
+        message: "Пользователь не найден",
+      });
+    }
+
+    req.user = user;
+
+    next();
+  } catch (error) {
     return res.status(401).json({
-      message: "Пользователь не найден",
+      message: "Истекло время жизни токена, авторизуйтесь снова",
     });
   }
-
-  req.user = user;
-
-  next();
 };
