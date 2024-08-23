@@ -3,6 +3,7 @@ import { dbConnect } from "./config/dbConnect.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import "dotenv/config";
+import morgan from "morgan";
 
 import { router  } from "./routes/index.js";
 
@@ -14,6 +15,7 @@ app.use(express.static("../client/build"));
 app.use(express.json());
 app.use(cookieParser())
 app.use(cors());
+app.use(morgan("dev"))
 
 app.use("/api", router);
 

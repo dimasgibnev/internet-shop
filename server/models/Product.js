@@ -1,34 +1,67 @@
-import mongoose from 'mongoose';
-import validator from 'validator';
+import mongoose from "mongoose";
 
 const ProductSchema = new mongoose.Schema(
-	{
-		name: {
-			type: String,
-			required: true,
-		},
-		imageUrl: {
-			type: String,
-			required: true,
-			validate: {
-				validator: validator.isURL,
-				message: 'Некорректная ссылка',
-			},
-		},
-		cordless: {
-			type: Boolean,
-			required: true,
-		},
-		description: [
-			{
-				type: mongoose.Schema.Types.ObjectId,
-				ref: 'Description',
-			},
-		],
-	},
-	{
-		timestamps: true,
-	},
+  {
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+    },
+    images: {
+      type: Array,
+    },
+    cordless: {
+      type: Boolean,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    category: {
+      type: String,
+      required: true,
+    },
+    line: {
+      type: String,
+      required: true,
+    },
+    series: {
+      type: String,
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      required: true,
+    },
+    ratings: [
+      {
+        star: Number,
+        comment: String,
+        postedBy: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      },
+    ],
+    totalRating: {
+      type: String,
+      default: "0",
+    },
+  },
+  {
+    timestamps: true,
+  }
 );
 
-export const ProductModel = mongoose.model('Post', ProductSchema);
+export const ProductModel = mongoose.model("Product", ProductSchema);

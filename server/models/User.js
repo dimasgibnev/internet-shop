@@ -39,12 +39,7 @@ const userSchema = new mongoose.Schema(
         ref: "Adress",
       },
     ],
-    wishList: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
-      },
-    ],
+    wishList: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
     refreshToken: {
       type: String,
     },

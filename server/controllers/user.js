@@ -3,7 +3,6 @@ import { UserModel } from "../models/User.js";
 import { mapUser } from "../helpers/mapUser.js";
 import { generate, generateRefreshToken, verify } from "../utils/token.js";
 import { validateMongoDbId } from "../utils/validateMongoDbId.js";
-import jwt from "jsonwebtoken";
 import * as ROLES from "../constants/roles.js";
 
 export async function register(req, res) {
@@ -100,6 +99,7 @@ export const logout = async (req, res) => {
     return res.sendStatus(204);
   } catch (error) {
     console.log(error);
+    res.status(500).json({error: error.message});
   }
 };
 
@@ -128,9 +128,7 @@ export const handleRefreshToken = async (req, res) => {
     res.json({ accessToken });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      message: "Не удалось получить данные",
-    });
+    res.status(500).json({error: error.message});
   }
 };
 
