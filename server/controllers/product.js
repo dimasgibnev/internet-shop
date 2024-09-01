@@ -175,7 +175,7 @@ export const getRating = async (req, res) => {
           ratings: { $elemMatch: alreadyRated },
         },
         {
-          $set: { "ratings.$.star": star, "ratings.$.comment": comment },
+          $set: { "ratings.$.star": star, "ratings.$.comment": comment},
         },
         {
           new: true,
@@ -185,7 +185,7 @@ export const getRating = async (req, res) => {
       const rateProduct = await ProductModel.findByIdAndUpdate(
         productId,
         {
-          $push: { ratings: { star, postedBy: _id, comment } },
+          $push: { ratings: { star, postedBy: _id, comment: comment } },
         },
         { new: true }
       );

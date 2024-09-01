@@ -4,6 +4,8 @@ import { mapUser } from "../helpers/mapUser.js";
 import { generate, generateRefreshToken, verify } from "../utils/token.js";
 import { validateMongoDbId } from "../utils/validateMongoDbId.js";
 import * as ROLES from "../constants/roles.js";
+import { CartModel } from "../models/Cart.js";
+import { ProductModel } from "../models/Product.js";
 
 export async function register(req, res) {
   try {
@@ -27,7 +29,7 @@ export async function register(req, res) {
 
 export async function login(req, res) {
   try {
-    const { email, password } = req.body;
+    const { email, password} = req.body;
 
     const user = await UserModel.findOne({ email });
 
@@ -99,7 +101,29 @@ export const logout = async (req, res) => {
     return res.sendStatus(204);
   } catch (error) {
     console.log(error);
-    res.status(500).json({error: error.message});
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const saveAddress = async (req, res) => {
+  const { _id } = req.user;
+  validateMongoDbId(_id);
+  try {
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      _id,
+      {
+        address: req.body.address,
+      },
+      {
+        new: true,
+      }
+    );
+    res.json(updatedUser);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Не удалось обновить адрес",
+    });
   }
 };
 
@@ -128,7 +152,7 @@ export const handleRefreshToken = async (req, res) => {
     res.json({ accessToken });
   } catch (error) {
     console.log(error);
-    res.status(500).json({error: error.message});
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -159,15 +183,6 @@ export const getMe = async (req, res) => {
       message: "Не удалось загрузить данные",
     });
   }
-};
-
-export const getRoles = async () => {
-  const roles = [
-    { id: ROLES.ADMIN, name: "admin" },
-    { id: ROLES.USER, name: "user" },
-  ];
-
-  return roles;
 };
 
 export const deleteUser = async (req, res) => {
@@ -211,5 +226,168 @@ export const updateUser = async (req, res) => {
     res.status(500).json({
       message: "Не удалось обновить пользователя",
     });
+  }
+};
+
+export const userCart = async (req, res) => {
+  const { cart } = req.body;
+  const { _id } = req.user;
+  validateMongoDbId(_id);
+  try {
+    let products = [];
+    const user = await UserModel.findById(_id);
+    const alreadyExistCart = await CartModel.findOne({ orderby: user._id });
+    if (alreadyExistCart) {
+      alreadyExistCart.remove();
+    }
+    for (let i = 0; i < cart.length; i++) {
+      let object = {};
+      object.product = cart[i]._id;
+      object.count = cart[i].count;
+      object.color = cart[i].color;
+      let getPrice = await ProductModel.findById(cart[i]._id)
+        .select("price")
+        .exec();
+      object.price = getPrice.price;
+      products.push(object);
+    }
+    let cartTotal = 0;
+    for (let i = 0; i < products.length; i++) {
+      cartTotal = cartTotal + products[i].price * products[i].count;
+    }
+    let newCart = await new CartModel({
+      products,
+      cartTotal,
+      orderby: user._id,
+    }).save();
+    res.json(newCart);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Ошибка при добавлении в корзину");
+  }
+};
+
+export const getUserCart = async (req, res) => {
+  const { _id } = req.user;
+  validateMongoDbId(_id);
+  try {
+    const cart = await CartModel.findOne({ orderby: _id }).populate(
+      "products.product"
+    );
+    res.json(cart);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Не удалось загрузить продукты из корзины");
+  }
+};
+
+export const emptyCart = async (req, res) => {
+  const { _id } = req.user;
+  validateMongoDbId(_id);
+  try {
+    const user = await UserModel.findOne({ _id });
+    const cart = await CartModel.findOneAndRemove({ orderby: user._id });
+    res.json(cart);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createOrder = async (req, res) => {
+  const { COD } = req.body;
+  const { _id } = req.user;
+  validateMongoDbId(_id);
+  try {
+    if (!COD) throw new Error("Не выбран способ оплаты");
+    const user = await UserModel.findById(_id);
+    let userCart = await CartModel.findOne({ orderby: user._id });
+    const finalAmout = userCart.cartTotal;
+
+    await new Order({
+      products: userCart.products,
+      paymentIntent: {
+        id: uniqid(),
+        method: "COD",
+        amount: finalAmout,
+        status: "Cash on Delivery",
+        created: Date.now(),
+        currency: "rub",
+      },
+      orderby: user._id,
+      orderStatus: "Cash on Delivery",
+    }).save();
+    const update = userCart.products.map((item) => {
+      return {
+        updateOne: {
+          filter: { _id: item.product._id },
+          update: { $inc: { quantity: -item.count, sold: +item.count } },
+        },
+      };
+    });
+    await Product.bulkWrite(update, {});
+    res.json({ message: "success" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getOrders = async (req, res) => {
+  const { _id } = req.user;
+  validateMongoDbId(_id);
+  try {
+    const userorders = await Order.findOne({ orderby: _id })
+      .populate("products.product")
+      .populate("orderby")
+      .exec();
+    res.json(userorders);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getAllOrders = async (req, res) => {
+  try {
+    const alluserorders = await Order.find()
+      .populate("products.product")
+      .populate("orderby")
+      .exec();
+    res.json(alluserorders);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getOrderByUserId = async (req, res) => {
+  const { id } = req.params;
+  validateMongoDbId(id);
+  try {
+    const userorders = await Order.findOne({ orderby: id })
+      .populate("products.product")
+      .populate("orderby")
+      .exec();
+    res.json(userorders);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateOrderStatus = async (req, res) => {
+  const { status } = req.body;
+  const { id } = req.params;
+  validateMongoDbId(id);
+  try {
+    const updateOrderStatus = await Order.findByIdAndUpdate(
+      id,
+      {
+        orderStatus: status,
+        paymentIntent: {
+          status: status,
+        },
+      },
+      { new: true }
+    );
+    res.json(updateOrderStatus);
+  } catch (error) {
+    console.log(error);
   }
 };

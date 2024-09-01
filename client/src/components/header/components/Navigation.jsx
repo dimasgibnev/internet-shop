@@ -1,26 +1,24 @@
-/* eslint-disable react/prop-types */
+import { Link } from 'react-router-dom';
 
-import styled from "styled-components";
-import { MyButton } from "../../myButton/MyButton";
-import { useNavigate } from "react-router";
-
-
-const NavigationContainer = ({ className }) => {
-	const navigate = useNavigate();
+export const Navigation = ({setCatalogIsOpen, catalogIsOpen}) => {
+	const handleOpenCatalog = () => {
+		setCatalogIsOpen(prev => !prev)
+	}
 
 	return (
-		<div className={className}>
-			<MyButton margin='0 10px 0 0' width='400px' onClick={() => navigate('/catalog')}>Каталог</MyButton>
-			<MyButton margin='0 10px 0 0' width='400px' onClick={() => navigate('/catalog/category1')}>Категория</MyButton>
-			<MyButton margin='0 10px 0 0' width='400px' onClick={() => navigate('/catalog/category2')}>Категория</MyButton>
-			<MyButton margin='0 10px 0 0' width='400px' onClick={() => navigate('/catalog/category3')}>Категория</MyButton>
+		<div className="navigation">
+			<div className="navigation__link-wrapper">
+				<Link className={catalogIsOpen ? 'navigation__active' : ''} to={'/catalog'} onMouseEnter={handleOpenCatalog}>Каталог</Link>
+			</div>
+			<div className="navigation__link-wrapper">
+				<Link to={'/wishlist'}>Аккумуляторные</Link>
+			</div>
+			<div className="navigation__link-wrapper">
+				<Link to={'/profile'}>Сетевые</Link>
+			</div>
+			<div className="navigation__link-wrapper">
+				<Link to={'/login'}>Акссесуары</Link>
+			</div>
 		</div>
 	);
 };
-
-export const Navigation = styled(NavigationContainer)`
-display: flex;
-	width: 1300 px;
-	height: 65px;
-	padding: 10px;
-`;

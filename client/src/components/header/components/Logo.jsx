@@ -1,24 +1,15 @@
-/* eslint-disable react/prop-types */
+import { Link } from 'react-router-dom';
 
-import { useNavigate } from 'react-router';
-import styled from 'styled-components';
-
-const LogoContainer = ({ className }) => {
-	const navigate = useNavigate();
+export const Logo = () => {
 
 	return (
-		<img
-			className={className}
-			src="https://cdn.makitatools.com//apps/cms/logo/d6fd3a5a-a919-46f1-9e08-bdc4345cb039_makita_l_500px.png?w=120&trim.threshold=80&trim.percentpadding=1"
-			alt="logo makita"
-			onClick={() => navigate('/')}
-		/>
+		<div className='logo'>
+			<Link to={'/'}>
+			<img
+				src="https://cdn.makitatools.com//apps/cms/logo/d6fd3a5a-a919-46f1-9e08-bdc4345cb039_makita_l_500px.png?w=120&trim.threshold=80&trim.percentpadding=1"
+				alt="logo makita"
+			/>
+			</Link>
+		</div>
 	);
 };
-
-export const Logo = styled(LogoContainer)`
-	width: 120px;
-	height: 50px;
-	cursor: pointer;
-	margin-right: 10px;
-`;

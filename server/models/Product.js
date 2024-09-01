@@ -13,9 +13,13 @@ const ProductSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
     },
-    images: {
-      type: Array,
-    },
+    images: [
+      {
+        url: String,
+        public_id: String,
+      }
+    ],
+    tags: String,
     cordless: {
       type: Boolean,
       required: true,
@@ -47,7 +51,9 @@ const ProductSchema = new mongoose.Schema(
     ratings: [
       {
         star: Number,
-        comment: String,
+        comment: {
+          type: String,
+        },
         postedBy: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "User",

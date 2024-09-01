@@ -1,18 +1,21 @@
-import styled from 'styled-components';
+import React, { useState } from 'react';
 import { ControlPanel, Navigation } from './components';
-/* eslint-disable react/prop-types */
+import './Header.sass';
 
-const HeaderContainer = ({ className }) => {
+export const Header = () => {
+	const [catalogIsOpen, setCatalogIsOpen] = useState(false);
 	return (
-		<div className={className}>
+		<div className="header">
 			<ControlPanel />
-			<Navigation />
+			<Navigation
+				catalogIsOpen={catalogIsOpen}
+				setCatalogIsOpen={setCatalogIsOpen}
+			/>
+			{catalogIsOpen && (
+				<div className="catalog">
+					<p сlassName="catalog__title">Каталог</p>
+				</div>
+			)}
 		</div>
 	);
 };
-
-export const Header = styled(HeaderContainer)`
-	width: 1300px;
-	height: 150px;
-	background-color: #2c9cc4;
-`;
