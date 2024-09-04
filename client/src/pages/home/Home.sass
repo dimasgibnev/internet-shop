@@ -1,1 +1,60 @@
 .home
+	width: 100%
+
+.section-banner
+	position: relative
+	margin-bottom: 50px
+	&__overlay
+		width: 500px
+		height: 300px
+		background: rgba(0, 0, 0, 0.5)
+		position: absolute
+		top: 140px
+		right: 100px
+		display: flex
+		justify-content: center
+		align-items: center
+	&__wrapper
+		img
+			width: 100%
+
+.section-products
+	display: flex
+	height: 400px
+	margin-bottom: 50px
+
+.products
+	display: flex
+	flex-direction: column
+	width: 100%
+	&__title
+		text-align: center
+		margin-bottom: 50px
+	&__wrapper
+		width: 100%
+		display: flex
+
+
+.product-card
+	margin-right: 20px
+	width: 100%
+	display: flex
+	flex-direction: column
+	border: 1px solid #d6d6d6
+	&__image-wrapper
+		width: 260px
+		height: 260px
+		img
+			padding: 30px
+			width: 260px
+	&__info
+		display: flex
+		padding: 20px
+		flex-direction: column
+		border-top: 1px solid #d6d6d6
+	&__model
+		margin-bottom: 20px
+	&__title
+		font-weight: bold
+	&:last-child
+		margin-right: 0

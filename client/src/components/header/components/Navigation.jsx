@@ -8,7 +8,7 @@ export const Navigation = ({setCatalogIsOpen, catalogIsOpen}) => {
 	return (
 		<div className="navigation">
 			<div className="navigation__link-wrapper">
-				<Link className={catalogIsOpen ? 'navigation__active' : ''} to={'/catalog'} onMouseEnter={handleOpenCatalog}>Каталог</Link>
+				<Link className={catalogIsOpen ? 'active' : ''} to={'/catalog'} onMouseEnter={handleOpenCatalog}>Каталог</Link>
 			</div>
 			<div className="navigation__link-wrapper">
 				<Link to={'/wishlist'}>Аккумуляторные</Link>
