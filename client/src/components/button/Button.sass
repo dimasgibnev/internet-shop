@@ -1,0 +1,12 @@
+.button
+	padding: 10px
+	border: none
+	border-radius: 5px
+	color: var(--color-white)
+	background: var(--color-makita)
+	cursor: pointer
+	&:disabled
+		cursor: default
+		background: var(--color-grey-dark)
+		&:hover:not(:disabled)
+			background: var(--color-header-hover)

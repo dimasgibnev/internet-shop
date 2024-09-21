@@ -1,3 +1,2 @@
-export * from './Logo'
-export * from './ControlPanel'
-export * from './Navigation'
+export * from './navigation/Navigation';
+export * from './catalog/Catalog';

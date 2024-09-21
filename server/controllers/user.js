@@ -3,7 +3,6 @@ import { UserModel } from "../models/User.js";
 import { mapUser } from "../helpers/mapUser.js";
 import { generate, generateRefreshToken, verify } from "../utils/token.js";
 import { validateMongoDbId } from "../utils/validateMongoDbId.js";
-import * as ROLES from "../constants/roles.js";
 import { CartModel } from "../models/Cart.js";
 import { ProductModel } from "../models/Product.js";
 
@@ -11,13 +10,28 @@ export async function register(req, res) {
   try {
     const password = await bcrypt.hash(req.body.password, 10);
     const newUser = await UserModel.create({ ...req.body, password });
-    const token = generate({ _id: newUser._id });
+    const accessToken = generate({ _id: newUser._id });
+    const refreshToken = generateRefreshToken({ _id: newUser._id });
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      newUser._id,
+      {
+        refreshToken,
+      },
+      {
+        new: true,
+      }
+    );
 
-    res.json({ user: mapUser(newUser), token });
+    res.cookie("refreshToken", updatedUser.refreshToken, {
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+    });
+
+    res.json({ user: mapUser(updatedUser), accessToken, refreshToken });
   } catch (error) {
     if (error.code === 11000) {
       return res.status(400).json({
-        message: "Такой пользователь уже существует",
+        message: "Пользователь с таким email или телефоном уже существует",
       });
     }
     console.log(error);
@@ -29,7 +43,7 @@ export async function register(req, res) {
 
 export async function login(req, res) {
   try {
-    const { email, password} = req.body;
+    const { email, password } = req.body;
 
     const user = await UserModel.findOne({ email });
 
@@ -59,13 +73,16 @@ export async function login(req, res) {
         new: true,
       }
     );
+
     res.cookie("refreshToken", updatedUser.refreshToken, {
-      maxAge: 3 * 24 * 60 * 60 * 1000,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,
     });
+
     res.json({
-      user: mapUser(user),
+      user: mapUser(updatedUser),
       accessToken,
+      refreshToken
     });
   } catch (error) {
     console.log(error);
@@ -91,14 +108,16 @@ export const logout = async (req, res) => {
         secure: true,
       });
 
-      return res.sendStatus(204);
+      return res.sendStatus(200);
     }
+
     await UserModel.findOneAndUpdate({ refreshToken }, { refreshToken: "" });
     res.clearCookie("refreshToken", {
       httpOnly: true,
       secure: true,
     });
-    return res.sendStatus(204);
+
+    return res.sendStatus(200);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: error.message });
@@ -108,6 +127,7 @@ export const logout = async (req, res) => {
 export const saveAddress = async (req, res) => {
   const { _id } = req.user;
   validateMongoDbId(_id);
+
   try {
     const updatedUser = await UserModel.findByIdAndUpdate(
       _id,
@@ -176,7 +196,7 @@ export const getMe = async (req, res) => {
 
     const user = await UserModel.findById(_id);
 
-    res.send({ data: user });
+    res.send({ user: mapUser(user) });
   } catch (error) {
     console.log(error);
     res.status(500).json({

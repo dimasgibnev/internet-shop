@@ -3,6 +3,7 @@ import "dotenv/config";
 import { verify } from "../utils/token.js";
 
 export const authenticated = async (req, res, next) => {
+
   if (!req.headers?.authorization) {
     return res.status(401).json({
       message: "Пользователь не авторизован",
@@ -11,14 +12,13 @@ export const authenticated = async (req, res, next) => {
 
   const token = req.headers.authorization.replace("Bearer ", "");
 
-
   try {
     const data = verify(token);
     
     const user = await UserModel.findById(data._id);
 
     if (!user) {
-      return res.status(401).json({
+      return res.status(404).json({
         message: "Пользователь не найден",
       });
     }

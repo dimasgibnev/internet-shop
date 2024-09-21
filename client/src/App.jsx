@@ -1,11 +1,15 @@
-import { BrowserRouter} from 'react-router-dom';
 import { AppRouter } from './components';
-import "./App.sass"
+import { withAppProvider } from './hoc/withAppProvider';
+import { withAppRouter } from './hoc/withAppRouter';
+import { AppLoader } from './components';
+import './App.sass';
 
-export const App = () => {
+const App = () => {
 	return (
-		<BrowserRouter>
-			<AppRouter/>
-		</BrowserRouter>
+		<AppLoader>
+			<AppRouter />
+		</AppLoader>
 	);
 };
+
+export default withAppRouter(withAppProvider(App));

@@ -1,21 +1,16 @@
-import React, { useState } from 'react';
-import { ControlPanel, Navigation } from './components';
+import { Navigation, Catalog } from './components';
 import './Header.sass';
 
 export const Header = () => {
-	const [catalogIsOpen, setCatalogIsOpen] = useState(false);
 	return (
-		<div className="header">
-			<ControlPanel />
-			<Navigation
-				catalogIsOpen={catalogIsOpen}
-				setCatalogIsOpen={setCatalogIsOpen}
-			/>
-			{catalogIsOpen && (
-				<div className="catalog">
-					<p сlassName="catalog__title">Каталог</p>
-				</div>
-			)}
-		</div>
+		<header className="header">
+			<div className="container ">
+				<Navigation />
+			</div>
+			<hr />
+			<div className="container">
+				<Catalog />
+			</div>
+		</header>
 	);
 };

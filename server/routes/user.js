@@ -6,7 +6,6 @@ import {
   updateUser,
   deleteUser,
   getMe,
-  handleRefreshToken,
   saveAddress
 } from "../controllers/user.js";
 import * as ROLES from "../constants/roles.js";
@@ -15,7 +14,6 @@ export const router = express.Router({ mergeParams: true });
 
 router.get("/", authenticated, checkHasRole([ROLES.ADMIN]), getUsers);
 router.get("/me", authenticated, getMe);
-router.get("/refresh", handleRefreshToken);
 router.put("/save-address", authenticated, saveAddress);
 router.patch("/:id", authenticated, checkHasRole([ROLES.ADMIN]), updateUser);
 router.delete("/:id", authenticated, checkHasRole([ROLES.ADMIN]), deleteUser);
