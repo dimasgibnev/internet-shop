@@ -3,11 +3,13 @@ import { useDispatch } from 'react-redux';
 import { Menu } from '../../menu/Menu';
 import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../../../../../store/authSlice';
+import { useUser } from '../../../../../hooks/useUser';
 
-export const Profile = ({ user, getUserName }) => {
+export const Profile = () => {
 	const [profileMenuIsOpen, setProfileMenuIsOpen] = useState(false);
 	const dispacth = useDispatch();
 	const navigate = useNavigate();
+	const { user, getUserName } = useUser();
 
 	const openProfileMenu = () => {
 		setProfileMenuIsOpen(true);

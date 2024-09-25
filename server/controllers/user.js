@@ -8,6 +8,11 @@ import { ProductModel } from "../models/Product.js";
 
 export async function register(req, res) {
   try {
+    if (!req.body) {
+      res.status(501).json({
+        message: "Введите данные для регистрации",
+      });
+    }
     const password = await bcrypt.hash(req.body.password, 10);
     const newUser = await UserModel.create({ ...req.body, password });
     const accessToken = generate({ _id: newUser._id });
@@ -34,10 +39,10 @@ export async function register(req, res) {
         message: "Пользователь с таким email или телефоном уже существует",
       });
     }
-    console.log(error);
     res.status(500).json({
       message: "Не удалось зарегистрироваться, попробуйте снова",
     });
+    console.log(error);
   }
 }
 
@@ -82,7 +87,7 @@ export async function login(req, res) {
     res.json({
       user: mapUser(updatedUser),
       accessToken,
-      refreshToken
+      refreshToken,
     });
   } catch (error) {
     console.log(error);

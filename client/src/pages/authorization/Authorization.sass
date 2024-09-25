@@ -6,6 +6,9 @@
 	align-items: center
 	padding: 20px 0
 	&__title
+		text-align: center
+		color: var(--color-header-hover)
+		margin-bottom: 20px
 	&__form-wrapper
 		position: absolute
 		top: 50%
@@ -20,16 +23,13 @@
 	align-items: center
 	padding: 20px
 	width: 350px
+	padding: 40px
 	background: var(--color-grey)
 	border-radius: 10px
-	&__error
-		color: red
-		font-size: 14px
-		margin-bottom: 20px
 	&__input
 		width: 100%
 		padding: 10px
-		margin-bottom: 10px
+		margin-bottom: 5px
 	&__button
 		width: 100%
 		margin-bottom: 20px
@@ -39,5 +39,11 @@
 	&__link
 		color: var(--color-makita)
 		text-decoration: none
+		transition: color 0.3s
 		&:hover
 			color: var(--color-header-hover)
+.auth__input-wrapper
+	width: 100%
+	display: flex
+	flex-direction: column
+	margin-bottom: 10px

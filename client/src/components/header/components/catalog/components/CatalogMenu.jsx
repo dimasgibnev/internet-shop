@@ -23,18 +23,25 @@ export const CatalogMenu = () => {
 			onMouseLeave={closeCatalog}
 			onMouseEnter={openCatalog}
 		>
-			<span className="header__link">
+			<div className="catalog__link">
 				{catalogIsOpen ? (
-					<i
-						className="fa-solid fa-xmark menu-icons"
-						onClick={closeCatalog}
-					></i>
+					<div className="menu__icon-wrapper">
+						<i
+							className="fa-solid fa-xmark menu-icons"
+							onClick={closeCatalog}
+						></i>
+					</div>
 				) : (
-					<i className="fa-solid fa-bars menu-icons" onClick={openCatalog}></i>
+					<div className="menu__icon-wrapper">
+						<i
+							className="fa-solid fa-bars menu-icons"
+							onClick={openCatalog}
+						></i>
+					</div>
 				)}
-				Каталог
+				<span>Каталог</span>
 				<Menu className={'catalog'} isOpen={catalogIsOpen} links={links} />
-			</span>
+			</div>
 		</div>
 	);
 };

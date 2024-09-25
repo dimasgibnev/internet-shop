@@ -7,7 +7,7 @@ import './App.sass';
 const App = () => {
 	return (
 		<AppLoader>
-			<AppRouter />
+				<AppRouter />
 		</AppLoader>
 	);
 };

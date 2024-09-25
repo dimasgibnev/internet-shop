@@ -8,8 +8,7 @@ const authService = {
 
 			return data;
 		} catch (error) {
-			console.log(error);
-			return error;
+			throw new Error(error.response.data.message);
 		}
 	},
 	signUp: async (arg) => {
@@ -29,8 +28,7 @@ const authService = {
 
 			return data;
 		} catch (error) {
-			console.log(error);
-			return error;
+			throw new Error(error.response.data.message);
 		}
 	},
 	fetchMe: async () => {
@@ -39,8 +37,7 @@ const authService = {
 
 			return data;
 		} catch (error) {
-			console.log(error);
-			return error;
+			throw new Error(error.response.data.message);
 		}
 	},
 };
