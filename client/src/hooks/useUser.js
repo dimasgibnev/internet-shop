@@ -1,7 +1,8 @@
 import { useSelector } from 'react-redux';
+import { userSelector } from '../store/authSlice';
 
 export const useUser = () => {
-	const user = useSelector((state) => state.user.data);
+	const user = useSelector(userSelector);
 
 	const getUserName = (method) => {
 		switch (method) {

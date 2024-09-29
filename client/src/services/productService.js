@@ -1,16 +1,19 @@
 import { http } from '../http';
+import { addToCart } from '../store/userSlice';
 
 const productService = {
-	fetchProducts: async () => {
+	fetchProducts: async (args) => {
 		try {
-			const { data } = await http.get('/products');
+			const { data } = await http.get(
+				`/products/?page=${args.page}&limit=${args.limit}`,
+			);
 
 			return data;
 		} catch (error) {
 			throw new Error(error.response.data.message);
 		}
 	},
-	fetchProduct: async (id: string) => {
+	fetchProduct: async (id) => {
 		try {
 			const { data } = await http.get(`/products/${id}`);
 
@@ -29,6 +32,16 @@ const productService = {
 			throw new Error(error.response.data.message);
 		}
 	},
+	addToCart: async (arg) => {
+		try {
+			const { data } = await http.put('/products', arg);
+			localStorage.setItem('token', data.accessToken);
+
+			return data;
+		} catch (error) {
+			throw new Error(error.response.data.message);
+		}
+	},
 	updateProduct: async (arg) => {
 		try {
 			const { data } = await http.patch('/products', arg);
@@ -38,7 +51,7 @@ const productService = {
 			throw new Error(error.response.data.message);
 		}
 	},
-	deleteProduct: async (id: string) => {
+	deleteProduct: async (id) => {
 		try {
 			const { data } = await http.get(`/products/${id}`);
 
@@ -47,16 +60,15 @@ const productService = {
 			throw new Error(error.response.data.message);
 		}
 	},
-	addToWishList: async (arg: { productId: string }) => {
+	addToWishList: async (arg) => {
 		try {
 			const { data } = await http.put(`/products/wishlist`, arg);
-
 			return data;
 		} catch (error) {
 			throw new Error(error.response.data.message);
 		}
 	},
-	addRating: async (arg: { star: number; productId: string; comment: string }) => {
+	addRating: async (arg) => {
 		try {
 			const { data } = await http.put(`/products/rating`, arg);
 

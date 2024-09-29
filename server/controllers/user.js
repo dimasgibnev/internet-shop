@@ -85,7 +85,7 @@ export async function login(req, res) {
     });
 
     res.json({
-      user: mapUser(updatedUser),
+      user: updatedUser,
       accessToken,
       refreshToken,
     });
@@ -201,7 +201,7 @@ export const getMe = async (req, res) => {
 
     const user = await UserModel.findById(_id);
 
-    res.send({ user: mapUser(user) });
+    res.send({ user });
   } catch (error) {
     console.log(error);
     res.status(500).json({

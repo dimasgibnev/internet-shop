@@ -125,7 +125,6 @@ export const addToWishlist = async (req, res) => {
   const { _id } = req.user;
   const { productId } = req.body;
   validateMongoDbId(_id);
-  validateMongoDbId(productId);
   try {
     const user = await UserModel.findById(_id);
 
@@ -141,7 +140,7 @@ export const addToWishlist = async (req, res) => {
         },
         { new: true }
       );
-      res.json({ user });
+      res.json({ wishList: user.wishList });
     } else {
       const user = await UserModel.findByIdAndUpdate(
         _id,
@@ -150,7 +149,7 @@ export const addToWishlist = async (req, res) => {
         },
         { new: true }
       );
-      res.json({ user });
+      res.json({ wishList: user.wishList });
     }
   } catch (error) {
     console.log(error);
@@ -175,7 +174,7 @@ export const getRating = async (req, res) => {
           ratings: { $elemMatch: alreadyRated },
         },
         {
-          $set: { "ratings.$.star": star, "ratings.$.comment": comment},
+          $set: { "ratings.$.star": star, "ratings.$.comment": comment },
         },
         {
           new: true,

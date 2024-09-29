@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import authService from '../services/authService';
+import { useSelector } from 'react-redux';
 
 export const signIn = createAsyncThunk(
 	'auth/signIn',
@@ -34,7 +35,6 @@ export const signUp = createAsyncThunk(
 		}
 	},
 );
-
 export const fetchMe = createAsyncThunk('auth/fetchMe', async () => {
 	const data = await authService.fetchMe();
 
@@ -85,18 +85,7 @@ const authSlice = createSlice({
 				state.error = action.error.message;
 				state.isLoading = false;
 			})
-			.addCase(fetchMe.pending, (state) => {
-				state.isLoading = true;
-			})
-			.addCase(fetchMe.fulfilled, (state, action) => {
-				state.data = action.payload.user;
-				state.isAuth = true;
-				state.isLoading = false;
-			})
-			.addCase(fetchMe.rejected, (state, action) => {
-				state.error = action.error.message;
-				state.isLoading = false;
-			})
+
 			.addCase(logout.pending, (state) => {
 				state.isLoading = true;
 			})
@@ -108,10 +97,24 @@ const authSlice = createSlice({
 			.addCase(logout.rejected, (state, action) => {
 				state.error = action.error.message;
 				state.isLoading = false;
+			})
+			.addCase(fetchMe.pending, (state) => {
+				state.isLoading = true;
+			})
+			.addCase(fetchMe.fulfilled, (state, action) => {
+				state.data = action.payload.user;
+				state.isAuth = true;
+				state.isLoading = false;
+			})
+			.addCase(fetchMe.rejected, (state, action) => {
+				state.error = action.error.message;
+				state.isLoading = false;
 			});
 	},
 });
 
 const { reducer: authReducer, actions } = authSlice;
+
+export const userSelector = (state) => state.auth.data;
 
 export default authReducer;

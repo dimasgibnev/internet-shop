@@ -1,23 +1,29 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchMe } from '../../store/authSlice';
 import { fetchProducts } from '../../store/productSlice';
+import { Loader } from '../loader/Loader';
 
 export const AppLoader = ({ children }) => {
 	const dispatch = useDispatch();
-	const isLoading = useSelector((state) => state.user.loading);
+	const [page, setPage] = useState(1);
+	const [limit, setLimit] = useState(16);
+	const isLoading = useSelector(
+		(state) => state.auth.isLoading || state.product.isLoading,
+	);
 
 	useEffect(() => {
-		if (localStorage.getItem('token')) {
+		if (localStorage.getItem('token') || isLoading) {
 			dispatch(fetchMe());
 		}
 
-		dispatch(fetchProducts())
+		dispatch(fetchProducts({ page, limit }));
 	}, [dispatch]);
 
-	if (isLoading) {
-		return <h1>Loading</h1>;
-	}
-
-	return <div>{children}</div>;
+	return (
+		<>
+			{isLoading ? <Loader /> : null}
+			{children}
+		</>
+	);
 };

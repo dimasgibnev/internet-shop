@@ -4,11 +4,11 @@ export const schema = yup.object().shape({
 	firstName: yup
 		.string()
 		.required('Это поле обязательно')
-		.matches(/^[a-zA-Zа-яёА-ЯЁ]*$/, 'Имя должно содержать только буквы'),
+		.matches(/^[а-яёА-ЯЁ]*$/, 'Имя должно содержать только буквы'),
 	lastName: yup
 		.string()
 		.required('Это поле обязательно')
-		.matches(/^[a-zA-Zа-яёА-ЯЁ]*$/, 'Фамилия должна содержать только буквы'),
+		.matches(/^[а-яёА-ЯЁ]*$/, 'Фамилия должна содержать только буквы'),
 	email: yup
 		.string()
 		.email('Введите корректный email')
