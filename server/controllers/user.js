@@ -83,9 +83,8 @@ export async function login(req, res) {
     });
 
     res.json({
-      user: updatedUser,
+      user: mapUser(updatedUser),
       accessToken,
-      refreshToken,
     });
   } catch (error) {
     console.log(error);
@@ -141,7 +140,8 @@ export const saveAddress = async (req, res) => {
         new: true,
       }
     );
-    res.json(updatedUser);
+
+    res.json({ user: mapUser(updatedUser) });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -183,7 +183,7 @@ export const getUsers = async (req, res) => {
   try {
     const users = await UserModel.find();
 
-    res.json({ data: users.map(mapUser) });
+    res.json({ users: users.map(mapUser) });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -197,9 +197,12 @@ export const getMe = async (req, res) => {
     const { _id } = req.user;
     validateMongoDbId(_id);
 
-    const user = await UserModel.findById(_id);
+    const user = await UserModel.findById(_id).populate({
+      path: "cart",
+      populate: "product",
+    });
 
-    res.send({ user });
+    res.send({ user: mapUser(user) });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -251,4 +254,3 @@ export const updateUser = async (req, res) => {
     });
   }
 };
-

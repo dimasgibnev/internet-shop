@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { fetchProduct } from '../../store/slices/productsSlice';
-import { findImage } from '../../utils/findImage';
 
-import styles from './product.module.sass';
 import { Button, Scroll } from '../../components';
 import { Icon } from '../../components/icon/Icon';
+
+import styles from './Product.module.sass';
 
 export const Product = () => {
 	const dispatch = useDispatch();

@@ -7,19 +7,26 @@ export const userCart = async (req, res) => {
     const { productId } = req.body;
     const { _id } = req.user;
     validateMongoDbId(_id);
+
     const product = await ProductModel.findById(productId);
 
-    await UserModel.findByIdAndUpdate(
+    const cart = {
+      product: product._id,
+      count: 1,
+    };
+
+    const user = await UserModel.findByIdAndUpdate(
       _id,
       {
-        $push: { cart: { product: productId, count: 1, price: product.price } },
+        $push: { cart },
       },
       { new: true }
-    );
+    ).populate({
+      path: "cart",
+      populate: "product",
+    });
 
-    const user = await UserModel.findById(_id);
-
-    res.json({ data: user.cart });
+    res.json({ cart: user.cart });
   } catch (error) {
     console.log(error);
     res.status(500).send("Ошибка при добавлении в корзину");
@@ -42,14 +49,12 @@ export const getUserCart = async (req, res) => {
 
 export const deleteProduct = async (req, res) => {
   try {
-    
-			
     const { _id } = req.user;
     const { id: productId } = req.params;
     const user = await UserModel.findOneAndUpdate(
       _id,
       {
-        $pull: { cart: { product: productId} },
+        $pull: { cart: { product: productId } },
       },
       { new: true }
     );

@@ -40,7 +40,7 @@ export const Cart = () => {
 			<div className={styles['cart-wrapper']}>
 				<div className={styles.products}>
 					{productPerPage.map(({ product, count }, i) => (
-						<Product key={product} id={product} count={count} />
+						<Product key={product._id} id={product._id} count={count} />
 					))}
 					<Pagination
 						currentPage={currentPage}

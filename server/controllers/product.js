@@ -1,3 +1,4 @@
+import { mapProduct } from "../helpers/mapProduct.js";
 import { ProductModel } from "../models/Product.js";
 import { UserModel } from "../models/User.js";
 import { validateMongoDbId } from "../utils/validateMongoDbId.js";
@@ -26,7 +27,7 @@ export const getProduct = async (req, res) => {
 
     const findProduct = await ProductModel.findById(id);
 
-    res.json({ data: findProduct });
+    res.json({ product: mapProduct(findProduct) });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -73,6 +74,11 @@ export const getProducts = async (req, res) => {
     // } else {
     //   query = query.select("-__v");
     // }
+    if (req.query.search) {
+      console.log(req.query.search);
+
+      query = query.findOne(req.query);
+    }
 
     const page = req.query.page;
     const limit = req.query.limit;
@@ -83,10 +89,10 @@ export const getProducts = async (req, res) => {
       const numProducts = await ProductModel.countDocuments();
       if (skip >= numProducts) throw new Error("Такой страницы не существует");
     }
+    const lastPage = Math.ceil((await ProductModel.countDocuments()) / limit);
+    const products =  await query;
 
-    const products = await query;
-
-    res.json({ data: products });
+    res.json({ products: products.map(mapProduct), lastPage });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: error.message });
@@ -140,7 +146,7 @@ export const addToWishlist = async (req, res) => {
   const { productId } = req.body;
   validateMongoDbId(_id);
   console.log(productId);
-  
+
   try {
     const user = await UserModel.findById(_id);
 

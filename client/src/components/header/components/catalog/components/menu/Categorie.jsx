@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Icon } from '../../../../../icon/Icon';
-import { SideMenu } from './SideMenu';
+import { SubMenu } from './SubMenu';
 
 import styles from './Menu.module.sass';
 
@@ -24,9 +24,8 @@ export const Categorie = ({ categories, title }) => {
 		>
 			{title}
 			<Icon className={styles['item-icon']} icon="chevron-right" weight="solid" />
-			<div className={styles.sideWrapper}>
-				{catalogIsOpen && <SideMenu categories={categories} />}
-			</div>
+
+			{catalogIsOpen && <SubMenu categories={categories} />}
 		</li>
 	);
 };

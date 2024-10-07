@@ -5,7 +5,7 @@ export const fetchProducts = createAsyncThunk(
 	'products/fetchProducts',
 	async (args, { rejectWithValue }) => {
 		try {
-			const { data } = await productService.fetchProducts(args);
+			const data = await productService.fetchProducts(args);
 
 			return data;
 		} catch (error) {
@@ -21,9 +21,9 @@ export const fetchProduct = createAsyncThunk(
 	'products/fetchProduct',
 	async (args, { rejectWithValue }) => {
 		try {
-			const { data } = await productService.fetchProduct(args);
+			const { product } = await productService.fetchProduct(args);
 
-			return data;
+			return product;
 		} catch (error) {
 			if (!error.response) {
 				throw error;
@@ -38,6 +38,7 @@ const initialState = {
 	isLoading: false,
 	data: null,
 	product: null,
+	lastPage: null,
 };
 
 const authSlice = createSlice({
@@ -54,10 +55,11 @@ const authSlice = createSlice({
 	extraReducers: (builder) => {
 		builder
 			.addCase(fetchProducts.pending, (state) => {
-				state.isLoading = true
+				state.isLoading = true;
 			})
 			.addCase(fetchProducts.fulfilled, (state, action) => {
-				state.data = action.payload;
+				state.data = action.payload.products;
+				state.lastPage = action.payload.lastPage;
 				state.isLoading = false;
 			})
 			.addCase(fetchProducts.rejected, (state, action) => {

@@ -2,20 +2,11 @@ import { useSelector } from 'react-redux';
 import { Button } from '../../../components';
 
 import styles from '../Cart.module.sass';
+import { calculateOrder } from '../../../utils/calculateOrder';
 
 export const Order = ({ cart }) => {
-	let productCount = 0;
-	let totalPrice = 0;
+	const {count, price} = calculateOrder(cart)
 
-	const products = useSelector((state) => state.products.data) || [];
-	
-	cart.forEach((item) => {
-		const product = products.find((product) => product._id === item.product);
-		if (product && product.quantity > 0) {
-			productCount += item.count;
-			totalPrice += item.price * item.count;
-		}
-	});
 
 	return (
 		<div className={styles['order-wrapper']}>
@@ -24,11 +15,11 @@ export const Order = ({ cart }) => {
 				<div className={styles['order-info']}>
 					<div className={styles.count}>
 						<span>Количество товаров: </span>
-						<div>{+productCount}</div>
+						<div>{+count}</div>
 					</div>
 					<div className={styles.total}>
 						<span>Общая стоимость: </span>
-						<div>{+totalPrice} ₽</div>
+						<div>{+price} ₽</div>
 					</div>
 				</div>
 

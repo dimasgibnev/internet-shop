@@ -4,9 +4,9 @@ import authService from '../../services/authService.js';
 
 export const addToCartAsync = createAsyncThunk('user/addToCart', async (arg) => {
 	try {
-		const { data } = await productService.addToCart(arg);
+		const {cart} = await productService.addToCart(arg);
 
-		return data;
+		return cart;
 	} catch (error) {
 		if (!error.response) {
 			throw error;
@@ -88,7 +88,6 @@ const userSlice = createSlice({
 				state.isLoading = true;
 			})
 			.addCase(removeFromCartAsync.fulfilled, (state, action) => {
-
 				state.isLoading = false;
 			})
 			.addCase(removeFromCartAsync.rejected, (state, action) => {

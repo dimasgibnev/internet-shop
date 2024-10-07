@@ -6,9 +6,7 @@ export const Header = () => {
 		<header className="header">
 			<div className="container ">
 				<Navigation />
-			</div>
 			<hr />
-			<div className="container">
 				<Catalog />
 			</div>
 		</header>

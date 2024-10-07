@@ -7,5 +7,8 @@ export const mapUser = (user) => {
 		mobile: user.mobile,
 		roleId: user.roleId,
 		registeredAt: user.createdAt,
+		cart: user.cart,
+		wishList: user.wishList,
+		adress: user.adress
 	}
 }

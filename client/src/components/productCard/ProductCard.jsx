@@ -14,7 +14,6 @@ import {
 	removeFromCart,
 	removeFromCartAsync,
 } from '../../store/slices/userSlice';
-import { setLoaded, setLoading } from '../../store/slices/productsSlice';
 import { useUser } from '../../hooks/useUser';
 
 import './ProductCard.sass';
@@ -27,7 +26,7 @@ export const ProductCard = ({ id, image, title, model, price }) => {
 	const guestWishList = useSelector((state) => state.user.wishList);
 	const cart = user ? user.cart : guestCart;
 	const wishList = user ? user.wishList : guestWishList;
-	const productInCart = cart.find((item) => item.product === id);
+	const productInCart = cart.find((item) => item.product._id === id);
 
 	useEffect(() => {
 		if (wishList) setActive(wishList.includes(id));
@@ -61,7 +60,7 @@ export const ProductCard = ({ id, image, title, model, price }) => {
 		<div className="product-card">
 			<div className="product-card__image-wrapper">
 				<Link to={`/products/details/${id}`}>
-					<img onLoad={() => dispatch(setLoaded())} src={image} alt={title} />
+					<img src={image} alt={title} />
 				</Link>
 			</div>
 

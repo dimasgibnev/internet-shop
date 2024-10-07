@@ -13,7 +13,7 @@ export const AppLoader = ({ children }) => {
 	);
 
 	useEffect(() => {
-		if (localStorage.getItem('token')) {
+		if (!!localStorage.getItem('token')) {
 			dispatch(fetchMe());
 		}
 		dispatch(fetchProducts());

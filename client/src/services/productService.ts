@@ -1,12 +1,15 @@
 import { http } from '../http';
-import { removeFromCart } from '../store/slices/userSlice';
-
+import { IProduct } from '../interface/product.interface';
+interface ResponseApi {
+	products: IProduct[],
+	lastPage: number
+}
 const productService = {
 	fetchProducts: async (args) => {
 		try {
 			if (args) {
 				if (args.filter) {
-					const { data } = await http.get(
+					const { data } = await http.get<ResponseApi>(
 						`/products/?page=${args.page}&limit=${args.limit}&filter=${args.filter}`,
 					);
 					return data;
@@ -46,8 +49,8 @@ const productService = {
 	},
 	addToCart: async (arg) => {
 		try {
-			const { data } = await http.post('/cart', { productId: arg });
-
+			const {data}  = await http.post('/cart', { productId: arg });
+			
 			return data;
 		} catch (error) {
 			throw new Error(error.response.data.message);
