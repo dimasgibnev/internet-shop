@@ -17,10 +17,7 @@ export const Product = ({ id, count }) => {
 
 	const handleRemoveFromCart = () => {
 		dispatch(removeFromCartAsync(id)).then(() => dispatch(fetchMe()));
-	}
-
-
-
+	};
 
 	return (
 		<>
@@ -44,17 +41,26 @@ export const Product = ({ id, count }) => {
 							{' ₽'}
 						</div>
 						<div className={styles.count}>
-							<Button
-								onClick={() => {}}
-								disabled={true}
-								className={styles['count-btn']}
-							>
-								−
-							</Button>
-							<div className={styles['count-value']}>{count}</div>
-							<Button onClick={() => {}} className={styles['count-btn']}>
-								+
-							</Button>
+							{product.quantity > 0 ? (
+								<>
+									<Button
+										onClick={() => {}}
+										disabled={true}
+										className={styles['count-btn']}
+									>
+										−
+									</Button>
+									<div className={styles['count-value']}>{count}</div>
+									<Button
+										onClick={() => {}}
+										className={styles['count-btn']}
+									>
+										+
+									</Button>
+								</>
+							) : (
+								'Нет в наличии'
+							)}
 						</div>
 					</div>
 					<Icon

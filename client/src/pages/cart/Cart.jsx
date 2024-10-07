@@ -19,6 +19,7 @@ export const Cart = () => {
 	if (productPerPage.length === 0 && currentPage !== 1) {
 		setCurrentPage(1);
 	}
+	
 	if (productPerPage.length === 0 && currentPage === 1) {
 		return (
 			<div className={styles.cart}>

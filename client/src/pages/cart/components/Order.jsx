@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import { Button } from '../../../components';
 
 import styles from '../Cart.module.sass';
@@ -5,8 +6,15 @@ import styles from '../Cart.module.sass';
 export const Order = ({ cart }) => {
 	let productCount = 0;
 	let totalPrice = 0;
-	cart.forEach(({ count, price }) => {
-		(productCount += count) && (totalPrice += count * price);
+
+	const products = useSelector((state) => state.products.data) || [];
+	
+	cart.forEach((item) => {
+		const product = products.find((product) => product._id === item.product);
+		if (product && product.quantity > 0) {
+			productCount += item.count;
+			totalPrice += item.price * item.count;
+		}
 	});
 
 	return (
