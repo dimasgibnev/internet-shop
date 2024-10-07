@@ -1,6 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
-import { Layout } from '../layout/Layout';
+
 import { routeConfig } from '../../config/route.config';
+
+import { Layout } from '../layout/Layout';
 import { PrivateRoute } from '../privateRoute/PrivateRoute';
 
 export const AppRouter = () => {

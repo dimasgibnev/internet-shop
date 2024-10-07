@@ -1,33 +1,51 @@
 import { Link } from 'react-router-dom';
-import './Footer.sass';
+
+import styles from './Footer.module.sass';
 
 export const Footer = () => {
 	return (
-		<footer className="footer">
-			<div className="footer__links links">
-				<div className="links__wrapper">
-					<span className="links__title">Инструменты</span>
-					<Link className="links__item">Аккумуляторные</Link>
-					<Link className="links__item">Сетевые</Link>
-					<Link className="links__item">Акссесуары</Link>
-					<Link className="links__item">Бензотехника</Link>
-					<Link className="links__item">Уборка</Link>
+		<footer className={styles.footer}>
+			<div className="container">
+				<div className={styles.links}>
+					<div>
+						<Link to={'/'}>
+							<img src={'/img/footer-logo.jpg'} alt="makita logo" />
+						</Link>
+					</div>
+					<div className={styles['links__wrapper']}>
+						<span className={styles['links__title']}>Инструменты</span>
+						<Link className={styles['links__item']} to={'/products/cordless'}>
+							Аккумуляторные
+						</Link>
+						<Link className={styles['links__item']} to={'/products/corded'}>
+							Сетевые
+						</Link>
+						<Link
+							className={styles['links__item']}
+							to={'/products/accessories'}
+						>
+							Акссесуары
+						</Link>
+						<Link className={styles['links__item']} to={'/products/gas'}>
+							Бензотехника
+						</Link>
+						<Link className={styles['links__item']} to={'/products/cleaning'}>
+							Уборка
+						</Link>
+					</div>
+					<div className={styles['links__wrapper']}>
+						<span className={styles['links__title']}>Контакты</span>
+						<Link to={'/about'} className={styles['links__item']}>
+							О нас
+						</Link>
+						<Link to={'/contacts'} className={styles['links__item']}>
+							Связь с нами
+						</Link>
+					</div>
 				</div>
-				<div className="links__wrapper">
-					<span className="links__title">Полезные ссылки</span>
-					<Link className="links__item">Сервесный центр</Link>
-					<Link className="links__item">FAQ</Link>
-					<Link className="links__item">Документация</Link>
-					<Link className="links__item">Регистрация</Link>
+				<div className={styles.copyright}>
+					<span>{new Date().getFullYear()} Разработка Дмитрий Сгибнев</span>
 				</div>
-				<div className="links__wrapper">
-					<span className="links__title">Контакты</span>
-					<Link to={'/about'} className="links__item">О нас</Link>
-					<Link to={'/contacts'} className="links__item">Связь с нами</Link>
-				</div>
-			</div>
-			<div className="footer__copyright">
-				<span>{new Date().getFullYear()} Разработка Дмитрий Сгибнев</span>
 			</div>
 		</footer>
 	);

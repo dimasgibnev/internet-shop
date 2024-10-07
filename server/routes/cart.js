@@ -4,13 +4,13 @@ import { checkHasRole } from "../middlewares/hasRole.js";
 import * as ROLES from "../constants/roles.js";
 import {
   createOrder,
-  emptyCart,
+  deleteProduct,
   getAllOrders,
   getOrders,
   getUserCart,
   updateOrderStatus,
   userCart,
-} from "../controllers/user.js";
+} from "../controllers/cart.js";
 
 export const router = express.Router({ mergeParams: true });
 
@@ -30,7 +30,7 @@ router.post(
   getAllOrders
 );
 router.get("/", authenticated, getUserCart);
-router.delete("/empty", authenticated, emptyCart);
+router.delete("/:id", authenticated, deleteProduct);
 router.put(
     "/order/update-order/:id",
     authenticated,

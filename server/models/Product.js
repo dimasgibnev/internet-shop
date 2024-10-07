@@ -13,16 +13,12 @@ const ProductSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
     },
-    mainImage: {
-      url: String,
-    },
     images: [
       {
         url: String,
-        public_id: String,
-      }
+        title: String,
+      },
     ],
-    tags: String,
     cordless: {
       type: Boolean,
       required: true,
@@ -49,6 +45,10 @@ const ProductSchema = new mongoose.Schema(
     },
     quantity: {
       type: Number,
+      required: true,
+    },
+    specs: {
+      type: String,
       required: true,
     },
     ratings: [

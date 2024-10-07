@@ -7,6 +7,19 @@
 	font-size: 26px
 	&__input-wrapper
 		position: relative
+	&__close-wrapper
+		cursor: pointer
+		display: flex
+		align-items: center
+		justify-content: center
+		position: absolute
+		width: 50px
+		height: 50px
+		color: var(--color-grey-dark)
+		top: 0
+		right: 10px
+		&:hover
+			color: #000
 	&__search-wrapper
 		cursor: pointer
 		display: flex
@@ -18,7 +31,7 @@
 		border-radius: 10px
 		background: #dadadab8
 		top: 0
-		right: 10px
+		left: 0
 	&__link-wrapper
 		position: relative
 		display: flex
@@ -34,8 +47,9 @@
 		right: 0
 		width: 200px
 	&__input
+		font-size: 20px
 		width: 460px
 		height: 50px
 		margin-right: 10px
-		padding-left: 10px
+		padding-left: 60px
 		padding-right: 45px

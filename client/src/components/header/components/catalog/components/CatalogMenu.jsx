@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu } from '../../menu/Menu';
+
+import { Menu } from './menu/Menu';
 
 export const CatalogMenu = () => {
 	const [catalogIsOpen, setCatalogIsOpen] = useState(false);
-
 	const openCatalog = () => {
 		setCatalogIsOpen(true);
 	};
@@ -13,10 +12,6 @@ export const CatalogMenu = () => {
 		setCatalogIsOpen(false);
 	};
 
-	const links = [
-		<Link to={'/products/cordless'}>Шуруповерты</Link>,
-		<Link to={'/'}>Дрели</Link>,
-	];
 	return (
 		<div
 			className="catalog__link-wrapper"
@@ -40,7 +35,7 @@ export const CatalogMenu = () => {
 					</div>
 				)}
 				<span>Каталог</span>
-				<Menu className={'catalog'} isOpen={catalogIsOpen} links={links} />
+				<Menu className={'catalog'} isOpen={catalogIsOpen} />
 			</div>
 		</div>
 	);

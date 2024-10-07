@@ -1,0 +1,20 @@
+.dots
+	display: flex
+	justify-content: center
+	position: absolute
+	bottom: 20px
+	left: 50%
+	transform: translateX(-50%)
+.dot
+	cursor: pointer
+	width: 20px
+	height: 20px
+	border-radius: 50%
+	background: var(--color-grey-dark)
+	margin: 0 5px
+	transition: background 500ms ease
+	&:hover
+		background: var(--color-makita-dark)
+
+.active-dot
+	background: var(--color-makita-dark)

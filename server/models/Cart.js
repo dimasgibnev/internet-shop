@@ -9,15 +9,12 @@ const cartSchema = new mongoose.Schema(
           ref: "Product",
         },
         count: Number,
-        price: Number,
+        orderedBy: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        }
       },
-    ],
-    cartTotal: Number,
-    totalAfterDiscount: Number,
-    orderby: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
+    ]
   },
   {
     timestamps: true,

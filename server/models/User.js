@@ -29,10 +29,13 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: ROLES.USER,
     },
-    cart: {
-      type: Array,
-      default: [],
-    },
+    cart: [
+      {
+        product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+        count: Number,
+        price: Number,
+      },
+    ],
     adress: {
       type: String,
     },

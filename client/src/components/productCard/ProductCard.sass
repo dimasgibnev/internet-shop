@@ -1,41 +1,55 @@
 .product-card
 	position: relative
-	margin-right: 20px
 	width: 300px
 	display: flex
 	flex-direction: column
 	border: 1px solid #d6d6d6
+	margin-bottom: 20px
 	&__wishlist
-		cursor: pointer
-		position: absolute
 		right: 10px
 		top: 10px
 		color: var(--color-grey-dark)
+		transition: transform 500ms ease
 		&:hover
+			transform: scale(1.05)
 			color: red
 		&.active
 			color: red
 	&__cart
+		padding: 5px
 		background: var(--color-makita-light)
 		color: var(--color-white)
-		position: absolute
 		right: 10px
-		bottom: 20px
+		bottom: 10px
+		transition: transform 500ms ease
+		&:hover
+			transform: scale(1.05)
 
 	&__image-wrapper
+		display: flex
+		justify-content: center
+		align-items: center
 		cursor: pointer
-		width: 260px
+		width: 300px
 		height: 260px
 		img
-			padding: 30px
-			width: 260px
+			display: block
+			width: 100%
+			padding: 20px 40px
 	&__info
 		display: flex
+		height: 50%
 		padding: 20px
 		flex-direction: column
 		border-top: 1px solid #d6d6d6
 	&__model
 		margin-bottom: 20px
+		height: 20%
 	&__title
+		color: #000
 		font-weight: bold
 		margin-bottom: 20px
+		height: 60%
+	&__price
+		font-weight: bold
+		height: 10%

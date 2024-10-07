@@ -19,7 +19,6 @@ export const getAllCategory = async (req, res) => {
 export const getCategory = async (req, res) => {
   try {
     const { id } = req.params;
-    validateMongoDbId(id);
 
     const findCategory = await CategoryModel.findById(id);
 

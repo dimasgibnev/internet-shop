@@ -1,7 +1,22 @@
-import { About, Authorization, Home, Products, Profile, Registration } from '../pages';
+import {
+	About,
+	Authorization,
+	Cart,
+	Home,
+	NotFound,
+	Products,
+	Product,
+	Profile,
+	Registration,
+} from '../pages';
 import { ROUTES } from '../constants';
+import { ROLES } from '../constants/roles';
 
 export const routeConfig = [
+	{
+		path: ROUTES.CART,
+		element: <Cart />,
+	},
 	{
 		path: ROUTES.HOME,
 		element: <Home />,
@@ -17,10 +32,16 @@ export const routeConfig = [
 	{
 		path: ROUTES.PROFILE,
 		element: <Profile />,
+		auth: true,
+		roles: [ROLES.USER, ROLES.ADMIN],
 	},
 	{
 		path: ROUTES.PRODUCTS,
 		element: <Products />,
+	},
+	{
+		path: ROUTES.PRODUCT,
+		element: <Product />,
 	},
 	{
 		path: ROUTES.PRODUCT_CATEGORY,
@@ -32,7 +53,6 @@ export const routeConfig = [
 	},
 	{
 		path: ROUTES.NOT_FOUND,
-		element: <Home />,
+		element: <NotFound />,
 	},
 ];
-

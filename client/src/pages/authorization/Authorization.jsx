@@ -1,15 +1,19 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { signIn } from '../../store/authSlice';
-import { useDispatch } from 'react-redux';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { FormProvider, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { schema } from '../../assets/schemas/authSchema';
+import { signIn } from '../../store/slices/authSlice';
+
 import { FormError } from '../../components';
 import { Button } from '../../components/button/Button';
 import { Inputs } from './components/Inputs';
-import { FormProvider, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { schema } from '../../schemas/authSchema';
+
 import './Authorization.sass';
 
 export const Authorization = () => {
+	const isLoggedIn = useSelector((state) => state.auth?.isAuth);
 	const methods = useForm({ resolver: yupResolver(schema), mode: 'onChange' });
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -35,6 +39,10 @@ export const Authorization = () => {
 
 	const isError =
 		serverError || (errors && Array.from(Object.values(errors)).length > 0);
+
+	if (isLoggedIn) {
+		return <Navigate to="/" />;
+	}
 
 	return (
 		<FormProvider {...methods}>

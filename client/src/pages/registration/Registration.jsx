@@ -1,14 +1,15 @@
-import { useNavigate } from 'react-router-dom';
-import { signUp } from '../../store/authSlice';
-import { useDispatch } from 'react-redux';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { signUp } from '../../store/slices/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import { FormError, Button } from '../../components';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Inputs } from './components/Inputs';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { schema } from '../../schemas/registerSchema';
+import { schema } from '../../assets/schemas/registerSchema';
 import './Registration.sass';
 
 export const Registration = () => {
+	const isLoggedIn = useSelector((state) => state.auth?.isAuth);
 	const methods = useForm({ resolver: yupResolver(schema), mode: 'onChange' });
 	const {
 		formState: { errors },
@@ -34,6 +35,10 @@ export const Registration = () => {
 	const serverError = errors?.serverError?.message;
 	const isError =
 		serverError || (errors && Array.from(Object.values(errors)).length > 0);
+
+	if (isLoggedIn) {
+		return <Navigate to="/" />;
+	}
 
 	return (
 		<FormProvider {...methods}>

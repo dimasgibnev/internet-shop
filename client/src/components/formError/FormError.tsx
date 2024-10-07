@@ -1,11 +1,12 @@
-import './FormError.sass';
-import React from 'react';
+import { FC } from 'react';
 
-interface FormErrorProps {
+import './FormError.sass';
+
+interface IFormError {
 	error: string;
 	className: 'server-error' | 'form-error';
 }
 
-export const FormError = ({ error, className }: FormErrorProps) => {
+export const FormError: FC<IFormError> = ({ error, className }) => {
 	return <span className={`${className} error`}>{error}</span>;
 };

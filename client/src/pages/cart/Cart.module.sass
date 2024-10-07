@@ -1,0 +1,114 @@
+.cart
+
+	position: relative
+	padding: 20px
+	min-height: 780px
+	background: var(--color-grey-light)
+	.empty-cart
+		width: 100%
+		height: 100%
+		display: flex
+		justify-content: center
+		align-items: center
+.cart-wrapper
+	display: flex
+	justify-content: space-between
+
+.products
+	display: flex
+	flex-direction: column
+	width: 70%
+	border-radius: 20px
+	padding: 20px
+
+
+
+.product
+	position: relative
+	display: flex
+	justify-content: center
+	align-items: center
+	margin-bottom: 20px
+	height: 150px
+	width: 100%
+	background: var(--color-white)
+	border-radius: 10px
+
+.trash
+	position: absolute
+	right: 10px
+	bottom: 10px
+	color: var(--color-grey-dark)
+	transition: transform 500ms ease
+	&:hover
+		transform: scale(1.05)
+		color: red
+	&.active
+		color: red
+
+.img
+	padding: 10px
+	height: 150px
+	margin-right: 10px
+	img
+		height: 100%
+
+.info
+	width: 60%
+	margin-right: 10px
+	.title
+		font-weight: bold
+		margin-bottom: 5px
+
+.price-info
+	display: flex
+	justify-content: space-between
+	align-items: center
+	width: 30%
+	.price
+	.count
+		display: flex
+		justify-content: space-between
+		align-items: center
+		width: 50%
+		padding: 0 10px
+		&-btn
+			padding: 0 5px
+			font-size: 20px
+
+.order-wrapper
+	height: 320px
+	display: flex
+	flex-direction: column
+	width: 25%
+	border-radius: 20px
+	padding: 20px
+	.title
+		margin-bottom: 20px
+	.count
+		margin-bottom: 20px
+		& > span
+			display: block
+			margin-bottom: 10px
+		& > div
+			font-weight: bold
+	.total
+		margin-bottom: 20px
+		& > span
+			display: block
+			margin-bottom: 10px
+		& > div
+			font-weight: bold
+.order
+	display: flex
+	flex-direction: column
+	align-items: center
+	height: 100%
+	background: var(--color-white)
+	border-radius: 10px
+	padding-top: 20px
+	& .title
+		font-weight: bold
+.btn-order
+	width: 60%
+

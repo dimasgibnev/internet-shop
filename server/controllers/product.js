@@ -38,27 +38,41 @@ export const getProduct = async (req, res) => {
 export const getProducts = async (req, res) => {
   try {
     const queryObj = { ...req.query };
-    const exludeFields = ["sort", "page", "limit", "fields"];
-    exludeFields.forEach((el) => delete queryObj[el]);
+    // const exludeFields = ["sort", "page", "limit", "fields"];
+    // exludeFields.forEach((el) => delete queryObj[el]);
+    // let queryStr = JSON.stringify(queryObj);
 
-    let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    let query = ProductModel.find();
 
-    let query = ProductModel.find(JSON.parse(queryStr));
-
-    if (req.query.sort) {
-      const sortBy = req.query.sort.split(",").join(" ");
-      query = query.sort(sortBy);
-    } else {
-      query = query.sort("category");
+    // queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    if (req.query.filter) {
+      switch (req.query.filter) {
+        case "cordless":
+          query = query.find({ line: req.query.filter });
+          break;
+        case "corded":
+          query = query.find({ line: req.query.filter });
+          break;
+        case "accessories":
+          query = query.find({ line: req.query.filter });
+          break;
+        case "gas":
+          query = query.find({ line: req.query.filter });
+          break;
+        case "cleaning":
+          query = query.find({ line: req.query.filter });
+          break;
+        default:
+          query = query.find({ category: req.query.filter });
+      }
     }
 
-    if (req.query.fields) {
-      const fields = req.query.fields.split(",").join(" ");
-      query = query.select(fields);
-    } else {
-      query = query.select("-__v");
-    }
+    // if (req.query.fields) {
+    //   const fields = req.query.fields.split(",").join(" ");
+    //   query = query.select(fields);
+    // } else {
+    //   query = query.select("-__v");
+    // }
 
     const page = req.query.page;
     const limit = req.query.limit;
@@ -125,6 +139,8 @@ export const addToWishlist = async (req, res) => {
   const { _id } = req.user;
   const { productId } = req.body;
   validateMongoDbId(_id);
+  console.log(productId);
+  
   try {
     const user = await UserModel.findById(_id);
 
@@ -149,7 +165,7 @@ export const addToWishlist = async (req, res) => {
         },
         { new: true }
       );
-      res.json({ wishList: user.wishList });
+      res.json({ data: user.wishList });
     }
   } catch (error) {
     console.log(error);

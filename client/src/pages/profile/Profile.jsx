@@ -1,15 +1,14 @@
 import { Dashboard } from './components/dashboard/Dashboard';
-import './Profile.sass';
+
+import styles from './Profile.module.sass';
 
 export const Profile = () => {
 	return (
-		<section className="profile">
-			<div className="container">
-				<div className="profile__header">
-					<h1 className="main__title">Профиль</h1>
-				</div>
-				<Dashboard />
+		<section className={styles.profile}>
+			<div className={styles.header}>
+				<h1 className={styles.title}>Профиль</h1>
 			</div>
+			<Dashboard />
 		</section>
 	);
 };
