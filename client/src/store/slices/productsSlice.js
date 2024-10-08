@@ -1,13 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import productService from '../../services/productService.js';
+import productService from '../../services/productService';
 
 export const fetchProducts = createAsyncThunk(
 	'products/fetchProducts',
 	async (args, { rejectWithValue }) => {
 		try {
-			const data = await productService.fetchProducts(args);
+			const {products} = await productService.fetchProducts(args);
 
-			return data;
+			return products;
 		} catch (error) {
 			if (!error.response) {
 				throw error;
@@ -58,8 +58,7 @@ const authSlice = createSlice({
 				state.isLoading = true;
 			})
 			.addCase(fetchProducts.fulfilled, (state, action) => {
-				state.data = action.payload.products;
-				state.lastPage = action.payload.lastPage;
+				state.data = action.payload
 				state.isLoading = false;
 			})
 			.addCase(fetchProducts.rejected, (state, action) => {

@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { ProfileMenu } from './profile-menu/ProfileMenu';
 import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../../../../../store/slices/authSlice';
 import { useUser } from '../../../../../hooks/useUser';
+import { Popup } from '../../../../ui/popup/Popup';
+import styles from '../Navigation.module.sass'
 
 export const Profile = () => {
 	const [profileMenuIsOpen, setProfileMenuIsOpen] = useState(false);
@@ -38,13 +39,13 @@ export const Profile = () => {
 
 	return (
 		<div
-			className="navigation__link-wrapper"
+			className={styles.links}
 			onMouseEnter={openProfileMenu}
 			onMouseLeave={closeProfileMenu}
 		>
 			<span className="header__link">{getUserName('short')}</span>
-			<ProfileMenu
-				className={'navigation'}
+			<Popup
+				className={styles.menu}
 				isOpen={profileMenuIsOpen}
 				links={links}
 			/>

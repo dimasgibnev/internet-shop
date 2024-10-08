@@ -2,9 +2,8 @@ import { Button } from '../button/Button';
 import styles from './Pagination.module.sass';
 
 export const Pagination = ({ currentPage, setCurrentPage, lastPage, disabled }) => {
-
 	if (disabled) {
-		return null
+		return null;
 	}
 
 	return (
@@ -19,7 +18,7 @@ export const Pagination = ({ currentPage, setCurrentPage, lastPage, disabled }) 
 			<div className={styles.current}>{currentPage}</div>
 			{currentPage === lastPage ? <div></div> : <div>{currentPage + 1}</div>}
 			<Button
-				disabled={currentPage  === lastPage}
+				disabled={currentPage === lastPage}
 				onClick={() => setCurrentPage(currentPage + 1)}
 			>
 				вперед

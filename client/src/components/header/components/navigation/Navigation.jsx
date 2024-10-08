@@ -4,14 +4,14 @@ import { useUser } from '../../../../hooks/useUser';
 import { LinkWrapper } from '../LinkWrapper';
 import { Profile } from './components/Profile';
 import { SearchPanel } from './components/SearchPanel';
-import './Navigation.sass';
+import styles from'./Navigation.module.sass';
 
 export const Navigation = () => {
 	const [searchPrhase, setSearchPrhase] = useState('');
 	const { user, getUserName } = useUser();
 
 	return (
-		<div className="navigation">
+		<div className={styles.navigation}>
 			<Logo />
 
 			<SearchPanel searchPrhase={searchPrhase} setSearchPrhase={setSearchPrhase} />

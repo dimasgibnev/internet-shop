@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import productService from '../../services/productService.js';
-import authService from '../../services/authService.js';
+import productService from '../../services/productService.ts';
 
 export const addToCartAsync = createAsyncThunk('user/addToCart', async (arg) => {
 	try {
@@ -47,8 +46,8 @@ export const addToWishListAsync = createAsyncThunk(
 const initialState = {
 	isAuth: false,
 	error: null,
-	cart: (await authService.fetchMe()).cart || [],
-	wishList: (await authService.fetchMe()).wishList || [],
+	cart:  [],
+	wishList: [],
 	isLoading: false,
 	data: null,
 };

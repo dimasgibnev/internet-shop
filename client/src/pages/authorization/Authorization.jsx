@@ -7,7 +7,7 @@ import { schema } from '../../assets/schemas/authSchema';
 import { signIn } from '../../store/slices/authSlice';
 
 import { FormError } from '../../components';
-import { Button } from '../../components/button/Button';
+import { Button } from '../../components/ui/button/Button';
 import { Inputs } from './components/Inputs';
 
 import './Authorization.sass';

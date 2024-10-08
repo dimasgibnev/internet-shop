@@ -44,6 +44,10 @@ export const routeConfig = [
 		element: <Product />,
 	},
 	{
+		path: ROUTES.PRODUCT_LINE,
+		element: <Products />,
+	},
+	{
 		path: ROUTES.PRODUCT_CATEGORY,
 		element: <Products />,
 	},

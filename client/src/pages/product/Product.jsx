@@ -1,11 +1,11 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { fetchProduct } from '../../store/slices/productsSlice';
 
 import { Button, Scroll } from '../../components';
-import { Icon } from '../../components/icon/Icon';
+import { Icon } from '../../components/ui/icon/Icon';
 
 import styles from './Product.module.sass';
 
@@ -73,7 +73,8 @@ export const Product = () => {
 					</div>
 				</div>
 				<div className={styles.desc}>
-					<Icon className={styles['desc-icon']}
+					<Icon
+						className={styles['desc-icon']}
 						icon={activeDesc ? 'chevron-up' : 'chevron-down'}
 						weight={'solid'}
 						onClick={() => setActiveDesc(!activeDesc)}

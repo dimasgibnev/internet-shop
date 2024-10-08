@@ -32,7 +32,7 @@
 		background: #dadadab8
 		top: 0
 		left: 0
-	&__link-wrapper
+	.links
 		position: relative
 		display: flex
 		align-items: center
@@ -43,13 +43,18 @@
 		transition: background 0.3s
 		&:hover
 			background: var(--color-header-hover)
-	&__menu
-		right: 0
-		width: 200px
-	&__input
+
+	input
 		font-size: 20px
 		width: 460px
 		height: 50px
 		margin-right: 10px
 		padding-left: 60px
 		padding-right: 45px
+
+.menu
+	top: 100%
+	right: 0
+	width: 200px
+	a
+		color: #000

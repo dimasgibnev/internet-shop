@@ -37,9 +37,7 @@ export async function register(req, res) {
         message: "Пользователь с таким email или телефоном уже существует",
       });
     }
-    res.status(500).json({
-      message: "Не удалось зарегистрироваться, попробуйте снова",
-    });
+    handleError(res, "Ошибка сервера, попробуйте снова");
     console.log(error);
   }
 }
@@ -88,9 +86,7 @@ export async function login(req, res) {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      message: "Не удалось войти, попробуйте снова",
-    });
+    handleError(res, "Ошибка сервера, попробуйте снова");
   }
 }
 
@@ -122,7 +118,7 @@ export const logout = async (req, res) => {
     return res.sendStatus(200);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: error.message });
+    handleError(res, "Ошибка сервера, попробуйте снова");
   }
 };
 
@@ -144,9 +140,7 @@ export const saveAddress = async (req, res) => {
     res.json({ user: mapUser(updatedUser) });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      message: "Не удалось обновить адрес",
-    });
+    handleError(res, "Ошибка сервера, попробуйте снова")
   }
 };
 
@@ -175,7 +169,7 @@ export const handleRefreshToken = async (req, res) => {
     res.json({ accessToken });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: error.message });
+    handleError(res, "Ошибка сервера, попробуйте снова")
   }
 };
 
@@ -186,9 +180,7 @@ export const getUsers = async (req, res) => {
     res.json({ users: users.map(mapUser) });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      message: "Не удалось загрузить данные",
-    });
+    handleError(res, "Ошибка сервера, попробуйте снова")
   }
 };
 
@@ -205,9 +197,7 @@ export const getMe = async (req, res) => {
     res.send({ user: mapUser(user) });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      message: "Не удалось загрузить данные",
-    });
+    handleError(res, "Ошибка сервера, попробуйте снова");
   }
 };
 
@@ -221,9 +211,7 @@ export const deleteUser = async (req, res) => {
     res.json({ error: null, message: "Пользователь был удален" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      message: "Не удалось удалить пользователя",
-    });
+    handleError(res, "Ошибка сервера, попробуйте снова")
   }
 };
 
@@ -249,8 +237,6 @@ export const updateUser = async (req, res) => {
     res.json({ data: mapUser(updatedUser), message: "Пользователь обновлен" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      message: "Не удалось обновить пользователя",
-    });
+    handleError(res, "Ошибка сервера, попробуйте снова")
   }
 };

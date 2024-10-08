@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchMe } from '../../store/slices/authSlice';
 import { fetchCategories } from '../../store/slices/categorySlice';
 import { fetchProducts } from '../../store/slices/productsSlice';
-import { Loader } from '../loader/Loader';
+import { Loader } from '../ui/loader/Loader';
 
 export const AppLoader = ({ children }) => {
 	const dispatch = useDispatch();

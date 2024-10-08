@@ -12,7 +12,7 @@ export const getAllCategory = async (req, res) => {
     res.json({ data: categories });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: error.message });
+    handleError(res, "Ошибка сервера, попробуйте снова")
   }
 };
 
@@ -29,7 +29,7 @@ export const getCategory = async (req, res) => {
     res.json({ data: findCategory });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: error.message });
+    handleError(res, "Ошибка сервера, попробуйте снова")
   }
 };
 
@@ -40,7 +40,7 @@ export const createCategory = async (req, res) => {
     res.json({ data: newCategory });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: error.message });
+    handleError(res, "Ошибка сервера, попробуйте снова")
   }
 };
 
@@ -64,7 +64,7 @@ export const updateCategory = async (req, res) => {
     res.json({ data: updatedCategory });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: error.message });
+    handleError(res, "Ошибка сервера, попробуйте снова")
   }
 };
 
@@ -81,6 +81,6 @@ export const deleteCategory = async (req, res) => {
     res.json({ message: "Категория была удалена", data: deletedCategory });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: error.message });
+    handleError(res, "Ошибка сервера, попробуйте снова")
   }
 };

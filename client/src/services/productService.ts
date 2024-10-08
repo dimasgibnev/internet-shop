@@ -5,28 +5,13 @@ interface ResponseApi {
 	lastPage: number
 }
 const productService = {
-	fetchProducts: async (args) => {
+	fetchProducts: async () => {
 		try {
-			if (args) {
-				if (args.filter) {
-					const { data } = await http.get<ResponseApi>(
-						`/products/?page=${args.page}&limit=${args.limit}&filter=${args.filter}`,
-					);
-					return data;
-				} else {
-					const { data } = await http.get(
-						`/products/?page=${args.page}&limit=${args.limit}`,
-					);
+			const { data } = await http.get(`/products`);
 
-					return data;
-				}
-			} else {
-				const { data } = await http.get(`/products`);
-
-				return data;
-			}
+			return data;
 		} catch (error) {
-			throw new Error(error.response.data.message);
+			return error
 		}
 	},
 	fetchProduct: async (id) => {

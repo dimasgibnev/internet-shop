@@ -9,25 +9,24 @@ import { fetchProducts } from '../../store/slices/productsSlice';
 import { findImage } from '../../utils/findImage';
 
 import './Products.sass';
+import { useProducts } from '../../hooks/useProducts';
+import { Sort } from '../../components/ui';
 
 export const Products = () => {
 	const params = useParams();
 	const dispatch = useDispatch();
-	const filter = params.category;
-	const products = useSelector((state) => state.products.data) || [];
-	const isLoading = useSelector((state) => state.products.isLoading);
-	const [currentPage, setCurrentPage] = useState(1);
-	const [limit, setLimit] = useState(8);
-	const lastPage = useSelector((state) => state.products.lastPage);
-	console.log('render');
+	const {
+		products, currentPage,setCurrentPage, limit, lastPage, isLoading
+	} = useProducts(params)
 
 	useEffect(() => {
-		dispatch(fetchProducts({ page: currentPage, limit, filter }));
-	}, [dispatch, currentPage, limit, filter]);
+		dispatch(fetchProducts());
+	}, [dispatch, currentPage, limit]);
 
 	return (
 		products.length > 0 && (
 			<div className="products">
+				<Sort />
 				<div className="products-wrapper">
 					{isLoading
 						? new Array(limit).fill(0).map((_, i) => <Skeleton key={i} />)
@@ -46,7 +45,7 @@ export const Products = () => {
 					disabled={products.length < 1}
 					currentPage={currentPage}
 					setCurrentPage={setCurrentPage}
-					lastPage={Math.ceil(products.length / limit)}
+					lastPage={lastPage}
 				/>
 			</div>
 		)

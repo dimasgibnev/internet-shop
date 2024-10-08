@@ -1,11 +1,12 @@
 import { LinkWrapper } from '../LinkWrapper';
-import { CatalogMenu } from './components/CatalogMenu';
+import { Menu } from './components/menu/Menu';
+
 import './Catalog.sass';
 
 export const Catalog = () => {
 	return (
 		<div className="catalog">
-			<CatalogMenu />
+			<Menu />
 
 			<LinkWrapper className="catalog" path={'/products/cordless'}>
 				Аккумуляторные

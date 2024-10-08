@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Button } from '../../../components';
-import { Icon } from '../../../components/icon/Icon';
+import { Icon } from '../../../components/ui/icon/Icon';
 
 import { findImage } from '../../../utils/findImage';
 

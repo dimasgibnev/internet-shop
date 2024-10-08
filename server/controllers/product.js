@@ -1,6 +1,7 @@
 import { mapProduct } from "../helpers/mapProduct.js";
 import { ProductModel } from "../models/Product.js";
 import { UserModel } from "../models/User.js";
+import { handleError } from "../utils/handleError.js";
 import { validateMongoDbId } from "../utils/validateMongoDbId.js";
 import slugify from "slugify";
 
@@ -13,9 +14,7 @@ export const createProduct = async (req, res) => {
     res.json({ data: newProduct });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      message: "Не удалось загрузить данные, попробуйте снова",
-    });
+    handleError(res, "Ошибка сервера, попробуйте снова");
   }
 };
 
@@ -30,72 +29,22 @@ export const getProduct = async (req, res) => {
     res.json({ product: mapProduct(findProduct) });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      message: "Не удалось загрузить данные, попробуйте снова",
-    });
+    handleError(res, "Ошибка сервера, попробуйте снова");
   }
 };
 
 export const getProducts = async (req, res) => {
   try {
-    const queryObj = { ...req.query };
-    // const exludeFields = ["sort", "page", "limit", "fields"];
-    // exludeFields.forEach((el) => delete queryObj[el]);
-    // let queryStr = JSON.stringify(queryObj);
+    let products = await ProductModel.find();
 
-    let query = ProductModel.find();
-
-    // queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-    if (req.query.filter) {
-      switch (req.query.filter) {
-        case "cordless":
-          query = query.find({ line: req.query.filter });
-          break;
-        case "corded":
-          query = query.find({ line: req.query.filter });
-          break;
-        case "accessories":
-          query = query.find({ line: req.query.filter });
-          break;
-        case "gas":
-          query = query.find({ line: req.query.filter });
-          break;
-        case "cleaning":
-          query = query.find({ line: req.query.filter });
-          break;
-        default:
-          query = query.find({ category: req.query.filter });
-      }
+    if (!products) {
+      handleError(res, "Товары не найдены", 404);
     }
 
-    // if (req.query.fields) {
-    //   const fields = req.query.fields.split(",").join(" ");
-    //   query = query.select(fields);
-    // } else {
-    //   query = query.select("-__v");
-    // }
-    if (req.query.search) {
-      console.log(req.query.search);
-
-      query = query.findOne(req.query);
-    }
-
-    const page = req.query.page;
-    const limit = req.query.limit;
-    const skip = (page - 1) * limit;
-    query = query.skip(skip).limit(limit);
-
-    if (req.query.page) {
-      const numProducts = await ProductModel.countDocuments();
-      if (skip >= numProducts) throw new Error("Такой страницы не существует");
-    }
-    const lastPage = Math.ceil((await ProductModel.countDocuments()) / limit);
-    const products =  await query;
-
-    res.json({ products: products.map(mapProduct), lastPage });
+    res.json({ products: products.map(mapProduct) });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: error.message });
+    handleError(res, "Ошибка сервера, попробуйте снова");
   }
 };
 
@@ -110,9 +59,7 @@ export const deleteProduct = async (req, res) => {
     res.json({ error: null, message: "Товар был удален" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      message: "Не удалось удалить товар, попробуйте снова",
-    });
+    handleError(res, "Ошибка сервера, попробуйте снова");
   }
 };
 
@@ -120,9 +67,8 @@ export const updateProduct = async (req, res) => {
   try {
     if (req.body.title) req.body.slug = slugify(req.body.title);
     const { id } = req.params;
-    const newProductData = req.body;
-
     validateMongoDbId(id);
+    const newProductData = req.body;
 
     const updatedProduct = await ProductModel.findByIdAndUpdate(
       id,
@@ -135,9 +81,7 @@ export const updateProduct = async (req, res) => {
     res.json({ data: updatedProduct });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      message: "Не удалось отправить данные, попробуйте снова",
-    });
+    handleError(res, "Ошибка сервера, попробуйте снова");
   }
 };
 
@@ -145,7 +89,7 @@ export const addToWishlist = async (req, res) => {
   const { _id } = req.user;
   const { productId } = req.body;
   validateMongoDbId(_id);
-  console.log(productId);
+  validateMongoDbId(productId);
 
   try {
     const user = await UserModel.findById(_id);
@@ -161,7 +105,10 @@ export const addToWishlist = async (req, res) => {
           $push: { wishList: productId },
         },
         { new: true }
-      );
+      ).populate({
+        path: "wishList",
+      });
+
       res.json({ wishList: user.wishList });
     } else {
       const user = await UserModel.findByIdAndUpdate(
@@ -170,14 +117,14 @@ export const addToWishlist = async (req, res) => {
           $pull: { wishList: productId },
         },
         { new: true }
-      );
+      ).populate({
+        path: "wishList",
+      });
       res.json({ data: user.wishList });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      message: "Ошибка сервера, попробуйте снова",
-    });
+    handleError(res, "Ошибка сервера, попробуйте снова");
   }
 };
 
@@ -229,8 +176,6 @@ export const getRating = async (req, res) => {
     res.json({ data: updatedRatingProduct });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      message: "Ошибка сервера, попробуйте снова",
-    });
+    handleError(res, "Ошибка сервера, попробуйте снова");
   }
 };

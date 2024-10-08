@@ -1,6 +1,6 @@
 import { useRef } from 'react';
-import { Input } from '../../../../input/Input';
-import { Icon } from '../../../../icon/Icon';
+import { Input } from '../../../../ui/input/Input';
+import { Icon } from '../../../../ui/icon/Icon';
 
 export const SearchPanel = ({ searchPrhase, setSearchPrhase }) => {
 	const inputRef = useRef(null);

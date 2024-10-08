@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { Icon } from '../icon/Icon';
+import { Icon } from '../ui/icon/Icon';
 import { CartInfo } from './components/cart-info/CartInfo';
 
-import { fetchMe} from '../../store/slices/authSlice';
+import { fetchMe } from '../../store/slices/authSlice';
 import {
 	addToCart,
 	addToCartAsync,
@@ -21,7 +21,7 @@ import './ProductCard.sass';
 export const ProductCard = ({ id, image, title, model, price }) => {
 	const [active, setActive] = useState(false);
 	const dispatch = useDispatch();
-	const {user} = useUser();
+	const { user } = useUser();
 	const guestCart = useSelector((state) => state.user.cart);
 	const guestWishList = useSelector((state) => state.user.wishList);
 	const cart = user ? user.cart : guestCart;
