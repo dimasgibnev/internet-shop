@@ -1,33 +1,64 @@
 import { Logo } from '../Logo';
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useUser } from '../../../../hooks/useUser';
 import { LinkWrapper } from '../LinkWrapper';
 import { Profile } from './components/Profile';
-import { SearchPanel } from './components/SearchPanel';
-import styles from'./Navigation.module.sass';
+import { SearchPanel } from './components/search-panel/SearchPanel';
+import styles from './Navigation.module.sass';
+import { Menu } from './components/menu/Menu';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	fetchSearchedProducts,
+	resetProducts,
+} from '../../../../store/slices/productsSlice';
+import { selectSearch, setSearch } from '../../../../store/slices/filterSlice';
 
 export const Navigation = () => {
-	const [searchPrhase, setSearchPrhase] = useState('');
+	const dispacth = useDispatch();
 	const { user, getUserName } = useUser();
+	const guestCart = useSelector((state) => state.user.cart);
+	const cart = user?.cart ? user.cart : guestCart;
+	const searchPhrase = useSelector(selectSearch);
+	const filter = useSelector((state) => state.filter);
+
+	const onSearch = ({ target }) => {
+		dispacth(setSearch(target.value));
+	};
+
+	useEffect(() => {
+		const finalFilter = { ...filter, search: searchPhrase };
+
+		if (searchPhrase) {
+			dispacth(fetchSearchedProducts(finalFilter));
+		} else if (searchPhrase === '') {
+			dispacth(resetProducts());
+		}
+	}, [dispacth, searchPhrase, filter]);
 
 	return (
 		<div className={styles.navigation}>
 			<Logo />
+			<Menu />
+			<SearchPanel searchPrhase={searchPhrase} onChange={onSearch} />
 
-			<SearchPanel searchPrhase={searchPrhase} setSearchPrhase={setSearchPrhase} />
-
-			<LinkWrapper path={'/cart'} className="navigation">
-				<i className="fa-solid fa-cart-shopping"></i>
+			<LinkWrapper path={'/cart'} className={styles.link}>
+				<i className="fa-solid fa-cart-shopping">
+					{cart.length > 0 && (
+						<div className={styles.cart}>
+							{cart.length < 10 ? cart.length : 9 + '+'}
+						</div>
+					)}
+				</i>
 			</LinkWrapper>
 
-			<LinkWrapper path={'/wishlist'} className="navigation">
-				<i className="fa-regular fa-heart"></i>
+			<LinkWrapper path={'/wishlist'} className={styles.link}>
+				<i className={user?.wishList.length > 0 ? `fa-solid fa-heart` : `fa-regular fa-heart`}></i>
 			</LinkWrapper>
 
 			{user ? (
 				<Profile user={user} getUserName={getUserName} />
 			) : (
-				<LinkWrapper path={'/login'} className="navigation">
+				<LinkWrapper path={'/login'} className={styles.link}>
 					Вход
 				</LinkWrapper>
 			)}

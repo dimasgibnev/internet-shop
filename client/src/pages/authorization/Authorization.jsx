@@ -13,10 +13,10 @@ import { Inputs } from './components/Inputs';
 import './Authorization.sass';
 
 export const Authorization = () => {
-	const isLoggedIn = useSelector((state) => state.auth?.isAuth);
-	const methods = useForm({ resolver: yupResolver(schema), mode: 'onChange' });
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const isAuth = useSelector((state) => state.auth?.isAuth);
+	const methods = useForm({ resolver: yupResolver(schema), mode: 'onChange' });
 	const {
 		formState: { errors },
 		handleSubmit,
@@ -40,7 +40,7 @@ export const Authorization = () => {
 	const isError =
 		serverError || (errors && Array.from(Object.values(errors)).length > 0);
 
-	if (isLoggedIn) {
+	if (isAuth) {
 		return <Navigate to="/" />;
 	}
 

@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../../../../../store/slices/authSlice';
 import { useUser } from '../../../../../hooks/useUser';
 import { Popup } from '../../../../ui/popup/Popup';
+
 import styles from '../Navigation.module.sass'
 
 export const Profile = () => {
@@ -39,7 +40,7 @@ export const Profile = () => {
 
 	return (
 		<div
-			className={styles.links}
+			className={styles.link}
 			onMouseEnter={openProfileMenu}
 			onMouseLeave={closeProfileMenu}
 		>

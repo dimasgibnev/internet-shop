@@ -1,17 +1,35 @@
 import { http } from '../http';
-import { IProduct } from '../interface/product.interface';
-interface ResponseApi {
-	products: IProduct[],
-	lastPage: number
-}
+
 const productService = {
-	fetchProducts: async () => {
+	fetchProducts: async (filters) => {
+		let queryString = '';
+
+		if (filters.line) {
+			queryString += `line=${filters.line}&`;
+		}
+
+		if (filters.category) {
+			queryString += `category=${filters.category}&`;
+		}
+
+		if (filters.pagination) {
+			queryString += `page=${filters.pagination.page}&limit=${filters.pagination.limit}&`;
+		}
+
+		if (filters.sort) {
+			queryString += `sort=${filters.sort.sort}&order=${filters.sort.order}&`;
+		}
+
+		if (filters.search) {
+			queryString += `search=${filters.search}&`;
+		}
+
 		try {
-			const { data } = await http.get(`/products`);
+			const { data } = await http.get(`/products?${queryString}`);
 
 			return data;
 		} catch (error) {
-			return error
+			return error;
 		}
 	},
 	fetchProduct: async (id) => {
@@ -34,8 +52,8 @@ const productService = {
 	},
 	addToCart: async (arg) => {
 		try {
-			const {data}  = await http.post('/cart', { productId: arg });
-			
+			const { data } = await http.post('/cart', { productId: arg });
+
 			return data;
 		} catch (error) {
 			throw new Error(error.response.data.message);
@@ -71,6 +89,7 @@ const productService = {
 	addToWishList: async (arg) => {
 		try {
 			const { data } = await http.put(`/products/wishlist`, { productId: arg });
+
 			return data;
 		} catch (error) {
 			throw new Error(error.response.data.message);

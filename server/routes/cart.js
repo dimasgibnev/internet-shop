@@ -7,7 +7,6 @@ import {
   deleteProduct,
   getAllOrders,
   getOrders,
-  getUserCart,
   updateOrderStatus,
   userCart,
 } from "../controllers/cart.js";
@@ -29,7 +28,6 @@ router.post(
   checkHasRole([ROLES.ADMIN]),
   getAllOrders
 );
-router.get("/", authenticated, getUserCart);
 router.delete("/:id", authenticated, deleteProduct);
 router.put(
     "/order/update-order/:id",

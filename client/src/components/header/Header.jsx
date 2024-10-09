@@ -1,13 +1,11 @@
-import { Navigation, Catalog } from './components';
-import './Header.sass';
+import { Navigation } from './components/navigation/Navigation';
+import styles from './Header.module.sass';
 
 export const Header = () => {
 	return (
-		<header className="header">
+		<header className={styles.header}>
 			<div className="container ">
 				<Navigation />
-			<hr />
-				<Catalog />
 			</div>
 		</header>
 	);

@@ -35,13 +35,48 @@ export const getProduct = async (req, res) => {
 
 export const getProducts = async (req, res) => {
   try {
-    let products = await ProductModel.find();
+    console.log(req.query);
 
-    if (!products) {
-      handleError(res, "Товары не найдены", 404);
+    const filter = {};
+    const sort = {};
+    let skip = 0;
+    let limit = 0;
+
+    if (req.query.line) {
+      filter.line = { $in: req.query.line };
     }
 
-    res.json({ products: products.map(mapProduct) });
+    if (req.query.category) {
+      filter.category = { $in: req.query.category };
+    }
+
+    if (req.query.sort) {
+      sort[req.query.sort] = req.query.order
+        ? req.query.order === "desc"
+          ? -1
+          : 1
+        : 1;
+    }
+
+    if (req.query.search) {
+      filter["$or"] = [{ title: { $regex: req.query.search, $options: "i" } }];
+    }
+
+    if (req.query.page && req.query.limit) {
+      const pageSize = req.query.limit;
+      const page = req.query.page;
+
+      skip = pageSize * (page - 1);
+      limit = pageSize;
+    }
+
+    const productsCount = await ProductModel.countDocuments(filter);
+    const products = await ProductModel.find(filter)
+      .sort(sort)
+      .skip(skip)
+      .limit(limit);
+
+    res.json({ products: products.map(mapProduct), count: productsCount });
   } catch (error) {
     console.log(error);
     handleError(res, "Ошибка сервера, попробуйте снова");
@@ -93,20 +128,24 @@ export const addToWishlist = async (req, res) => {
 
   try {
     const user = await UserModel.findById(_id);
+    const product = await ProductModel.findById(productId);
 
-    const alreadyAdded = user.wishList.find(
-      (id) => id.toString() === productId
+    const alreadyAdded = user.wishList.some(
+      ({ product }) => product._id.toString() === productId
     );
+
+    const wishList = { product: product._id };
 
     if (!alreadyAdded) {
       const user = await UserModel.findByIdAndUpdate(
         _id,
         {
-          $push: { wishList: productId },
+          $push: { wishList },
         },
         { new: true }
       ).populate({
         path: "wishList",
+        populate: "product",
       });
 
       res.json({ wishList: user.wishList });
@@ -114,13 +153,15 @@ export const addToWishlist = async (req, res) => {
       const user = await UserModel.findByIdAndUpdate(
         _id,
         {
-          $pull: { wishList: productId },
+          $pull: { wishList},
         },
         { new: true }
       ).populate({
         path: "wishList",
+        populate: "product",
       });
-      res.json({ data: user.wishList });
+
+      res.json({ wishList: user.wishList });
     }
   } catch (error) {
     console.log(error);

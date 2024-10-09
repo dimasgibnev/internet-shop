@@ -33,19 +33,6 @@ export const userCart = async (req, res) => {
   }
 };
 
-export const getUserCart = async (req, res) => {
-  const { _id } = req.user;
-  validateMongoDbId(_id);
-  try {
-    const cart = await CartModel.findOne({ orderby: _id }).populate(
-      "products.product"
-    );
-    res.json(cart);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Не удалось загрузить продукты из корзины");
-  }
-};
 
 export const deleteProduct = async (req, res) => {
   try {

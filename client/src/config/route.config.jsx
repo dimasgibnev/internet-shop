@@ -8,11 +8,16 @@ import {
 	Product,
 	Profile,
 	Registration,
+	WishList,
 } from '../pages';
 import { ROUTES } from '../constants';
 import { ROLES } from '../constants/roles';
 
 export const routeConfig = [
+	{
+		path: ROUTES.ABOUT,
+		element: <About />,
+	},
 	{
 		path: ROUTES.CART,
 		element: <Cart />,
@@ -52,8 +57,8 @@ export const routeConfig = [
 		element: <Products />,
 	},
 	{
-		path: ROUTES.ABOUT,
-		element: <About />,
+		path: ROUTES.WISHLIST,
+		element: <WishList />,
 	},
 	{
 		path: ROUTES.NOT_FOUND,

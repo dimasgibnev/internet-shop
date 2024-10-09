@@ -5,49 +5,59 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Pagination, ProductCard } from '../../components';
 import { Skeleton } from '../../components/productCard/components/Skeleton/Skeleton';
 
-import { fetchProducts } from '../../store/slices/productsSlice';
-import { findImage } from '../../utils/findImage';
+import {
+	fetchProducts,
+	selectCount,
+	selectLoading,
+	selectProducts,
+} from '../../store/slices/productsSlice';
+import { selectSort, setCategory, setLine } from '../../store/slices/filterSlice';
 
-import './Products.sass';
-import { useProducts } from '../../hooks/useProducts';
 import { Sort } from '../../components/ui';
+import { LIMIT } from '../../constants/query';
+
+import styles from './Products.module.sass';
 
 export const Products = () => {
+	const sort = useSelector(selectSort);
 	const params = useParams();
 	const dispatch = useDispatch();
-	const {
-		products, currentPage,setCurrentPage, limit, lastPage, isLoading
-	} = useProducts(params)
+	const [page, setPage] = useState(1);
+
+	const products = useSelector(selectProducts) || [];
+	const isLoading = useSelector(selectLoading);
+	const totalCount = useSelector(selectCount);
+
+	const lastPage = Math.ceil(totalCount / LIMIT);
 
 	useEffect(() => {
-		dispatch(fetchProducts());
-	}, [dispatch, currentPage, limit]);
+		dispatch(setLine(params.line));
+		dispatch(setCategory(params.category));
+		const filter = {
+			pagination: { page, limit: LIMIT },
+			sort,
+			category: params.category,
+			line: params.line,
+		};
+		dispatch(fetchProducts(filter));
+	}, [dispatch, page, sort, params.category, params.line]);
 
 	return (
-		products.length > 0 && (
-			<div className="products">
-				<Sort />
-				<div className="products-wrapper">
-					{isLoading
-						? new Array(limit).fill(0).map((_, i) => <Skeleton key={i} />)
-						: products.map((product) => (
-								<ProductCard
-									key={product._id}
-									id={product._id}
-									image={findImage(product.images)}
-									title={product.title}
-									model={product.series}
-									price={product.price}
-								/>
-							))}
-				</div>
-				<Pagination
-					disabled={products.length < 1}
-					currentPage={currentPage}
-					setCurrentPage={setCurrentPage}
-					lastPage={lastPage}
-				/>
+		<div className={styles.products}>
+			<Sort />
+			<div className={styles.wrapper}>
+				{isLoading
+					? new Array(LIMIT).fill(0).map((_, i) => <Skeleton key={i} />)
+					: products.map((product) => (
+							<ProductCard key={product._id} product={product} />
+						))}
 			</div>
-		)
+			<Pagination
+				className={styles.pagination}
+				currentPage={page}
+				lastPage={lastPage}
+				setCurrentPage={setPage}
+			/>
+		</div>
 	);
 };

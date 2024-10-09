@@ -7,3 +7,4 @@ export * from './registration/Registration.jsx';
 export * from './products/Products.jsx';
 export * from './product/Product.jsx';
 export * from './profile/Profile.jsx';
+export * from './wishlist/Wishlist.jsx'

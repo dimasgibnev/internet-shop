@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { findImage } from '../../../utils/findImage';
@@ -8,10 +7,8 @@ import { Skeleton } from '../../../components/productCard/components/Skeleton/Sk
 
 import styles from '../Home.module.sass';
 
-export const ProductsCarousel = () => {
+export const ProductsCarousel = ({ products }) => {
 	const isLoading = useSelector((state) => state.products.isLoading);
-	const products = useSelector((state) => state.products.data) || [];
-	const newProducts = products && [...products].reverse().slice(0, 4);
 
 	return (
 		<section className={styles.products}>
@@ -19,15 +16,8 @@ export const ProductsCarousel = () => {
 			<div className={styles.wrapper}>
 				{isLoading
 					? new Array(4).fill(0).map((_, i) => <Skeleton key={i} />)
-					: newProducts.map((product) => (
-							<ProductCard
-								key={product._id}
-								id={product._id}
-								image={findImage(product.images)}
-								title={product.title}
-								model={product.series}
-								price={product.price}
-							/>
+					: products.map((product) => (
+							<ProductCard key={product._id} product={product} />
 						))}
 			</div>
 		</section>

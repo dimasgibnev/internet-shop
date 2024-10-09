@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { Categorie } from './Categorie';
 
 import styles from './Menu.module.sass';
+import { LinkWrapper } from '../../../LinkWrapper';
 
 export const Menu = () => {
 	const [catalogIsOpen, setCatalogIsOpen] = useState(false);
@@ -28,23 +29,22 @@ export const Menu = () => {
 			onMouseLeave={closeCatalog}
 			onMouseEnter={openCatalog}
 		>
-			<div className="catalog__link">
+			<div className={styles['catalog-link']}>
 				{catalogIsOpen ? (
-					<div className="menu__icon-wrapper">
+					<div className={styles.icon}>
 						<i
 							className="fa-solid fa-xmark menu-icons"
 							onClick={closeCatalog}
 						></i>
 					</div>
 				) : (
-					<div className="menu__icon-wrapper">
+					<div className={styles.icon}>
 						<i
 							className="fa-solid fa-bars menu-icons"
 							onClick={openCatalog}
 						></i>
 					</div>
 				)}
-				<span>Каталог</span>
 				<Popup links={cats} className={styles.menu} isOpen={catalogIsOpen} />
 			</div>
 		</div>

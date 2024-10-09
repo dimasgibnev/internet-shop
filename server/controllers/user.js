@@ -3,6 +3,7 @@ import { UserModel } from "../models/User.js";
 import { mapUser } from "../helpers/mapUser.js";
 import { generate, generateRefreshToken, verify } from "../utils/token.js";
 import { validateMongoDbId } from "../utils/validateMongoDbId.js";
+import { handleError } from "../utils/handleError.js";
 
 export async function register(req, res) {
   try {
@@ -44,28 +45,24 @@ export async function register(req, res) {
 
 export async function login(req, res) {
   try {
-    const { email, password } = req.body;
+    const { email, password} = req.body;
 
     const user = await UserModel.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({
-        message: "Почта или пароль неверны",
-      });
+      handleError(res, "Почта или пароль неверны", 400);
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user?.password);
 
     if (!isMatch) {
-      return res.status(400).json({
-        message: "Почта или пароль неверны",
-      });
+      handleError(res, "Почта или пароль неверны", 400);
     }
 
     const accessToken = generate({ _id: user._id });
     const refreshToken = generateRefreshToken({ _id: user._id });
 
-    const updatedUser = await UserModel.findByIdAndUpdate(
+    let updatedUser = await UserModel.findByIdAndUpdate(
       user._id,
       {
         refreshToken,
@@ -140,7 +137,7 @@ export const saveAddress = async (req, res) => {
     res.json({ user: mapUser(updatedUser) });
   } catch (error) {
     console.log(error);
-    handleError(res, "Ошибка сервера, попробуйте снова")
+    handleError(res, "Ошибка сервера, попробуйте снова");
   }
 };
 
@@ -169,7 +166,7 @@ export const handleRefreshToken = async (req, res) => {
     res.json({ accessToken });
   } catch (error) {
     console.log(error);
-    handleError(res, "Ошибка сервера, попробуйте снова")
+    handleError(res, "Ошибка сервера, попробуйте снова");
   }
 };
 
@@ -180,7 +177,7 @@ export const getUsers = async (req, res) => {
     res.json({ users: users.map(mapUser) });
   } catch (error) {
     console.log(error);
-    handleError(res, "Ошибка сервера, попробуйте снова")
+    handleError(res, "Ошибка сервера, попробуйте снова");
   }
 };
 
@@ -189,10 +186,13 @@ export const getMe = async (req, res) => {
     const { _id } = req.user;
     validateMongoDbId(_id);
 
-    const user = await UserModel.findById(_id).populate({
-      path: "cart",
-      populate: "product",
-    });
+    const user = await UserModel.findById(_id)
+      .populate({
+        path: "wishList",
+        populate: "product",
+      })
+      .populate({ path: "cart", populate: "product" })
+      .exec();
 
     res.send({ user: mapUser(user) });
   } catch (error) {
@@ -211,7 +211,7 @@ export const deleteUser = async (req, res) => {
     res.json({ error: null, message: "Пользователь был удален" });
   } catch (error) {
     console.log(error);
-    handleError(res, "Ошибка сервера, попробуйте снова")
+    handleError(res, "Ошибка сервера, попробуйте снова");
   }
 };
 
@@ -237,6 +237,6 @@ export const updateUser = async (req, res) => {
     res.json({ data: mapUser(updatedUser), message: "Пользователь обновлен" });
   } catch (error) {
     console.log(error);
-    handleError(res, "Ошибка сервера, попробуйте снова")
+    handleError(res, "Ошибка сервера, попробуйте снова");
   }
 };

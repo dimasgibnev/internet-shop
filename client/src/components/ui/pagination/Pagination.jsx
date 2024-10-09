@@ -1,13 +1,19 @@
 import { Button } from '../button/Button';
 import styles from './Pagination.module.sass';
 
-export const Pagination = ({ currentPage, setCurrentPage, lastPage, disabled }) => {
+export const Pagination = ({
+	currentPage,
+	setCurrentPage,
+	lastPage,
+	disabled,
+	className,
+}) => {
 	if (disabled) {
 		return null;
 	}
 
 	return (
-		<div className={styles.pagination}>
+		<div className={styles.pagination + ' ' + className}>
 			<Button
 				disabled={currentPage === 1}
 				onClick={() => setCurrentPage(currentPage - 1)}

@@ -3,7 +3,7 @@ export * from './app-loader/AppLoader';
 export * from './ui/button/Button.jsx';
 export * from './ui/dots/Dots.jsx';
 export * from './ui/input/Input';
-export * from './formError/FormError.tsx';
+export * from './ui/formError/FormError';
 export * from './layout/Layout';
 export * from './productCard/ProductCard.jsx';
 export * from './ui/pagination/Pagination.jsx';

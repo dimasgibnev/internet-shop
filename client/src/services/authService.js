@@ -5,9 +5,12 @@ const authService = {
 		try {
 			const { data } = await http.post('/login', arg);
 			localStorage.setItem('token', data.accessToken);
+			console.log(data);
 
 			return data;
 		} catch (error) {
+			console.log(error.response.data.message);
+
 			throw new Error(error.response.data.message);
 		}
 	},
