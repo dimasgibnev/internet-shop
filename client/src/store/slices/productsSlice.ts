@@ -1,5 +1,18 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { RootState } from '../store';
 import productService from '../../services/productService';
+import { IProduct } from '../../interface/product.interface';
+import { AxiosError } from 'axios';
+import { setReviews } from './reviewSlice';
+
+export interface IProductsState {
+	error: string | undefined;
+	isLoading: boolean;
+	data: IProduct[] | [];
+	product: IProduct | null;
+	searchedProducts: IProduct[] | [];
+	count: number | null;
+}
 
 export const fetchProducts = createAsyncThunk(
 	'products/fetchProducts',
@@ -8,7 +21,7 @@ export const fetchProducts = createAsyncThunk(
 			const data = await productService.fetchProducts(filters);
 
 			return data;
-		} catch (error) {
+		} catch (error: Error | AxiosError | any) {
 			if (!error.response) {
 				throw error;
 			}
@@ -24,7 +37,7 @@ export const fetchSearchedProducts = createAsyncThunk(
 			const data = await productService.fetchProducts(filters);
 
 			return data;
-		} catch (error) {
+		} catch (error: Error | AxiosError | any) {
 			if (!error.response) {
 				throw error;
 			}
@@ -35,12 +48,19 @@ export const fetchSearchedProducts = createAsyncThunk(
 
 export const fetchProduct = createAsyncThunk(
 	'products/fetchProduct',
-	async (args, { rejectWithValue }) => {
+	async (productId: string | undefined, { rejectWithValue, dispatch }) => {
 		try {
-			const { product } = await productService.fetchProduct(args);
+			const { product, lastPage } = await productService.fetchProduct(productId);
+
+			dispatch(
+				setReviews({
+					data: { totalRating: product.totalRating, reviews: product.reviews },
+					lastPage,
+				}),
+			);
 
 			return product;
-		} catch (error) {
+		} catch (error: Error | AxiosError | any) {
 			if (!error.response) {
 				throw error;
 			}
@@ -49,12 +69,12 @@ export const fetchProduct = createAsyncThunk(
 	},
 );
 
-const initialState = {
-	error: null,
+const initialState: IProductsState = {
+	error: '',
 	isLoading: false,
-	data: null,
+	data: [],
 	product: null,
-	searchedProducts: null,
+	searchedProducts: [],
 	count: null,
 };
 
@@ -63,11 +83,11 @@ const authSlice = createSlice({
 	initialState,
 	reducers: {
 		resetProducts: (state) => {
-			state.searchedProducts = null;
+			state.searchedProducts = [];
 		},
 		resetProduct: (state) => {
 			state.product = null;
-		}
+		},
 	},
 	extraReducers: (builder) => {
 		builder
@@ -94,8 +114,7 @@ const authSlice = createSlice({
 				state.error = action.error.message;
 				state.isLoading = false;
 			})
-			.addCase(fetchSearchedProducts.pending, (state) => {
-			})
+			.addCase(fetchSearchedProducts.pending, (state) => {})
 			.addCase(fetchSearchedProducts.fulfilled, (state, action) => {
 				state.searchedProducts = action.payload.products;
 				state.isLoading = false;
@@ -106,15 +125,16 @@ const authSlice = createSlice({
 			});
 	},
 });
-export const selectCount = (state) => state.products.count;
+export const selectCount = (state: RootState) => state.products.count;
 
-export const selectLoading = (state) => state.products.isLoading;
+export const selectLoading = (state: RootState) => state.products.isLoading;
 
-export const selectProducts = (state) => state.products.data;
+export const selectProducts = (state: RootState) => state.products.data;
 
-export const selectProduct = (state) => state.products.product;
+export const selectProduct = (state: RootState) => state.products.product;
 
-export const selectSearchedProducts = (state) => state.products.searchedProducts;
+export const selectSearchedProducts = (state: RootState) =>
+	state.products.searchedProducts;
 
 export const { resetProducts, resetProduct } = authSlice.actions;
 

@@ -20,7 +20,10 @@
 	color: var(--color-grey-dark)
 	top: 0
 	right: 10px
-	&:hover
+	i
+		color: var(--color-grey-dark)
+		transition: color 300ms ease
+		&:hover
 			color: #000
 
 .search-wrapper
@@ -35,6 +38,11 @@
 	background: #dcdcdcb8
 	top: 0
 	left: 0
+	i
+		color: var(--color-grey-dark)
+		transition: color 300ms ease
+		&:hover
+			color: #000
 
 .popup
 	display: flex
@@ -43,9 +51,11 @@
 	position: absolute
 	z-index: 10
 	width: 460px
+	max-height: 270px
 	background: var(--color-white)
 	box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5)
 	border-radius: 10px
+	overflow-y: auto
 	img
 		width: 50px
 		height: 50px
@@ -58,6 +68,7 @@
 		margin-bottom: 10px
 		font-size: 18px
 		padding: 5px
+		height: 70px
 		&:hover
 			background: var(--color-grey-light)
 		&:first-child

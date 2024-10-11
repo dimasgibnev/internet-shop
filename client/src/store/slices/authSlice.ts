@@ -1,14 +1,30 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import authService from '../../services/authService';
+import { IUser } from '../../interface/user.interface';
+import { AxiosError } from 'axios';
+import { RootState } from '../store';
+import { resetUser, setUser } from './userSlice';
+
+interface IAuthState {
+	data: IUser | null;
+	isAuth: boolean;
+	isLoading: boolean;
+	error: Error | AxiosError | any;
+}
 
 export const signIn = createAsyncThunk(
 	'auth/signIn',
-	async (args, { rejectWithValue }) => {
+	async (args, { rejectWithValue, dispatch, getState }) => {
 		try {
-			const data = await authService.signIn(args);
+			const state = getState() as RootState;
+			const cart = state.user.cart;
+			const wishlist = state.user.wishList;
 
-			return data;
-		} catch (error) {
+			const { user } = await authService.signIn({ authData: args, cart, wishlist });
+
+			dispatch(setUser(user));
+			return user;
+		} catch (error: Error | AxiosError | any) {
 			if (!error.response) {
 				throw error;
 			}
@@ -20,12 +36,13 @@ export const signIn = createAsyncThunk(
 
 export const signUp = createAsyncThunk(
 	'auth/signUp',
-	async (args, { rejectWithValue }) => {
+	async (args, { rejectWithValue, dispatch }) => {
 		try {
-			const data = await authService.signUp(args);
+			const { user } = await authService.signUp(args);
+			dispatch(setUser(user));
 
-			return data;
-		} catch (error) {
+			return user;
+		} catch (error: Error | AxiosError | any) {
 			if (!error.response) {
 				throw error;
 			}
@@ -34,19 +51,21 @@ export const signUp = createAsyncThunk(
 		}
 	},
 );
-export const fetchMe = createAsyncThunk('auth/fetchMe', async () => {
-	const data = await authService.fetchMe();
+export const fetchMe = createAsyncThunk('auth/fetchMe', async (_, { dispatch }) => {
+	const { user } = await authService.fetchMe();
+	dispatch(setUser(user));
 
-	return data;
+	return user;
 });
 
-export const logout = createAsyncThunk('auth/logout', async () => {
+export const logout = createAsyncThunk('auth/logout', async (_, { dispatch }) => {
 	const data = await authService.logout();
+	dispatch(resetUser());
 
 	return data;
 });
 
-const initialState = {
+const initialState: IAuthState = {
 	isAuth: false,
 	error: null,
 	isLoading: false,
@@ -56,13 +75,14 @@ const initialState = {
 const authSlice = createSlice({
 	name: 'auth',
 	initialState,
+	reducers: {},
 	extraReducers: (builder) => {
 		builder
 			.addCase(signIn.pending, (state) => {
 				state.isLoading = true;
 			})
 			.addCase(signIn.fulfilled, (state, action) => {
-				state.data = action.payload.user;
+				state.data = action.payload;
 				state.isAuth = true;
 				state.isLoading = false;
 			})
@@ -75,7 +95,7 @@ const authSlice = createSlice({
 				state.error = null;
 			})
 			.addCase(signUp.fulfilled, (state, action) => {
-				state.data = action.payload.user;
+				state.data = action.payload;
 				state.isAuth = true;
 				state.isLoading = false;
 				state.error = null;
@@ -100,8 +120,8 @@ const authSlice = createSlice({
 			.addCase(fetchMe.pending, (state) => {
 				state.isLoading = true;
 			})
-			.addCase(fetchMe.fulfilled, (state, action) => {
-				state.data = action.payload.user;
+			.addCase(fetchMe.fulfilled, (state, action: { payload: IUser }) => {
+				state.data = action.payload;
 				state.isAuth = true;
 				state.isLoading = false;
 			})
@@ -112,8 +132,8 @@ const authSlice = createSlice({
 	},
 });
 
-export const userSelector = (state) => state.auth.data;
+export const selectUser = (state: RootState) => state.auth.data;
 
-export const selectUserWishes = (state) => state.auth.data?.wishList;
+export const selectUserWishes = (state: RootState) => state.auth.data?.wishList;
 
 export default authSlice.reducer;

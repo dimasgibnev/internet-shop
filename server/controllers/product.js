@@ -24,9 +24,14 @@ export const getProduct = async (req, res) => {
 
     validateMongoDbId(id);
 
-    const findProduct = await ProductModel.findById(id);
+    const findProduct = await ProductModel.findById(id).populate({
+      path: "reviews",
+      populate: "postedBy",
+    });
+    const totalLength = findProduct.reviews.length;
+    const lastPage = Math.ceil(totalLength / 2);
 
-    res.json({ product: mapProduct(findProduct) });
+    res.json({ product: mapProduct(findProduct), lastPage });
   } catch (error) {
     console.log(error);
     handleError(res, "Ошибка сервера, попробуйте снова");
@@ -153,7 +158,7 @@ export const addToWishlist = async (req, res) => {
       const user = await UserModel.findByIdAndUpdate(
         _id,
         {
-          $pull: { wishList},
+          $pull: { wishList },
         },
         { new: true }
       ).populate({
@@ -174,17 +179,17 @@ export const getRating = async (req, res) => {
   const { star, productId, comment } = req.body;
   try {
     const product = await ProductModel.findById(productId);
-    const alreadyRated = product.ratings.find(
+    const alreadyRated = product.reviews.find(
       ({ postedBy }) => postedBy.toString() === _id.toString()
     );
 
     if (alreadyRated) {
       const updateRating = await ProductModel.updateOne(
         {
-          ratings: { $elemMatch: alreadyRated },
+          reviews: { $elemMatch: alreadyRated },
         },
         {
-          $set: { "ratings.$.star": star, "ratings.$.comment": comment },
+          $set: { "reviews.$.star": star, "reviews.$.comment": comment },
         },
         {
           new: true,
@@ -194,17 +199,24 @@ export const getRating = async (req, res) => {
       const rateProduct = await ProductModel.findByIdAndUpdate(
         productId,
         {
-          $push: { ratings: { star, postedBy: _id, comment: comment } },
+          $push: {
+            reviews: {
+              star,
+              postedBy: _id,
+              comment: comment,
+              createdAt: Date.now(),
+            },
+          },
         },
         { new: true }
       );
     }
-    const getAllRatings = await ProductModel.findById(productId);
-    const totalRating = getAllRatings.ratings.length;
-    const ratingSum = getAllRatings.ratings
+    const getAllreviews = await ProductModel.findById(productId);
+    const totalRating = getAllreviews.reviews.length;
+    const reviewsum = getAllreviews.reviews
       .map((item) => item.star)
       .reduce((acc, star) => acc + star, 0);
-    const actualRating = Math.round(ratingSum / totalRating);
+    const actualRating = Math.round(reviewsum / totalRating);
 
     const updatedRatingProduct = await ProductModel.findByIdAndUpdate(
       productId,
@@ -212,9 +224,12 @@ export const getRating = async (req, res) => {
         totalRating: actualRating,
       },
       { new: true }
-    );
+    ).populate({
+      path: "reviews",
+      populate: "postedBy",
+    });
 
-    res.json({ data: updatedRatingProduct });
+    res.json({ reviews: updatedRatingProduct.reviews });
   } catch (error) {
     console.log(error);
     handleError(res, "Ошибка сервера, попробуйте снова");

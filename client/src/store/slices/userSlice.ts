@@ -1,26 +1,42 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import productService from '../../services/productService';
+import { AxiosError } from 'axios';
+import { IProduct } from '../../interface/product.interface';
+import { IUser } from '../../interface/user.interface';
+import { RootState } from '../store';
+import userService from '../../services/userService';
 
-export const addToCartAsync = createAsyncThunk('user/addToCart', async (arg) => {
-	try {
-		const { cart } = await productService.addToCart(arg);
+interface IUserState {
+	isAuth: boolean;
+	error: string | undefined;
+	cart: { product: IProduct; count: number }[];
+	wishList: { product: IProduct }[];
+	isLoading: boolean;
+	data: IUser | null;
+}
 
-		return cart;
-	} catch (error) {
-		if (!error.response) {
-			throw error;
+export const addToCartAsync = createAsyncThunk(
+	'user/addToCart',
+	async (productId: string) => {
+		try {
+			const { cart } = await userService.addToCart(productId);
+
+			return cart;
+		} catch (error: Error | AxiosError | any) {
+			if (!error.response) {
+				throw error;
+			}
 		}
-	}
-});
+	},
+);
 
 export const removeFromCartAsync = createAsyncThunk(
 	'user/removeFromCart',
-	async (arg) => {
+	async (productId: string, thunkAPI) => {
 		try {
-			const { data } = await productService.removeFromCart(arg);
-
-			return data;
-		} catch (error) {
+			const { cart } = await userService.removeFromCart(productId);
+			thunkAPI.dispatch(removeFromCart({ _id: productId }));
+			return cart;
+		} catch (error: Error | AxiosError | any) {
 			if (!error.response) {
 				throw error;
 			}
@@ -30,12 +46,12 @@ export const removeFromCartAsync = createAsyncThunk(
 
 export const addToWishListAsync = createAsyncThunk(
 	'product/addToWishList',
-	async (arg) => {
+	async (productId: string) => {
 		try {
-			const { wishList } = await productService.addToWishList(arg);
+			const { wishList } = await userService.addToWishList(productId);
 
 			return wishList;
-		} catch (error) {
+		} catch (error: Error | AxiosError | any) {
 			if (!error.response) {
 				throw error;
 			}
@@ -43,9 +59,9 @@ export const addToWishListAsync = createAsyncThunk(
 	},
 );
 
-const initialState = {
+const initialState: IUserState = {
 	isAuth: false,
-	error: null,
+	error: '',
 	cart: [],
 	wishList: [],
 	isLoading: false,
@@ -76,6 +92,18 @@ const userSlice = createSlice({
 			state.cart = state.cart.filter(
 				({ product }) => product._id !== action.payload._id,
 			);
+		},
+		setUser: (state, action: { payload: IUser }) => {
+			state.cart.push(...action.payload.cart);
+			state.wishList.push(...action.payload.wishList);
+			state.data = action.payload;
+			state.isAuth = true;
+		},
+		resetUser: (state) => {
+			state.isAuth = false;
+			state.data = null;
+			state.cart = [];
+			state.wishList = [];
 		},
 	},
 	extraReducers: (builder) => {
@@ -115,8 +143,13 @@ const userSlice = createSlice({
 	},
 });
 
-export const selectWishes = (state) => state.user.wishList;
+export const selectWishes = (state: RootState) => state.user.wishList;
 
-export const { addToWishList, addToCart, removeFromCart } = userSlice.actions;
+export const selectCart = (state: RootState) => state.user.cart;
+
+export const selectUser = (state: RootState) => state.user.data;
+
+export const { addToWishList, addToCart, removeFromCart, setUser, resetUser } =
+	userSlice.actions;
 
 export default userSlice.reducer;

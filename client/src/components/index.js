@@ -5,6 +5,6 @@ export * from './ui/dots/Dots.jsx';
 export * from './ui/input/Input';
 export * from './ui/formError/FormError';
 export * from './layout/Layout';
-export * from './productCard/ProductCard.jsx';
+export * from './productCard/ProductCard';
 export * from './ui/pagination/Pagination.jsx';
 export * from './ui/scroll/Scroll.jsx';

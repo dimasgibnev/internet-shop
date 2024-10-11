@@ -3,7 +3,7 @@ import { http } from '../http';
 const authService = {
 	signIn: async (arg) => {
 		try {
-			const { data } = await http.post('/login', arg);
+			const { data } = await http.post('/login', { ...arg });
 			localStorage.setItem('token', data.accessToken);
 			console.log(data);
 
@@ -40,7 +40,7 @@ const authService = {
 
 			return data;
 		} catch (error) {
-			return error
+			return error;
 		}
 	},
 };

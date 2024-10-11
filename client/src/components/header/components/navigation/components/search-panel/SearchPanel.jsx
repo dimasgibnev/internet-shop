@@ -38,7 +38,7 @@ export const SearchPanel = ({ onChange }) => {
 			/>
 			<div className={styles.popup}>
 				{products?.length > 0 && (
-					products.slice(0, 4).map((product) => (
+					products.map((product) => (
 						<Link
 							to={`/products/details/${product._id}`}
 							key={product._id}

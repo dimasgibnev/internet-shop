@@ -45,7 +45,11 @@ export async function register(req, res) {
 
 export async function login(req, res) {
   try {
-    const { email, password} = req.body;
+    const {
+      authData: { email, password },
+      cart,
+      wishlist,
+    } = req.body;
 
     const user = await UserModel.findOne({ email });
 
@@ -53,7 +57,7 @@ export async function login(req, res) {
       handleError(res, "Почта или пароль неверны", 400);
     }
 
-    const isMatch = await bcrypt.compare(password, user?.password);
+    const isMatch = bcrypt.compare(password, user?.password);
 
     if (!isMatch) {
       handleError(res, "Почта или пароль неверны", 400);
@@ -72,13 +76,78 @@ export async function login(req, res) {
       }
     );
 
+    if (cart.length > 0) {
+      let filtredCart = [];
+
+      if (user.cart.length > 0) {
+        const diffProducts = user.cart.filter(
+          (item) => cart.some((cartItem) => cartItem.product !== item.product)
+        );
+console.log(diffProducts);
+
+        if (diffProducts.length > 0) {
+          filtredCart.push(...diffProducts, ...cart);
+        } else {
+          filtredCart.push(...user.cart);
+        }
+      }
+
+      const finalCart = filtredCart.length > 0 ? filtredCart : cart;
+
+      updatedUser = await UserModel.findByIdAndUpdate(
+        user._id,
+        {
+          cart: finalCart,
+        },
+        {
+          new: true,
+        }
+      );
+    }
+
+    if (wishlist.length > 0) {
+      let filtredWishlist = [];
+
+      if (user.wishList.length > 0) {
+        const diffWishes = user.wishList.filter(
+          (item) => item.product !== wishlist.product
+        );
+
+        if (diffWishes.length > 0) {
+          filtredWishlist.push(...diffWishes);
+        } else {
+          filtredWishlist.push(...user.wishList);
+        }
+      }
+      const finalWishes =
+        filtredWishlist.length > 0 ? filtredWishlist : wishlist;
+
+      updatedUser = await UserModel.findByIdAndUpdate(
+        user._id,
+        {
+          wishList: finalWishes,
+        },
+        {
+          new: true,
+        }
+      );
+    }
+
     res.cookie("refreshToken", updatedUser.refreshToken, {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,
     });
 
+    const User = await UserModel.findById(user._id)
+      .populate({
+        path: "wishList",
+        populate: "product",
+      })
+      .populate({ path: "cart", populate: "product" })
+      .exec();
+
     res.json({
-      user: mapUser(updatedUser),
+      user: mapUser(User),
       accessToken,
     });
   } catch (error) {

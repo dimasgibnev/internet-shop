@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchMe } from '../../store/slices/authSlice';
 import { fetchCategories } from '../../store/slices/categorySlice';
 import { fetchProducts } from '../../store/slices/productsSlice';
-import { Loader } from '../ui/loader/Loader';
 import {
 	selectCategory,
 	selectLine,
@@ -19,7 +18,6 @@ export const AppLoader = ({ children }) => {
 	const line = useSelector(selectLine);
 	const category = useSelector(selectCategory);
 	const page = useSelector(selectPage);
-	const isLoading = useSelector((state) => state.auth.isLoading);
 
 	useEffect(() => {
 		const filter = {
@@ -35,5 +33,5 @@ export const AppLoader = ({ children }) => {
 		dispatch(fetchCategories());
 	}, [dispatch, sort, line, category, page]);
 
-	return isLoading ? <Loader /> : children;
+	return children;
 };

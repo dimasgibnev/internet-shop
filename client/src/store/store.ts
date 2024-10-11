@@ -4,6 +4,7 @@ import filterReducer from './slices/filterSlice';
 import categoryReducer from './slices/categorySlice';
 import productsReducer from './slices/productsSlice';
 import userReducer from './slices/userSlice';
+import ratingReducer from './slices/reviewSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -12,5 +13,10 @@ export const store = configureStore({
 		user: userReducer,
 		category: categoryReducer,
 		filter: filterReducer,
+		review: ratingReducer,
 	},
 });
+
+export type RootState = ReturnType<typeof store.getState>;
+
+export type AppDispatch = typeof store.dispatch;

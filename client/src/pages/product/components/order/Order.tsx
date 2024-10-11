@@ -1,6 +1,14 @@
+import { FC, PropsWithChildren } from 'react';
 import { Button } from '../../../../components';
+import { IProduct } from '../../../../interface/product.interface';
+
 import styles from './Order.module.sass';
-export const Order = ({ product }) => {
+
+type Props = {
+	product: IProduct;
+};
+
+export const Order: FC<PropsWithChildren<Props>> = ({ product }) => {
 	return (
 		<div className={styles.order}>
 			<div className={styles.price}>

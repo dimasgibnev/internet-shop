@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 
 import {
 	fetchProduct,
@@ -8,17 +8,23 @@ import {
 	selectProduct,
 } from '../../store/slices/productsSlice';
 
-import { Order, ProductInfo } from './components';
+import { Order, ProductInfo, Reviews } from './components';
 import { Scroll } from '../../components';
 
-import styles from './Product.module.sass';
 import { Description } from './components/description/Description';
+import { IProduct } from '../../interface/product.interface';
+
+import { Stars } from '../../components/ui';
+
+import styles from './Product.module.sass';
 
 export const Product = () => {
-	const dispatch = useDispatch();
-	const params = useParams();
+	const dispatch = useAppDispatch();
+	const params = useParams<{
+		productId?: string | undefined;
+	}>();
 
-	const product = useSelector(selectProduct);
+	const product: IProduct | null = useAppSelector(selectProduct);
 
 	useEffect(() => {
 		dispatch(resetProduct());
@@ -32,6 +38,7 @@ export const Product = () => {
 			<div className={styles.title}>
 				<span>{product.series}</span>
 				<h2>{product.title}</h2>
+				<Stars className={styles.stars} selected={product.totalRating}/>
 			</div>
 			<div className={styles.wrapper}>
 				<div className={styles.info}>
@@ -39,6 +46,7 @@ export const Product = () => {
 					<Order product={product} />
 				</div>
 				<Description product={product} />
+				<Reviews productId={params.productId} />
 			</div>
 			<Scroll />
 		</div>

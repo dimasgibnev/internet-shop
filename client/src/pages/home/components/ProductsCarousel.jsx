@@ -1,7 +1,5 @@
 import { useSelector } from 'react-redux';
 
-import { findImage } from '../../../utils/findImage';
-
 import { ProductCard } from '../../../components';
 import { Skeleton } from '../../../components/productCard/components/Skeleton/Skeleton';
 

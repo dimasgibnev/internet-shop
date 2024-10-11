@@ -11,7 +11,7 @@ export const mapProduct = (product) => {
         series: product.series,
         quantity: product.quantity,
         specs: product.specs,
-        ratings: product.ratings,
+        reviews: product.reviews,
         totalRating: product.totalRating
 	}
 }

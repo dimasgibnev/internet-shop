@@ -47,7 +47,7 @@ export const Products = () => {
 			<Sort />
 			<div className={styles.wrapper}>
 				{isLoading
-					? new Array(LIMIT).fill(0).map((_, i) => <Skeleton key={i} />)
+					? new Array(totalCount).fill(0).map((_, i) => <Skeleton key={i} />)
 					: products.map((product) => (
 							<ProductCard key={product._id} product={product} />
 						))}

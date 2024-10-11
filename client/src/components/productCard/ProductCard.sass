@@ -10,11 +10,11 @@
 		top: 10px
 		color: var(--color-grey-dark)
 		transition: transform 500ms ease
-		&:hover
-			transform: scale(1.05)
-			color: red
-		&.active
-			color: red
+		i
+			&:hover
+				transform: scale(1.05)
+				color: red
+
 	&__cart
 		padding: 5px
 		background: var(--color-makita-light)
@@ -26,6 +26,7 @@
 			transform: scale(1.05)
 
 	&__image-wrapper
+		position: relative
 		display: flex
 		justify-content: center
 		align-items: center
@@ -53,3 +54,15 @@
 	&__price
 		font-weight: bold
 		height: 10%
+
+.stars
+	position: absolute
+	bottom: 5px
+	left: 5px
+	display: flex
+	i
+		font-size: 12px
+		
+.active
+	i
+		color: red

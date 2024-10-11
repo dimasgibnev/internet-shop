@@ -6,19 +6,16 @@ export interface IProduct {
 	images: { url: string; title: 'main' | 'secondary' }[];
 	cordless: boolean;
 	description: string;
-	price: string;
+	price: number;
 	category: string;
 	line: string;
 	series: string;
-	quantity: string;
+	quantity: number;
 	specs: string;
 	ratings: {
 		star: number;
 		comment: string;
 		postedBy: IUser;
 	}[];
-	totalRating: {
-		type: String;
-		default: '0';
-	};
+	totalRating: number;
 }

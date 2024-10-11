@@ -33,7 +33,6 @@ export const userCart = async (req, res) => {
   }
 };
 
-
 export const deleteProduct = async (req, res) => {
   try {
     const { _id } = req.user;
@@ -45,7 +44,7 @@ export const deleteProduct = async (req, res) => {
       },
       { new: true }
     );
-    res.json(user.cart);
+    res.json({ cart: user.cart });
   } catch (error) {
     console.log(error);
   }

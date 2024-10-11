@@ -1,10 +1,17 @@
-import { useState } from 'react';
+import { FC, PropsWithChildren, useState } from 'react';
+
+import { Icon } from '../../../../components/ui/icon/Icon';
+import { IProduct } from '../../../../interface/product.interface';
 
 import styles from './Description.module.sass';
-import { Icon } from '../../../../components/ui/icon/Icon';
 
-export const Description = ({ product }) => {
-	const [activeDesc, setActiveDesc] = useState(false);
+type Props = {
+	product: IProduct;
+};
+
+export const Description: FC<PropsWithChildren<Props>> = ({ product }) => {
+	const [activeDesc, setActiveDesc] = useState<boolean>(false);
+
 	return (
 		<div className={styles.desc}>
 			<Icon

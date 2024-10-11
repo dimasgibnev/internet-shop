@@ -1,7 +1,13 @@
-import React from 'react';
+import  { FC } from 'react';
 import styles from './CartInfo.module.sass';
 import { Link } from 'react-router-dom';
-export const CartInfo = ({ id, remove }) => {
+
+type Props = {
+	id: string;
+	remove: (id: string) => void;
+}
+
+export const CartInfo: FC<Props> = ({ id, remove }) => {
 	return (
 		<div className={styles.counter}>
 			<Link to={`/cart`} className={styles.text}>
