@@ -12,6 +12,7 @@ import {
 } from '../pages';
 import { ROUTES } from '../constants';
 import { ROLES } from '../constants/roles';
+import { Order } from '../pages/product/components';
 
 export const routeConfig = [
 	{
@@ -30,12 +31,19 @@ export const routeConfig = [
 		path: ROUTES.LOGIN,
 		element: <Authorization />,
 	},
+
 	{
 		path: ROUTES.REGISTER,
 		element: <Registration />,
 	},
 	{
 		path: ROUTES.PROFILE,
+		element: <Profile />,
+		auth: true,
+		roles: [ROLES.USER, ROLES.ADMIN],
+	},
+	{
+		path: ROUTES.ORDER,
 		element: <Profile />,
 		auth: true,
 		roles: [ROLES.USER, ROLES.ADMIN],

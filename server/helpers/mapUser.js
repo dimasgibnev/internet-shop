@@ -9,6 +9,7 @@ export const mapUser = (user) => {
 		registeredAt: user.createdAt,
 		cart: user.cart,
 		wishList: user.wishList,
-		adress: user.adress
+		adress: user.adress,
+		orders: user.orders
 	}
 }

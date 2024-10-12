@@ -14,6 +14,7 @@ export interface IUser {
 	}[];
 
 	adress: string;
+	orders: IProduct[];
 	wishList: {
 		product: IProduct;
 		count: number;

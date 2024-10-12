@@ -16,6 +16,7 @@ export const useAddReview = ({ comment, star, productId }: TypeReview) => {
 	const [active, setActive] = useState<number>(star || 0);
 
 	const handleSubmit = (): void => {
+
 		dispatch(addReview({ productId, comment: text, star: active })).then(() =>
 			dispatch(fetchMe()),
 		);

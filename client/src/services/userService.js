@@ -1,4 +1,5 @@
 import { http } from '../http';
+import { addToCart } from '../store/slices/userSlice';
 
 const userService = {
 	addToCart: async (arg) => {
@@ -31,6 +32,15 @@ const userService = {
 	addRating: async (arg) => {
 		try {
 			const { data } = await http.put(`/products/rating`, arg);
+
+			return data;
+		} catch (error) {
+			throw new Error(error.response.data.message);
+		}
+	},
+	saveAdress: async (arg) => {
+		try {
+			const { data } = await http.put(`/users//save-address`, arg);
 
 			return data;
 		} catch (error) {

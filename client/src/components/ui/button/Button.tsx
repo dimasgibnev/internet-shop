@@ -5,11 +5,11 @@ type TypeProps = {
 	children: string | ReactNode;
 	className?: string;
 	disabled?: boolean;
-	onClick?: (T: string) => void
 	props?: any;
+	onClick?: () => void;
 };
 
-export const Button: FC<TypeProps> = ({ children, className, disabled,onClick, ...props }) => {
+export const Button: FC<TypeProps> = ({ children, className, disabled, ...props }) => {
 	return (
 		<button {...props} className={`button ${className}`}>
 			{children}

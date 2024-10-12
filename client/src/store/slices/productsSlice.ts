@@ -133,6 +133,8 @@ export const selectProducts = (state: RootState) => state.products.data;
 
 export const selectProduct = (state: RootState) => state.products.product;
 
+export const selectProductId = (state: RootState) => state.products.product?._id;
+
 export const selectSearchedProducts = (state: RootState) =>
 	state.products.searchedProducts;
 

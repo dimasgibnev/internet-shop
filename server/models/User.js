@@ -47,6 +47,12 @@ const userSchema = new mongoose.Schema(
     refreshToken: {
       type: String,
     },
+    orders: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Order",
+      },
+    ],
   },
   {
     timestamps: true,

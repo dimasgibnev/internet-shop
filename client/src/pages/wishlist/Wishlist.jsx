@@ -1,8 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
-import { selectWishes } from '../../store/slices/userSlice';
-import { selectUser } from '../../store/slices/authSlice';
+import {  selectWishes } from '../../store/slices/userSlice';
 import { resetFilter } from '../../store/slices/filterSlice';
 
 import { ProductCard } from '../../components';
@@ -11,11 +10,7 @@ import styles from './Wishlist.module.sass';
 
 export const WishList = () => {
 	const dispatch = useDispatch();
-
-	const user = useSelector(selectUser);
-	const guestWishList = useSelector(selectWishes);
-
-	const list = user?.wishList ? user.wishList : guestWishList;
+	const wishlist = useSelector(selectWishes);
 
 	useEffect(() => {
 		dispatch(resetFilter());
@@ -25,8 +20,8 @@ export const WishList = () => {
 		<div className={styles.container}>
 			<h2>Избранное</h2>
 			<div className={styles.list}>
-				{list.length > 0 ? (
-					list.map(({ product }) => (
+				{wishlist.length > 0 ? (
+					wishlist.map(({ product }) => (
 						<ProductCard key={product._id} product={product} />
 					))
 				) : (

@@ -45,7 +45,7 @@ export const Product = () => {
 					<Order product={product} />
 				</div>
 				<Description product={product} />
-				<Reviews productId={params.productId} />
+				<Reviews />
 			</div>
 			<Scroll />
 		</div>

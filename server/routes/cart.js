@@ -7,15 +7,15 @@ import {
   deleteProduct,
   getAllOrders,
   getOrders,
-  updateOrderStatus,
-  userCart,
+  createCart,
 } from "../controllers/cart.js";
 
 export const router = express.Router({ mergeParams: true });
 
-router.post("/", authenticated, userCart);
-router.post("/cash-order", authenticated, createOrder);
-router.get("/get-orders", authenticated, getOrders);
+router.post("/", authenticated, createCart);
+router.delete("/:id", authenticated, deleteProduct);
+router.post("/order", authenticated, createOrder);
+router.get("/orders", authenticated, getOrders);
 router.get(
   "/getallorders",
   authenticated,
@@ -28,10 +28,3 @@ router.post(
   checkHasRole([ROLES.ADMIN]),
   getAllOrders
 );
-router.delete("/:id", authenticated, deleteProduct);
-router.put(
-    "/order/update-order/:id",
-    authenticated,
-    checkHasRole([ROLES.ADMIN]),
-    updateOrderStatus
-  );

@@ -30,9 +30,7 @@ export const Profile = () => {
 	const links = [
 		<Link>{user && <b>{getUserName()}</b>}</Link>,
 		<Link to={'/profile'}>Мой кабинет</Link>,
-		<Link to={'/profile/data'}>Личные данные</Link>,
 		<Link to={'/profile/orders'}>Заказы</Link>,
-		<Link to={'/profile/wishlist'}>Избранное</Link>,
 		<Link to={'/'} onClick={handleLogout}>
 			Выйти
 		</Link>,

@@ -10,6 +10,7 @@ import { useWishlist } from '../../hooks/useWishlist';
 import { useAppSelector } from '../../hooks/hooks';
 
 import './ProductCard.sass';
+import { formatePrice } from '../../utils/formatePrice';
 
 export const ProductCard = ({ product }: { product: IProduct }) => {
 	const {handleAddToWishList, inWish} = useWishlist(product)
@@ -34,7 +35,7 @@ export const ProductCard = ({ product }: { product: IProduct }) => {
 				>
 					<span>{product.title}</span>
 				</Link>
-				<span className="product-card__price">{product.price} ₽</span>
+				<span className="product-card__price">{formatePrice(`${product.price}`)} ₽</span>
 
 				<Icon
 					onClick={() => !isLoading && handleAddToWishList(product._id)}

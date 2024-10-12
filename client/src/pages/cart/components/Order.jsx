@@ -1,11 +1,32 @@
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../../../components/ui';
+import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
+import { selectIsAuth } from '../../../store/slices/authSlice';
 
 import { calculateOrder } from '../../../utils/calculateOrder';
 
+import { formatePrice } from '../../../utils/formatePrice';
+
 import styles from '../Cart.module.sass';
+import { createOrder } from '../../../store/slices/orderSlice';
 
 export const Order = ({ cart }) => {
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 	const { count, price } = calculateOrder(cart);
+	const isAuth = useAppSelector(selectIsAuth);
+	const order = cart.filter((item) => item.product.quantity > 0);
+	const isEmpty = cart.length === 0;
+
+	const handleCreateOrder = () => {
+		if (isEmpty) {
+			navigate('/products');
+		} else if (!isAuth) {
+			navigate('/login');
+		} else {
+			dispatch(createOrder({ products: order }));
+		}
+	};
 
 	return (
 		<div className={styles['order-wrapper']}>
@@ -18,11 +39,22 @@ export const Order = ({ cart }) => {
 					</div>
 					<div className={styles.total}>
 						<span>Общая стоимость: </span>
-						<div>{+price} ₽</div>
+						<div>{formatePrice(`${price}`)} ₽</div>
 					</div>
 				</div>
 
-				<Button className={styles['btn-order']}> Оформить </Button>
+				{!isAuth ? (
+					<Button
+						className={styles['btn-order']}
+						onClick={() => navigate('/login')}
+					>
+						Войдите в аккаунт
+					</Button>
+				) : (
+					<Button className={styles['btn-order']} onClick={handleCreateOrder}>
+						{isEmpty ? 'К покупкам' : 'Оформить заказ'}
+					</Button>
+				)}
 			</div>
 		</div>
 	);

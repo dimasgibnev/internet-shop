@@ -16,7 +16,7 @@ interface IUserState {
 
 export const addToCartAsync = createAsyncThunk(
 	'user/addToCart',
-	async (productId: string) => {
+	async (productId: string, thunkAPI) => {
 		try {
 			const { cart } = await userService.addToCart(productId);
 
@@ -33,8 +33,23 @@ export const removeFromCartAsync = createAsyncThunk(
 	'user/removeFromCart',
 	async (productId: string, thunkAPI) => {
 		try {
+			thunkAPI.dispatch(removeFromCart(productId));
 			const { cart } = await userService.removeFromCart(productId);
-			thunkAPI.dispatch(removeFromCart({ _id: productId }));
+
+			return cart;
+		} catch (error: Error | AxiosError | any) {
+			if (!error.response) {
+				throw error;
+			}
+		}
+	},
+);
+export const clearCartAsync = createAsyncThunk(
+	'user/removeFromCart',
+	async (type: string, thunkAPI) => {
+		try {
+			thunkAPI.dispatch(clearCart());
+			const { cart } = await userService.removeFromCart(type);
 
 			return cart;
 		} catch (error: Error | AxiosError | any) {
@@ -47,11 +62,26 @@ export const removeFromCartAsync = createAsyncThunk(
 
 export const addToWishListAsync = createAsyncThunk(
 	'product/addToWishList',
-	async (productId: string) => {
+	async (productId: string, { dispatch }) => {
 		try {
 			const { wishList } = await userService.addToWishList(productId);
 
 			return wishList;
+		} catch (error: Error | AxiosError | any) {
+			if (!error.response) {
+				throw error;
+			}
+		}
+	},
+);
+
+export const saveAdress = createAsyncThunk(
+	'product/saveAdress',
+	async (productId: string, { dispatch }) => {
+		try {
+			const data = await userService.saveAdress(productId);
+
+			return data;
 		} catch (error: Error | AxiosError | any) {
 			if (!error.response) {
 				throw error;
@@ -93,6 +123,9 @@ const userSlice = createSlice({
 			state.cart = state.cart.filter(
 				({ product }) => product._id !== action.payload,
 			);
+		},
+		clearCart(state) {
+			state.cart = [];
 		},
 		setUser: (state, action: { payload: IUser }) => {
 			state.cart = action.payload.cart;
@@ -140,6 +173,16 @@ const userSlice = createSlice({
 			.addCase(addToWishListAsync.rejected, (state, action) => {
 				state.error = action.error.message;
 				state.isLoading = false;
+			})
+			.addCase(saveAdress.pending, (state) => {
+				state.isLoading = true;
+			})
+			.addCase(saveAdress.fulfilled, (state) => {
+				state.isLoading = false;
+			})
+			.addCase(saveAdress.rejected, (state, action) => {
+				state.error = action.error.message;
+				state.isLoading = false;
 			});
 	},
 });
@@ -150,7 +193,7 @@ export const selectCart = (state: RootState) => state.user.cart;
 
 export const selectUser = (state: RootState) => state.user.data;
 
-export const { addToWishList, addToCart, removeFromCart, setUser, resetUser } =
+export const { addToWishList, addToCart, removeFromCart, setUser, resetUser, clearCart } =
 	userSlice.actions;
 
 export default userSlice.reducer;

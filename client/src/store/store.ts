@@ -5,6 +5,7 @@ import categoryReducer from './slices/categorySlice';
 import productsReducer from './slices/productsSlice';
 import userReducer from './slices/userSlice';
 import ratingReducer from './slices/reviewSlice';
+import orderReducer from './slices/orderSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
 		category: categoryReducer,
 		filter: filterReducer,
 		review: ratingReducer,
+		order: orderReducer,
 	},
 });
 

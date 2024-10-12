@@ -7,7 +7,7 @@ import { IReview } from '../../../../interface/review.interface';
 
 import { useAppSelector } from '../../../../hooks/hooks';
 import { selectUser } from '../../../../store/slices/userSlice';
-import { selectProduct } from '../../../../store/slices/productsSlice';
+import { selectProductId } from '../../../../store/slices/productsSlice';
 
 import styles from './Review.module.sass';
 
@@ -17,25 +17,17 @@ type Props = {
 
 export const Review: FC<Props> = ({ review }) => {
 	const { star, comment, postedBy, createdAt } = review;
-	const product = useAppSelector(selectProduct);
-	const productId = product?._id;
+	const productId = useAppSelector(selectProductId);
 	const user = useAppSelector(selectUser);
 	const isUserAdded = user?._id === postedBy?._id;
 	const [isShow, setIsShow] = useState(false);
+	const isLengthEnough = comment.length > 150
 	const { handleSubmit, setText, setActive, setIsEdit, text, active, isEdit } =
 		useAddReview({
 			productId,
 			comment,
 			star,
 		});
-
-	if (!review) {
-		return (
-			<div className={styles.review}>
-				<div>Этот товар пока еще никто не оценил</div>
-			</div>
-		);
-	}
 
 	return (
 		<div className={styles.review}>
@@ -92,11 +84,7 @@ export const Review: FC<Props> = ({ review }) => {
 				)
 			) : null}
 			<span className={styles.show} onClick={() => setIsShow(!isShow)}>
-				{isEdit || (comment && comment?.length < 150)
-					? ''
-					: isShow
-						? 'Скрыть'
-						: 'Показать еще'}
+				{isEdit || !isLengthEnough ? '' : isShow ? 'Скрыть' : 'Показать еще'}
 			</span>
 		</div>
 	);

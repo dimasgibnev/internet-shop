@@ -1,8 +1,9 @@
 import { ProductModel } from "../models/Product.js";
 import { UserModel } from "../models/User.js";
+import { OrderModel } from "../models/Order.js";
 import { validateMongoDbId } from "../utils/validateMongoDbId.js";
 
-export const userCart = async (req, res) => {
+export const createCart = async (req, res) => {
   try {
     const { productId } = req.body;
     const { _id } = req.user;
@@ -37,6 +38,18 @@ export const deleteProduct = async (req, res) => {
   try {
     const { _id } = req.user;
     const { id: productId } = req.params;
+
+    if (productId === "clear") {
+      const user = await UserModel.findOneAndUpdate(
+        _id,
+        {
+          $set: { cart: [] },
+        },
+        { new: true }
+      );
+      res.status(200).json({ cart: user.cart });
+    }
+
     const user = await UserModel.findOneAndUpdate(
       _id,
       {
@@ -51,38 +64,30 @@ export const deleteProduct = async (req, res) => {
 };
 
 export const createOrder = async (req, res) => {
-  const { COD } = req.body;
+  const { products } = req.body;
   const { _id } = req.user;
   validateMongoDbId(_id);
-  try {
-    if (!COD) throw new Error("Не выбран способ оплаты");
-    const user = await UserModel.findById(_id);
-    let userCart = await CartModel.findOne({ orderby: user._id });
-    const finalAmout = userCart.cartTotal;
 
-    await new Order({
-      products: userCart.products,
-      paymentIntent: {
-        id: uniqid(),
-        method: "COD",
-        amount: finalAmout,
-        status: "Cash on Delivery",
-        created: Date.now(),
-        currency: "rub",
-      },
+  try {
+    const user = await UserModel.findById(_id);
+
+    const order = await new OrderModel({
+      products,
       orderby: user._id,
-      orderStatus: "Cash on Delivery",
     }).save();
-    const update = userCart.products.map((item) => {
-      return {
-        updateOne: {
-          filter: { _id: item.product._id },
-          update: { $inc: { quantity: -item.count, sold: +item.count } },
-        },
-      };
-    });
-    await Product.bulkWrite(update, {});
-    res.json({ message: "success" });
+
+    await UserModel.findByIdAndUpdate(
+      _id,
+      {
+        $set: { cart: [] },
+        $push: { orders: order._id },
+      },
+      { new: true }
+    );
+
+    await order.populate({ path: "products", populate: "product" });
+
+    res.json({ order });
   } catch (error) {
     console.log(error);
   }
@@ -92,11 +97,10 @@ export const getOrders = async (req, res) => {
   const { _id } = req.user;
   validateMongoDbId(_id);
   try {
-    const userorders = await Order.findOne({ orderby: _id })
-      .populate("products.product")
-      .populate("orderby")
+    const userorders = await OrderModel.find({ orderby: _id })
+      .populate({ path: "products", populate: "product" })
       .exec();
-    res.json(userorders);
+    res.json({ orders: userorders });
   } catch (error) {
     console.log(error);
   }
@@ -123,27 +127,6 @@ export const getOrderByUserId = async (req, res) => {
       .populate("orderby")
       .exec();
     res.json(userorders);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const updateOrderStatus = async (req, res) => {
-  const { status } = req.body;
-  const { id } = req.params;
-  validateMongoDbId(id);
-  try {
-    const updateOrderStatus = await Order.findByIdAndUpdate(
-      id,
-      {
-        orderStatus: status,
-        paymentIntent: {
-          status: status,
-        },
-      },
-      { new: true }
-    );
-    res.json(updateOrderStatus);
   } catch (error) {
     console.log(error);
   }

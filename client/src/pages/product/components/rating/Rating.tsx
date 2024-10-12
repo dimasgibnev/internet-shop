@@ -6,7 +6,7 @@ import { selectUser } from '../../../../store/slices/userSlice';
 import { selectIsAuth } from '../../../../store/slices/authSlice';
 import { IReview } from '../../../../interface/review.interface';
 import { useAddReview } from '../../../../hooks/useAddReview';
-import { selectProduct } from '../../../../store/slices/productsSlice';
+import { selectProductId } from '../../../../store/slices/productsSlice';
 type Props = {
 	total: number | undefined;
 	reviews: IReview[] | undefined;
@@ -15,8 +15,7 @@ type Props = {
 export const Rating: FC<Props> = ({ total, reviews }) => {
 	const user = useAppSelector(selectUser);
 	const isAuth = useAppSelector(selectIsAuth);
-	const product = useAppSelector(selectProduct);
-	const productId = product?._id;
+	const productId = useAppSelector(selectProductId);
 	const isRated = useMemo(
 		() => reviews?.some((review) => review.postedBy?._id === user?._id),
 		[reviews, user?._id],

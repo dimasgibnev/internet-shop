@@ -4,6 +4,7 @@ import { IUser } from '../../interface/user.interface';
 import { AxiosError } from 'axios';
 import { RootState } from '../store';
 import { resetUser, setUser } from './userSlice';
+import { setOrders } from './orderSlice';
 
 interface IAuthState {
 	data: IUser | null;
@@ -23,6 +24,7 @@ export const signIn = createAsyncThunk(
 			const { user } = await authService.signIn({ authData: args, cart, wishlist });
 
 			dispatch(setUser(user));
+			
 			return user;
 		} catch (error: Error | AxiosError | any) {
 			if (!error.response) {
@@ -134,6 +136,6 @@ const authSlice = createSlice({
 
 export const selectUser = (state: RootState) => state.auth.data;
 
-export const selectIsAuth = (state: RootState) =>state.auth.isAuth
+export const selectIsAuth = (state: RootState) => state.auth.isAuth;
 
 export default authSlice.reducer;

@@ -11,6 +11,7 @@ import {
 	selectSort,
 } from '../../store/slices/filterSlice';
 import { LIMIT } from '../../constants/query';
+import { getOrders } from '../../store/slices/orderSlice';
 
 export const AppLoader = ({ children }) => {
 	const dispatch = useDispatch();
@@ -29,6 +30,7 @@ export const AppLoader = ({ children }) => {
 		if (!!localStorage.getItem('token')) {
 			dispatch(fetchMe());
 		}
+		dispatch(getOrders())
 		dispatch(fetchProducts(filter));
 		dispatch(fetchCategories());
 	}, [dispatch, sort, line, category, page]);

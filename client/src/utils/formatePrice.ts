@@ -1,15 +1,16 @@
-export const formatePrice = (price: number) => {
-	const stringPrice = String(price);
+export const formatePrice = (price: string) => {
 	let reverse = '';
-
-	for (let i = stringPrice.length - 1; i >= 0; i--) {
-		if (i % 3 === 0) {
-			reverse = reverse + ',' + stringPrice.charAt(i);
-		}
-		reverse = reverse + stringPrice.charAt(i);
+	let formated = ''
+	for (let i = price.length - 1; i >= 0; i--) {
+		reverse = reverse + price[i];
 	}
-
-	const formated = reverse.split(',').reverse().join().replaceAll(',', ' ');
-
-	return formated;
+	for (let i = 0; i < reverse.length; i++) {
+		if (i % 3 === 0 && i !== 0) {
+			formated = reverse[i] + ',' + formated
+		}
+		else {
+			formated = reverse[i] + formated
+		}
+	}
+	return formated.split('').join('').replaceAll(',', ' ');
 };

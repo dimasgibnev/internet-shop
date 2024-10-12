@@ -107,7 +107,8 @@ export async function login(req, res) {
 
       if (user.wishList.length > 0) {
         const diffWishes = user.wishList.filter(
-          (item) => !wishlist.some((wishItem) => item.product === wishItem.product)
+          (item) =>
+            !wishlist.some((wishItem) => item.product === wishItem.product)
         );
 
         if (diffWishes.length > 0) {
@@ -191,7 +192,7 @@ export const saveAddress = async (req, res) => {
     const updatedUser = await UserModel.findByIdAndUpdate(
       _id,
       {
-        address: req.body.address,
+        adress: req.body.adress,
       },
       {
         new: true,
