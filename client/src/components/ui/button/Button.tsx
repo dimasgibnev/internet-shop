@@ -5,7 +5,7 @@ type TypeProps = {
 	children: string | ReactNode;
 	className?: string;
 	disabled?: boolean;
-	onClick?: () => void
+	onClick?: (T: string) => void
 	props?: any;
 };
 

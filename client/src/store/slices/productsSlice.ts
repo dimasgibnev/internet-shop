@@ -54,7 +54,7 @@ export const fetchProduct = createAsyncThunk(
 
 			dispatch(
 				setReviews({
-					data: { totalRating: product.totalRating, reviews: product.reviews },
+					data: { totalRating: product.totalRating, reviews: product.reviews, productId },
 					lastPage,
 				}),
 			);

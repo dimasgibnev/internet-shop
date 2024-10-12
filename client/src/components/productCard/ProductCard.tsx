@@ -1,65 +1,21 @@
-import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { Link } from 'react-router-dom';
 
-import { Icon } from '../ui/icon/Icon';
 import { CartInfo } from './components/cart-info/CartInfo';
+import { Stars, Icon } from '../ui';
 
-import { fetchMe } from '../../store/slices/authSlice';
-import {
-	addToCart,
-	addToCartAsync,
-	addToWishList,
-	addToWishListAsync,
-	removeFromCart,
-	removeFromCartAsync,
-	selectCart,
-	selectUser,
-	selectWishes,
-} from '../../store/slices/userSlice';
-
-import { Stars } from '../ui';
 import { IProduct } from '../../interface/product.interface';
+
+import { useCart } from '../../hooks/useCart';
+import { useWishlist } from '../../hooks/useWishlist';
+import { useAppSelector } from '../../hooks/hooks';
 
 import './ProductCard.sass';
 
 export const ProductCard = ({ product }: { product: IProduct }) => {
-	const dispatch = useAppDispatch();
-
-	const totalRating = product?.totalRating;
+	const {handleAddToWishList, inWish} = useWishlist(product)
+	const { inCart, handleAddToCart, handleRemoveFromCart } = useCart(product);
 	const isLoading = useAppSelector((state) => state.user.isLoading);
-	const user = useAppSelector(selectUser);
-	const wishList = useAppSelector(selectWishes);
-	const cart: { product: IProduct; count: number }[] = useAppSelector(selectCart);
-
-	const productInCart = cart.some(({ product: item }) => item._id === product._id);
-	const inWishes = wishList.some(({ product: item }) => item._id === product._id);
-
-
-
-	const handleAddToWishList = (id: string): void => {
-		if (!user) {
-			dispatch(addToWishList(product));
-		} else {
-			dispatch(addToWishListAsync(id));
-		}
-	};
-
-	const handleAddToCart = (id: string): void => {
-		if (!user) {
-			dispatch(addToCart(product));
-		} else {
-			dispatch(addToCartAsync(id));
-		}
-	};
-
-	const handleRemoveFromCart = (id: string): void => {
-		if (!user) {
-			dispatch(removeFromCart(product));
-		} else {
-			dispatch(removeFromCartAsync(id));
-		}
-	};
+	const totalRating = product?.totalRating;
 
 	return (
 		<div className="product-card">
@@ -82,12 +38,12 @@ export const ProductCard = ({ product }: { product: IProduct }) => {
 
 				<Icon
 					onClick={() => !isLoading && handleAddToWishList(product._id)}
-					className={`product-card__wishlist ${inWishes && 'active'}`}
+					className={`product-card__wishlist ${inWish && 'active'}`}
 					icon={'heart'}
-					weight={inWishes ? 'solid' : 'regular'}
+					weight={inWish ? 'solid' : 'regular'}
 				/>
 
-				{productInCart ? (
+				{inCart ? (
 					<CartInfo id={product._id} remove={handleRemoveFromCart} />
 				) : (
 					<Icon

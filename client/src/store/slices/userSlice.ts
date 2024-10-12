@@ -35,7 +35,7 @@ export const removeFromCartAsync = createAsyncThunk(
 		try {
 			const { cart } = await userService.removeFromCart(productId);
 			thunkAPI.dispatch(removeFromCart({ _id: productId }));
-			
+
 			return cart;
 		} catch (error: Error | AxiosError | any) {
 			if (!error.response) {
@@ -91,12 +91,12 @@ const userSlice = createSlice({
 		},
 		removeFromCart: (state, action) => {
 			state.cart = state.cart.filter(
-				({ product }) => product._id !== action.payload._id,
+				({ product }) => product._id !== action.payload,
 			);
 		},
 		setUser: (state, action: { payload: IUser }) => {
-			state.cart = action.payload.cart
-			state.wishList  =action.payload.wishList
+			state.cart = action.payload.cart;
+			state.wishList = action.payload.wishList;
 			state.data = action.payload;
 			state.isAuth = true;
 		},

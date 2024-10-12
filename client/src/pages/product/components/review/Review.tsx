@@ -15,7 +15,8 @@ type Props = {
 	review: IReview;
 };
 
-export const Review: FC<Props> = ({ review: { star, comment, postedBy, createdAt } }) => {
+export const Review: FC<Props> = ({ review }) => {
+	const { star, comment, postedBy, createdAt } = review;
 	const product = useAppSelector(selectProduct);
 	const productId = product?._id;
 	const user = useAppSelector(selectUser);
@@ -28,7 +29,7 @@ export const Review: FC<Props> = ({ review: { star, comment, postedBy, createdAt
 			star,
 		});
 
-	if (!createdAt) {
+	if (!review) {
 		return (
 			<div className={styles.review}>
 				<div>Этот товар пока еще никто не оценил</div>

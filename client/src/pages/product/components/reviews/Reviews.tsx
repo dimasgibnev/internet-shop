@@ -40,7 +40,6 @@ export const Reviews: FC = () => {
 					{paginaitedReviews &&
 						paginaitedReviews.map((review) => (
 							<Review
-								
 								review={review}
 								key={review._id}
 							/>
