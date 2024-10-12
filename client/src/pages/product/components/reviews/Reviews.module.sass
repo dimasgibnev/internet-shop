@@ -2,15 +2,12 @@
 	display: flex
 	flex-direction: column
 
+
 @mixin block
 	padding: 10px
 	border-radius: 10px
 	border: 1px solid #000000d8
 
-@mixin rating
-	align-items: center
-	max-height: 250px
-	width: 40%
 
 
 .container
@@ -32,53 +29,22 @@
 	border-top: 1px solid #0000002c
 
 .reviews
+	position:relative
 	@include column
 	padding-bottom: 0
 	width: 70%
 	min-height: 250px
 	overflow-y: auto
-
-
-.stars
-	display: flex
-	width: fit-content
-	margin-bottom: 20px
-
-.total
-	@include column
-	@include rating
-	span
-		font-size: 20px
-	.stars
-		position: relative
-		top: 30px
-		i
-			font-size: 30px
-
-.rate
-	@include column
-	@include rating
-	.stars
-		i
-			cursor: pointer
-			font-size: 30px
-			&:hover
-				color: var(--color-makita-light)
-	.text
-		@include block
-		width: 90%
-		height: 100px
-		resize: none
-		outline: none
-		overflow-y: auto
-		margin-bottom: 20px
-		&:focus-visible
-			border: 2px solid var(--color-makita-light)
-	.btn
-		width: 70%
-		border: 1px solid #00000000
+	.show
+		width: fit-content
+		color: var(--color-grey-dark)
+		padding: 5px 0
+		font-size: 14px
+		cursor: pointer
+		border-bottom: 1px solid #00000000
+		margin-bottom: 0
 		&:hover
-			border: 1px solid var(--color-makita)
-			color: var(--color-makita)
-			background: white
+			color: #000
+			border-bottom: 1px solid var(--color-grey-dark)
+
 

@@ -9,12 +9,11 @@ import {
 } from '../../store/slices/productsSlice';
 
 import { Order, ProductInfo, Reviews } from './components';
-import { Scroll } from '../../components';
+import { Stars, Scroll } from '../../components/ui';
 
 import { Description } from './components/description/Description';
 import { IProduct } from '../../interface/product.interface';
 
-import { Stars } from '../../components/ui';
 
 import styles from './Product.module.sass';
 

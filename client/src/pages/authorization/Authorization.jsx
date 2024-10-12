@@ -3,11 +3,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { schema } from '../../assets/schemas/authSchema';
+import { loginSchema } from '../../data/shema';
 import { signIn } from '../../store/slices/authSlice';
 
-import { FormError } from '../../components';
-import { Button } from '../../components/ui/button/Button';
+import { FormError, Button } from '../../components/ui';
 import { Inputs } from './components/Inputs';
 
 import './Authorization.sass';
@@ -16,7 +15,7 @@ export const Authorization = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const isAuth = useSelector((state) => state.auth?.isAuth);
-	const methods = useForm({ resolver: yupResolver(schema), mode: 'onChange' });
+	const methods = useForm({ resolver: yupResolver(loginSchema), mode: 'onChange' });
 	const {
 		formState: { errors },
 		handleSubmit,

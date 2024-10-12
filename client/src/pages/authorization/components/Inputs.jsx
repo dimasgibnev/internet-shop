@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form';
-import { FormError, Input } from '../../../components';
+import { FormError, Input } from '../../../components/ui';
 
 export const Inputs = () => {
 	const {

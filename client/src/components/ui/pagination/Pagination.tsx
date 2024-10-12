@@ -1,7 +1,16 @@
+import { FC } from 'react';
 import { Button } from '../button/Button';
 import styles from './Pagination.module.sass';
 
-export const Pagination = ({
+type TypeProps = {
+	currentPage: number
+	setCurrentPage: (num: number) => void
+	lastPage: number
+	disabled: boolean
+	className:string
+}
+
+export const Pagination:FC<TypeProps> = ({
 	currentPage,
 	setCurrentPage,
 	lastPage,
@@ -11,6 +20,7 @@ export const Pagination = ({
 	if (disabled) {
 		return null;
 	}
+
 
 	return (
 		<div className={styles.pagination + ' ' + className}>

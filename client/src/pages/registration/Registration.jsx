@@ -1,16 +1,19 @@
 import { Navigate, useNavigate } from 'react-router-dom';
-import { signUp } from '../../store/slices/authSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { FormError, Button } from '../../components';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Inputs } from './components/Inputs';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { schema } from '../../assets/schemas/registerSchema';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { signUp } from '../../store/slices/authSlice';
+import { registerSchema } from '../../data/shema';
+
+import { FormError, Button } from '../../components/ui';
+import { Inputs } from './components/Inputs';
+
 import './Registration.sass';
 
 export const Registration = () => {
-	const isLoggedIn = useSelector((state) => state.auth?.isAuth);
-	const methods = useForm({ resolver: yupResolver(schema), mode: 'onChange' });
+	const isAuth = useSelector((state) => state.auth?.isAuth);
+	const methods = useForm({ resolver: yupResolver(registerSchema), mode: 'onChange' });
 	const {
 		formState: { errors },
 		handleSubmit,
@@ -36,7 +39,7 @@ export const Registration = () => {
 	const isError =
 		serverError || (errors && Array.from(Object.values(errors)).length > 0);
 
-	if (isLoggedIn) {
+	if (isAuth) {
 		return <Navigate to="/" />;
 	}
 

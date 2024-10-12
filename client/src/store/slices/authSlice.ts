@@ -134,6 +134,6 @@ const authSlice = createSlice({
 
 export const selectUser = (state: RootState) => state.auth.data;
 
-export const selectUserWishes = (state: RootState) => state.auth.data?.wishList;
+export const selectIsAuth = (state: RootState) =>state.auth.isAuth
 
 export default authSlice.reducer;

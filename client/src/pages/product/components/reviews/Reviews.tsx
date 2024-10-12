@@ -1,81 +1,55 @@
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useRef, useState } from 'react';
 import { useAppSelector } from '../../../../hooks/hooks';
-import {
-	selectLastPage,
-	selectReviews,
-	selectTotalRating,
-} from '../../../../store/slices/reviewSlice';
+import { selectLastPage, selectReviews } from '../../../../store/slices/reviewSlice';
 
-import { Button } from '../../../../components';
 import { Review } from '../review/Review';
-import { Stars } from '../../../../components/ui';
-
-import { selectUser } from '../../../../store/slices/authSlice';
-import { useAddReview } from '../../../../hooks/useAddReview';
 
 import styles from './Reviews.module.sass';
+import { Rating } from '../rating/Rating';
 
-type Props = {
-	productId: string | undefined;
-};
 
-export const Reviews: FC<Props> = ({ productId }) => {
+export const Reviews: FC = () => {
+	const reviewsRef = useRef<null | HTMLDivElement>(null);
+	const [page, setPage] = useState(1);
 	const data = useAppSelector(selectReviews);
-	const user = useAppSelector(selectUser);
 	const lastPage = useAppSelector(selectLastPage);
-	const totalRating = useAppSelector(selectTotalRating);
+	const reviews = data?.reviews;
+	const totalRating = data?.totalRating
+	const paginaitedReviews = useMemo(() => reviews?.slice(0, page * 2), [reviews, page]);
 
-	const isRated = useMemo(
-		() => data?.reviews?.some((review) => review?.postedBy?._id === user?._id),
-		[data?.reviews, user?._id],
-	);
-
-	const { handleSubmit, setActive, setText, active, text } = useAddReview({
-		productId,
-		comment: '',
-		star: 0,
-	});
+	const handleShow = () => {
+		setPage((prev) => {
+			if (!(prev === lastPage)) {
+				return (prev += 1);
+			} else {
+				reviewsRef?.current?.scrollIntoView({
+					behavior: 'smooth',
+					block: 'start',
+				});
+				return (prev = 1);
+			}
+		});
+	};
 
 	return (
 		<div className={styles.container}>
 			<h3>Отзывы</h3>
 			<div className={styles.wrapper}>
-				{isRated ? (
-					<div className={styles.total}>
-						<span>Оценка пользователей: </span>
-						<Stars className={styles.stars} selected={totalRating} />
-					</div>
-				) : (
-					<>
-						<div className={styles.rate}>
-							<Stars
-								className={styles.stars}
-								selected={active}
-								setSelected={setActive}
-								isEdit={true}
-							/>
-
-							<textarea
-								className={styles.text}
-								name="review"
-								value={text}
-								onChange={(e) => setText(e.target.value)}
-							></textarea>
-							<Button className={styles.btn} onClick={handleSubmit}>
-								Оставить отзыв
-							</Button>
-						</div>
-					</>
-				)}
-				<div className={styles.reviews}>
-					{data?.reviews &&
-						data.reviews.map((review) => (
+				<Rating total={totalRating} reviews={reviews}/>
+				<div className={styles.reviews} ref={reviewsRef}>
+					{paginaitedReviews &&
+						paginaitedReviews.map((review) => (
 							<Review
-								productId={productId}
+								
 								review={review}
 								key={review._id}
 							/>
 						))}
+					<span onClick={handleShow} className={styles.show}>
+						{reviews?.length === paginaitedReviews?.length
+							? 'Скрыть'
+							: 'Показать еще'}
+					</span>
 				</div>
 			</div>
 		</div>

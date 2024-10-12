@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 
 import { ProductsCarousel } from './components/ProductsCarousel.jsx';
 import { Banners } from './components/Banners.jsx';
+import { Scroll } from '../../components/ui';
 
-import { Scroll } from '../../components';
 import { resetFilter } from '../../store/slices/filterSlice';
 
 import styles from './Home.module.sass';

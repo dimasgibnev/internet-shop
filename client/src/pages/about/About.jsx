@@ -1,5 +1,5 @@
 import { Assembly, Cordless, FirstInstruments, Foundation, Slider } from './components';
-import { Scroll } from '../../components';
+import { Scroll } from '../../components/ui';
 
 import styles from './About.module.sass';
 

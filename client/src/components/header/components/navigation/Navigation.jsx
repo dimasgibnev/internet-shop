@@ -4,7 +4,6 @@ import { useUser } from '../../../../hooks/useUser';
 import { LinkWrapper } from '../LinkWrapper';
 import { Profile } from './components/Profile';
 import { SearchPanel } from './components/search-panel/SearchPanel';
-import styles from './Navigation.module.sass';
 import { Menu } from './components/menu/Menu';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -12,12 +11,18 @@ import {
 	resetProducts,
 } from '../../../../store/slices/productsSlice';
 import { selectSearch, setSearch } from '../../../../store/slices/filterSlice';
+import { selectCart, selectWishes } from '../../../../store/slices/userSlice';
+import { useAppSelector } from '../../../../hooks/hooks';
+
+import styles from './Navigation.module.sass';
 
 export const Navigation = () => {
 	const dispacth = useDispatch();
+	
 	const { user, getUserName } = useUser();
-	const guestCart = useSelector((state) => state.user.cart);
-	const cart = user?.cart ? user.cart : guestCart;
+	const wishlist = useAppSelector(selectWishes)
+	const cart = useAppSelector(selectCart);
+
 	const searchPhrase = useSelector(selectSearch);
 	const filter = useSelector((state) => state.filter);
 
@@ -52,7 +57,7 @@ export const Navigation = () => {
 			</LinkWrapper>
 
 			<LinkWrapper path={'/wishlist'} className={styles.link}>
-				<i className={user?.wishList.length > 0 ? `fa-solid fa-heart` : `fa-regular fa-heart`}></i>
+				<i className={wishlist.length > 0 ? `fa-solid fa-heart` : `fa-regular fa-heart`}></i>
 			</LinkWrapper>
 
 			{user ? (

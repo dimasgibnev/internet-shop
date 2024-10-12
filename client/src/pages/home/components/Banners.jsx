@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 
 import { Banner } from './banner/Banner';
 import { Skeleton } from './banner/Skeleton';
-import { banners } from '../../../assets/banners';
-import { Dots } from '../../../components';
+import { banners } from '../../../data/banners';
+import { Dots } from '../../../components/ui';
 
 import styles from '../Home.module.sass';
 

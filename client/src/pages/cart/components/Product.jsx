@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Button } from '../../../components';
-import { Icon } from '../../../components/ui/icon/Icon';
+import { Button, Icon } from '../../../components/ui';
 
 import { findImage } from '../../../utils/findImage';
 

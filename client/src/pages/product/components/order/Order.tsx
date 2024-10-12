@@ -1,5 +1,5 @@
 import { FC, PropsWithChildren } from 'react';
-import { Button } from '../../../../components';
+import { Button } from '../../../../components/ui';
 import { IProduct } from '../../../../interface/product.interface';
 
 import styles from './Order.module.sass';

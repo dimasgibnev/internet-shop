@@ -1,7 +1,6 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { Button } from '../../../../components';
+import { Button } from '../../../../components/ui';
 
 import styles from './Banner.module.sass';
 

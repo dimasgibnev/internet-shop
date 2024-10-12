@@ -1,23 +1,22 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useUser } from '../../hooks/useUser';
+import { FC, useEffect, useState } from 'react';
 
 import { Product } from './components/Product';
 import { Order } from './components/Order';
-import { Pagination } from '../../components';
 import { EmptyCart } from './components/EmptyCart';
+import { Pagination } from '../../components/ui';
 
 import { resetFilter } from '../../store/slices/filterSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { selectCart } from '../../store/slices/userSlice';
+
 import styles from './Cart.module.sass';
 
-export const Cart = () => {
-	const dispatch = useDispatch();
+export const Cart: FC = () => {
 	const [currentPage, setCurrentPage] = useState(1);
-	const { user } = useUser();
-	const guestCart = useSelector((state) => state.user.cart);
-	const products = user?.cart ? user.cart : guestCart;
-	const lastPage = products && Math.ceil(products.length / 4);
-	const productsInCart = products.slice(currentPage * 4 - 4, currentPage * 4);
+	const dispatch = useAppDispatch();
+	const cart = useAppSelector(selectCart);
+	const lastPage = cart && Math.ceil(cart.length / 4);
+	const productsInCart = cart.slice(currentPage * 4 - 4, currentPage * 4);
 
 	useEffect(() => {
 		dispatch(resetFilter());
@@ -41,6 +40,8 @@ export const Cart = () => {
 						);
 					})}
 					<Pagination
+						className={styles.pagination}
+						disabled={currentPage === lastPage}
 						currentPage={currentPage}
 						setCurrentPage={setCurrentPage}
 						lastPage={lastPage}

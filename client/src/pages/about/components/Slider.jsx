@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { slides } from '../../../assets/slides.ts';
+import { slides } from '../../../data/slides';
+
+import { Dots } from '../../../components/ui';
 
 import styles from '../About.module.sass';
-import { Dots } from '../../../components/index.js';
 
 export const Slider = () => {
 	const [active, setActive] = useState(0);
@@ -34,9 +35,21 @@ export const Slider = () => {
 					key={index}
 					className={active === index ? styles.active : styles.hidden}
 				>
-					<img className={styles.img} src={`/img/about/slider/${first}`} alt="" />
-					<img className={styles.img} src={`/img/about/slider/${second}`} alt="" />
-					<img className={styles.img} src={`/img/about/slider/${third}`} alt="" />
+					<img
+						className={styles.img}
+						src={`/img/about/slider/${first}`}
+						alt=""
+					/>
+					<img
+						className={styles.img}
+						src={`/img/about/slider/${second}`}
+						alt=""
+					/>
+					<img
+						className={styles.img}
+						src={`/img/about/slider/${third}`}
+						alt=""
+					/>
 				</div>
 			))}
 			<Dots items={slides} active={active} handleSetActive={handleSetActive} />

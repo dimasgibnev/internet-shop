@@ -1,21 +1,25 @@
 import { FC, useState } from 'react';
 import { useAddReview } from '../../../../hooks/useAddReview';
 
-import { Stars } from '../../../../components/ui';
-import { Icon } from '../../../../components/ui/icon/Icon';
+import { Stars, Icon } from '../../../../components/ui';
 
 import { IReview } from '../../../../interface/review.interface';
+
+import { useAppSelector } from '../../../../hooks/hooks';
+import { selectUser } from '../../../../store/slices/userSlice';
+import { selectProduct } from '../../../../store/slices/productsSlice';
 
 import styles from './Review.module.sass';
 
 type Props = {
-	review: IReview
-	productId: string | undefined;
+	review: IReview;
 };
-export const Review: FC<Props> = ({
-	review: { star, comment, postedBy, createdAt },
-	productId,
-}) => {
+
+export const Review: FC<Props> = ({ review: { star, comment, postedBy, createdAt } }) => {
+	const product = useAppSelector(selectProduct);
+	const productId = product?._id;
+	const user = useAppSelector(selectUser);
+	const isUserAdded = user?._id === postedBy?._id;
 	const [isShow, setIsShow] = useState(false);
 	const { handleSubmit, setText, setActive, setIsEdit, text, active, isEdit } =
 		useAddReview({
@@ -23,6 +27,14 @@ export const Review: FC<Props> = ({
 			comment,
 			star,
 		});
+
+	if (!createdAt) {
+		return (
+			<div className={styles.review}>
+				<div>Этот товар пока еще никто не оценил</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className={styles.review}>
@@ -61,23 +73,29 @@ export const Review: FC<Props> = ({
 				)}
 			</div>
 
-			{isEdit ? (
-				<Icon
-					icon={'check'}
-					className={styles.edit}
-					weight={'solid'}
-					onClick={handleSubmit}
-				/>
-			) : (
-				<Icon
-					icon={'pen-to-square'}
-					className={styles.edit}
-					weight={'regular'}
-					onClick={() => setIsEdit(!isEdit)}
-				/>
-			)}
+			{isUserAdded ? (
+				isEdit ? (
+					<Icon
+						icon={'check'}
+						className={styles.edit}
+						weight={'solid'}
+						onClick={handleSubmit}
+					/>
+				) : (
+					<Icon
+						icon={'pen-to-square'}
+						className={styles.edit}
+						weight={'regular'}
+						onClick={() => setIsEdit(!isEdit)}
+					/>
+				)
+			) : null}
 			<span className={styles.show} onClick={() => setIsShow(!isShow)}>
-				{isEdit ? '' : isShow ? 'Скрыть' : 'Показать еще'}
+				{isEdit || (comment && comment?.length < 150)
+					? ''
+					: isShow
+						? 'Скрыть'
+						: 'Показать еще'}
 			</span>
 		</div>
 	);

@@ -1,4 +1,4 @@
-import { Button } from '../../../components';
+import { Button } from '../../../components/ui';
 
 import { calculateOrder } from '../../../utils/calculateOrder';
 

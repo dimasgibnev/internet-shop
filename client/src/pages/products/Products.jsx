@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Pagination, ProductCard } from '../../components';
 import { Skeleton } from '../../components/productCard/components/Skeleton/Skeleton';
 
 import {
@@ -13,10 +12,11 @@ import {
 } from '../../store/slices/productsSlice';
 import { selectSort, setCategory, setLine } from '../../store/slices/filterSlice';
 
-import { Sort } from '../../components/ui';
+import { Sort, Pagination } from '../../components/ui';
 import { LIMIT } from '../../constants/query';
 
 import styles from './Products.module.sass';
+import { ProductCard } from '../../components';
 
 export const Products = () => {
 	const sort = useSelector(selectSort);

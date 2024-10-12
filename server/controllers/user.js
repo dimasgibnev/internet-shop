@@ -81,14 +81,11 @@ export async function login(req, res) {
 
       if (user.cart.length > 0) {
         const diffProducts = user.cart.filter(
-          (item) => cart.some((cartItem) => cartItem.product !== item.product)
+          (item) => !cart.some((cartItem) => cartItem.product === item.product)
         );
-console.log(diffProducts);
 
         if (diffProducts.length > 0) {
-          filtredCart.push(...diffProducts, ...cart);
-        } else {
-          filtredCart.push(...user.cart);
+          filtredCart.push(...diffProducts);
         }
       }
 
@@ -110,13 +107,11 @@ console.log(diffProducts);
 
       if (user.wishList.length > 0) {
         const diffWishes = user.wishList.filter(
-          (item) => item.product !== wishlist.product
+          (item) => !wishlist.some((wishItem) => item.product === wishItem.product)
         );
 
         if (diffWishes.length > 0) {
           filtredWishlist.push(...diffWishes);
-        } else {
-          filtredWishlist.push(...user.wishList);
         }
       }
       const finalWishes =

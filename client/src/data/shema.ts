@@ -1,6 +1,18 @@
 import * as yup from 'yup';
 
-export const schema = yup.object().shape({
+export const loginSchema = yup.object().shape({
+	email: yup
+		.string()
+		.email('Введите корректный email')
+		.required('Это поле обязательно'),
+	password: yup
+		.string()
+		.required('Это поле обязательно')
+		.min(6, 'Пароль должен быть минимум 6 символов'),
+});
+
+
+export const registerSchema = yup.object().shape({
 	firstName: yup
 		.string()
 		.required('Это поле обязательно')
@@ -27,5 +39,6 @@ export const schema = yup.object().shape({
 	confirmPassword: yup
 		.string()
 		.required('Это поле обязательно')
-		.oneOf([yup.ref('password'), null], 'Пароль должен совпадать'),
+		.oneOf([yup.ref('password'), ''], 'Пароль должен совпадать'),
 });
+
