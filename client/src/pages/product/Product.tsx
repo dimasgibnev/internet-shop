@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import {  useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 
 import {
@@ -9,11 +9,10 @@ import {
 } from '../../store/slices/productsSlice';
 
 import { Order, ProductInfo, Reviews } from './components';
-import { Stars, Scroll } from '../../components/ui';
+import { Stars, Scroll, BreadCrumbs } from '../../components/ui';
 
 import { Description } from './components/description/Description';
 import { IProduct } from '../../interface/product.interface';
-
 
 import styles from './Product.module.sass';
 
@@ -34,10 +33,11 @@ export const Product = () => {
 
 	return (
 		<div className={styles.product}>
+			<BreadCrumbs product={product} />
 			<div className={styles.title}>
-				<span>{product.series}</span>
+				<span className={styles.text}>{product.series}</span>
 				<h2>{product.title}</h2>
-				<Stars className={styles.stars} selected={product.totalRating}/>
+				<Stars className={styles.stars} selected={product.totalRating} />
 			</div>
 			<div className={styles.wrapper}>
 				<div className={styles.info}>

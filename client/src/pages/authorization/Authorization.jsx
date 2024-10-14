@@ -18,22 +18,20 @@ export const Authorization = () => {
 	const methods = useForm({ resolver: yupResolver(loginSchema), mode: 'onChange' });
 	const {
 		formState: { errors },
-		handleSubmit,
 		setError,
+		handleSubmit,
 	} = methods;
-	const serverError = errors?.serverError?.message;
+	const error = useSelector((state) => state.auth?.error);
+	const serverError = errors?.serverError?.message || error;
 
 	const sendData = (authData) => {
 		dispatch(signIn(authData))
 			.unwrap()
 			.then(() => {
 				navigate('/');
+			}).catch((e) => {
+				setError(error)
 			})
-			.catch((e) => {
-				setError('serverError', {
-					message: e.message,
-				});
-			});
 	};
 
 	const isError =

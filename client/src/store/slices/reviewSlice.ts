@@ -27,7 +27,6 @@ export const addReview = createAsyncThunk(
 	async (args: TypeReview, { rejectWithValue }): Promise<IReviewState | any> => {
 		try {
 			const { data } = await reviewService.addReview(args);
-			console.log(data);
 
 			return data;
 		} catch (error: Error | AxiosError | any) {

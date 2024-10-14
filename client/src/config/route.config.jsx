@@ -12,7 +12,6 @@ import {
 } from '../pages';
 import { ROUTES } from '../constants';
 import { ROLES } from '../constants/roles';
-import { Order } from '../pages/product/components';
 
 export const routeConfig = [
 	{
@@ -43,14 +42,16 @@ export const routeConfig = [
 		roles: [ROLES.USER, ROLES.ADMIN],
 	},
 	{
-		path: ROUTES.ORDER,
+		path: ROUTES.ORDERS,
 		element: <Profile />,
 		auth: true,
 		roles: [ROLES.USER, ROLES.ADMIN],
 	},
 	{
-		path: ROUTES.PRODUCTS,
-		element: <Products />,
+		path: ROUTES.ORDER,
+		element: <Profile />,
+		auth: true,
+		roles: [ROLES.USER, ROLES.ADMIN],
 	},
 	{
 		path: ROUTES.PRODUCT,

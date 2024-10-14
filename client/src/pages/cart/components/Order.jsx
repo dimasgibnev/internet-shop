@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { Button } from '../../../components/ui';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import { selectIsAuth } from '../../../store/slices/authSlice';
@@ -24,7 +24,7 @@ export const Order = ({ cart }) => {
 		} else if (!isAuth) {
 			navigate('/login');
 		} else {
-			dispatch(createOrder({ products: order }));
+			dispatch(createOrder({ products: order, totalPrice: price }));
 		}
 	};
 
@@ -48,7 +48,7 @@ export const Order = ({ cart }) => {
 						className={styles['btn-order']}
 						onClick={() => navigate('/login')}
 					>
-						Войдите в аккаунт
+						Войдите
 					</Button>
 				) : (
 					<Button className={styles['btn-order']} onClick={handleCreateOrder}>

@@ -1,28 +1,30 @@
 import { Link, useMatch } from 'react-router-dom';
 
-import { logout } from '../../../../store/slices/authSlice';
-
 import { Info } from '../info/Info';
 import { Orders } from '../orders/Orders';
+import { Order } from '../order/Order';
 
-import { useUser } from '../../../../hooks/useUser';
-import { useAppDispatch } from '../../../../hooks/hooks';
+import { useDispatch } from 'react-redux';
+import { resetUser, selectUser } from '../../../../store/slices/userSlice';
 
 import styles from './Dashboard.module.sass';
+import { getUserName } from '../../../../utils/getUserName';
+import { useAppSelector } from '../../../../hooks/hooks';
 
 export const Dashboard = () => {
-	const dispatch = useAppDispatch();
-	const { getUserName } = useUser();
+	const dispatch = useDispatch();
+	const user = useAppSelector(selectUser);
 	const isOrders = useMatch('/profile/orders');
+	const isOrder = useMatch('/profile/orders/:id');
 
 	const links = [
-		{ title: getUserName(), path: '/profile' },
+		{ title: 'Мой кабинет', path: '/profile' },
 		{ title: 'Заказы', path: '/profile/orders' },
 		{
 			title: 'Выйти',
 			path: '/',
 			onclick: () => {
-				dispatch(logout());
+				dispatch(resetUser());
 			},
 		},
 	];
@@ -41,7 +43,9 @@ export const Dashboard = () => {
 					</Link>
 				))}
 			</div>
-			<div className={styles.right}>{!isOrders ? <Info /> : <Orders />}</div>
+			<div className={styles.right}>
+				{!isOrders && !isOrder ? <Info /> : isOrder ? <Order /> : <Orders />}
+			</div>
 		</div>
 	);
 };

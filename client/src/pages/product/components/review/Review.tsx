@@ -17,17 +17,28 @@ type Props = {
 
 export const Review: FC<Props> = ({ review }) => {
 	const { star, comment, postedBy, createdAt } = review;
+	const [isShow, setIsShow] = useState(false);
+
 	const productId = useAppSelector(selectProductId);
 	const user = useAppSelector(selectUser);
+
 	const isUserAdded = user?._id === postedBy?._id;
-	const [isShow, setIsShow] = useState(false);
-	const isLengthEnough = comment.length > 150
-	const { handleSubmit, setText, setActive, setIsEdit, text, active, isEdit } =
-		useAddReview({
-			productId,
-			comment,
-			star,
-		});
+	const isLengthEnough = comment.length > 150;
+
+	const {
+		handleSubmit,
+		handleSetText,
+		setActive,
+		setIsEdit,
+		text,
+		active,
+		isEdit,
+		error,
+	} = useAddReview({
+		productId,
+		comment,
+		star,
+	});
 
 	return (
 		<div className={styles.review}>
@@ -51,7 +62,7 @@ export const Review: FC<Props> = ({ review }) => {
 			<div className={styles['comment-wrapper']}>
 				{isEdit ? (
 					<textarea
-						onChange={(e) => setText(e.target.value)}
+						onChange={handleSetText}
 						value={text}
 						className={styles.text}
 					></textarea>
@@ -64,6 +75,7 @@ export const Review: FC<Props> = ({ review }) => {
 						</div>
 					</>
 				)}
+				<div className={styles.error}>{error}</div>
 			</div>
 
 			{isUserAdded ? (

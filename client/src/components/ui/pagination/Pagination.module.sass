@@ -3,18 +3,16 @@
 	display: flex
 	justify-content: center
 	align-items: center
-	width: 300px
+	width: 320px
 	color: var(--color-grey-dark)
+	button
+		width: 120px
+		margin-right: 20px
+		&:hover
+			background: var(--color-makita-light)
 	.current
 		font-weight: bold
 		color: var(--color-makita-dark)
-	button
-		width: 100px
-		margin-right: 20px
-		&:not(:disabled):hover
-			background: var(--color-makita-dark)
-		&:last-child
-			margin-right: 0
 	div
 		width: 20px
 		margin-right: 10px

@@ -1,5 +1,7 @@
 import { useFormContext } from 'react-hook-form';
 import { FormError, Input } from '../../../components/ui';
+import { useDispatch } from 'react-redux';
+import { clearError } from '../../../store/slices/authSlice';
 
 export const Inputs = () => {
 	const {
@@ -8,6 +10,7 @@ export const Inputs = () => {
 		formState: { errors },
 		clearErrors,
 	} = useFormContext();
+	const dispatch = useDispatch();
 
 	const firstNameError = errors?.firstName?.message;
 	const lastNameError = errors?.lastName?.message;
@@ -46,7 +49,7 @@ export const Inputs = () => {
 				<div className="input-wrapper">
 					<Input
 						{...register('email', {
-							onChange: () => clearErrors('serverError'),
+							onChange: () => dispatch(clearError()),
 						})}
 						className="register-form__input"
 						type="email"
@@ -62,7 +65,7 @@ export const Inputs = () => {
 				<div className="input-wrapper">
 					<Input
 						{...register('mobile', {
-							onChange: () => clearErrors('serverError'),
+							onChange: () => dispatch(clearError()),
 						})}
 						className="register-form__input"
 						type="phone"

@@ -138,6 +138,7 @@ const userSlice = createSlice({
 			state.data = null;
 			state.cart = [];
 			state.wishList = [];
+			localStorage.removeItem('token');
 		},
 	},
 	extraReducers: (builder) => {

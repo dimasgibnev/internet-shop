@@ -44,9 +44,6 @@ const userSchema = new mongoose.Schema(
         count: Number,
       },
     ],
-    refreshToken: {
-      type: String,
-    },
     orders: [
       {
         type: mongoose.Schema.Types.ObjectId,

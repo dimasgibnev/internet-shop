@@ -2,6 +2,7 @@ import { ProductModel } from "../models/Product.js";
 import { UserModel } from "../models/User.js";
 import { OrderModel } from "../models/Order.js";
 import { validateMongoDbId } from "../utils/validateMongoDbId.js";
+import { mapOrder } from "../helpers/mapOrder.js";
 
 export const createCart = async (req, res) => {
   try {
@@ -64,7 +65,7 @@ export const deleteProduct = async (req, res) => {
 };
 
 export const createOrder = async (req, res) => {
-  const { products } = req.body;
+  const { products, totalPrice } = req.body;
   const { _id } = req.user;
   validateMongoDbId(_id);
 
@@ -74,6 +75,7 @@ export const createOrder = async (req, res) => {
     const order = await new OrderModel({
       products,
       orderby: user._id,
+      totalPrice,
     }).save();
 
     await UserModel.findByIdAndUpdate(
@@ -100,33 +102,23 @@ export const getOrders = async (req, res) => {
     const userorders = await OrderModel.find({ orderby: _id })
       .populate({ path: "products", populate: "product" })
       .exec();
-    res.json({ orders: userorders });
+    res.json({ orders: userorders.map(mapOrder) });
   } catch (error) {
     console.log(error);
   }
 };
 
-export const getAllOrders = async (req, res) => {
-  try {
-    const alluserorders = await Order.find()
-      .populate("products.product")
-      .populate("orderby")
-      .exec();
-    res.json(alluserorders);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const getOrderByUserId = async (req, res) => {
+export const getOrder = async (req, res) => {
   const { id } = req.params;
-  validateMongoDbId(id);
+  const { _id } = req.user;
+  validateMongoDbId(_id);
   try {
-    const userorders = await Order.findOne({ orderby: id })
-      .populate("products.product")
-      .populate("orderby")
+    
+    const userorder = await OrderModel.findById(id)
+      .populate({ path: "products", populate: "product" })
       .exec();
-    res.json(userorders);
+
+    res.json({ order: mapOrder(userorder) });
   } catch (error) {
     console.log(error);
   }

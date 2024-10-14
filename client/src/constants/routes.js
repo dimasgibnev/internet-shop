@@ -1,19 +1,17 @@
 export const ROUTES = {
 	ABOUT: '/about',
-	CONTACTS: '/contacts',
 	ADMIN: '/admin',
 	LOGIN: '/login',
 	REGISTER: '/register',
 	HOME: '/',
 	CART: '/cart',
-	ORDER: '/profile/orders',
-	PRODUCTS: '/products',
+	ORDER: '/profile/orders/:id',
+	ORDERS: '/profile/orders',
 	PRODUCT: '/products/details/:productId',
 	PRODUCT_LINE: '/products/:line',
 	PRODUCT_CATEGORY: '/products/category/:category',
 	PROFILE: '/profile',
-	USERS: '/users',
 	WISHLIST: '/wishlist',
 	NOT_FOUND: '*',
 	ERROR: '*',
-}
+};

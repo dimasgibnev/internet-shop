@@ -20,26 +20,14 @@ export const Footer = () => {
 						<Link className={styles['links__item']} to={'/products/corded'}>
 							Сетевые
 						</Link>
-						<Link
-							className={styles['links__item']}
-							to={'/products/accessories'}
-						>
-							Акссесуары
-						</Link>
 						<Link className={styles['links__item']} to={'/products/gas'}>
 							Бензотехника
-						</Link>
-						<Link className={styles['links__item']} to={'/products/cleaning'}>
-							Уборка
 						</Link>
 					</div>
 					<div className={styles['links__wrapper']}>
 						<span className={styles['links__title']}>Контакты</span>
 						<Link to={'/about'} className={styles['links__item']}>
 							О нас
-						</Link>
-						<Link to={'/contacts'} className={styles['links__item']}>
-							Связь с нами
 						</Link>
 					</div>
 				</div>

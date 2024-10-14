@@ -9,8 +9,8 @@ export const loginSchema = yup.object().shape({
 		.string()
 		.required('Это поле обязательно')
 		.min(6, 'Пароль должен быть минимум 6 символов'),
+	serverError: yup.string(),
 });
-
 
 export const registerSchema = yup.object().shape({
 	firstName: yup
@@ -40,5 +40,5 @@ export const registerSchema = yup.object().shape({
 		.string()
 		.required('Это поле обязательно')
 		.oneOf([yup.ref('password'), ''], 'Пароль должен совпадать'),
+	serverError: yup.string(),
 });
-

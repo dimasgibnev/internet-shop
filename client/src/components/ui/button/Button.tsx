@@ -1,17 +1,19 @@
-import { FC, ReactNode } from 'react';
-import './Button.sass';
+import { FC } from 'react';
+import styles from './Button.module.sass';
 
-type TypeProps = {
-	children: string | ReactNode;
-	className?: string;
+type Props = {
 	disabled?: boolean;
-	props?: any;
+	className?: string;
+	children?: React.ReactNode;
 	onClick?: () => void;
 };
-
-export const Button: FC<TypeProps> = ({ children, className, disabled, ...props }) => {
+export const Button: FC<Props> = ({ children, className, disabled, ...props }) => {
 	return (
-		<button {...props} className={`button ${className}`}>
+		<button
+			{...props}
+			className={`${styles.button} ${className}`}
+			disabled={disabled}
+		>
 			{children}
 		</button>
 	);

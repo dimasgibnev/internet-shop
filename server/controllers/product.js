@@ -40,8 +40,6 @@ export const getProduct = async (req, res) => {
 
 export const getProducts = async (req, res) => {
   try {
-    console.log(req.query);
-
     const filter = {};
     const sort = {};
     let skip = 0;
@@ -82,43 +80,6 @@ export const getProducts = async (req, res) => {
       .limit(limit);
 
     res.json({ products: products.map(mapProduct), count: productsCount });
-  } catch (error) {
-    console.log(error);
-    handleError(res, "Ошибка сервера, попробуйте снова");
-  }
-};
-
-export const deleteProduct = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    validateMongoDbId(id);
-
-    await ProductModel.findByIdAndDelete(id);
-
-    res.json({ error: null, message: "Товар был удален" });
-  } catch (error) {
-    console.log(error);
-    handleError(res, "Ошибка сервера, попробуйте снова");
-  }
-};
-
-export const updateProduct = async (req, res) => {
-  try {
-    if (req.body.title) req.body.slug = slugify(req.body.title);
-    const { id } = req.params;
-    validateMongoDbId(id);
-    const newProductData = req.body;
-
-    const updatedProduct = await ProductModel.findByIdAndUpdate(
-      id,
-      newProductData,
-      {
-        returnDocument: "after",
-      }
-    );
-
-    res.json({ data: updatedProduct });
   } catch (error) {
     console.log(error);
     handleError(res, "Ошибка сервера, попробуйте снова");

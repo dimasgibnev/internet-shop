@@ -24,6 +24,8 @@ const initialState = {
 const filterSlice = createSlice({
 	name: 'category',
 	initialState,
+	reducers: {
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(fetchCategories.pending, (state) => {
@@ -40,6 +42,8 @@ const filterSlice = createSlice({
 	},
 });
 
-export default filterSlice.reducer;
+export const selectCategories = (state) => state.category.data;
 
 export const { setSort } = filterSlice.actions;
+
+export default filterSlice.reducer;

@@ -21,6 +21,7 @@ export const Registration = () => {
 	} = methods;
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const error = useSelector((state) => state.auth?.error);
 
 	const sendData = (data) => {
 		dispatch(signUp(data))
@@ -29,13 +30,11 @@ export const Registration = () => {
 				navigate('/');
 			})
 			.catch((e) => {
-				setError('serverError', {
-					message: e.message,
-				});
+				setError(error);
 			});
 	};
 
-	const serverError = errors?.serverError?.message;
+	const serverError = errors?.serverError?.message || error;
 	const isError =
 		serverError || (errors && Array.from(Object.values(errors)).length > 0);
 

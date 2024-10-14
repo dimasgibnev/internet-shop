@@ -3,8 +3,7 @@ import authService from '../../services/authService';
 import { IUser } from '../../interface/user.interface';
 import { AxiosError } from 'axios';
 import { RootState } from '../store';
-import { resetUser, setUser } from './userSlice';
-import { setOrders } from './orderSlice';
+import { setUser } from './userSlice';
 
 interface IAuthState {
 	data: IUser | null;
@@ -24,7 +23,7 @@ export const signIn = createAsyncThunk(
 			const { user } = await authService.signIn({ authData: args, cart, wishlist });
 
 			dispatch(setUser(user));
-			
+
 			return user;
 		} catch (error: Error | AxiosError | any) {
 			if (!error.response) {
@@ -60,13 +59,6 @@ export const fetchMe = createAsyncThunk('auth/fetchMe', async (_, { dispatch }) 
 	return user;
 });
 
-export const logout = createAsyncThunk('auth/logout', async (_, { dispatch }) => {
-	const data = await authService.logout();
-	dispatch(resetUser());
-
-	return data;
-});
-
 const initialState: IAuthState = {
 	isAuth: false,
 	error: null,
@@ -77,7 +69,11 @@ const initialState: IAuthState = {
 const authSlice = createSlice({
 	name: 'auth',
 	initialState,
-	reducers: {},
+	reducers: {
+		clearError: (state) => {
+			state.error = null;
+		},
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(signIn.pending, (state) => {
@@ -106,19 +102,6 @@ const authSlice = createSlice({
 				state.error = action.error.message;
 				state.isLoading = false;
 			})
-
-			.addCase(logout.pending, (state) => {
-				state.isLoading = true;
-			})
-			.addCase(logout.fulfilled, (state, action) => {
-				state.data = null;
-				state.isAuth = false;
-				state.isLoading = false;
-			})
-			.addCase(logout.rejected, (state, action) => {
-				state.error = action.error.message;
-				state.isLoading = false;
-			})
 			.addCase(fetchMe.pending, (state) => {
 				state.isLoading = true;
 			})
@@ -137,5 +120,7 @@ const authSlice = createSlice({
 export const selectUser = (state: RootState) => state.auth.data;
 
 export const selectIsAuth = (state: RootState) => state.auth.isAuth;
+
+export const {clearError} = authSlice.actions
 
 export default authSlice.reducer;

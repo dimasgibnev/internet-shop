@@ -7,7 +7,7 @@ import morgan from "morgan";
 
 import { router } from "./routes/index.js";
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT
 
 const app = express();
 
@@ -15,10 +15,7 @@ app.use(express.static("../client/build"));
 app.use(express.json());
 app.use(cookieParser());
 app.use(
-  cors({
-    origin: "http://localhost:3000",
-    credentials: true,
-  })
+  cors()
 );
 app.use(morgan("dev"));
 

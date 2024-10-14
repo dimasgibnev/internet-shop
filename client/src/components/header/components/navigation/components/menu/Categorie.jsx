@@ -1,11 +1,12 @@
 import { useState } from 'react';
-
-import { Icon } from '../../../../../ui/icon/Icon';
-
-import styles from './Menu.module.sass';
 import { Link } from 'react-router-dom';
 
+import styles from './Menu.module.sass';
+import { useDispatch } from 'react-redux';
+import { setCategory } from '../../../../../../store/slices/filterSlice';
+
 export const Categorie = ({ categories, title }) => {
+	const dispatch = useDispatch();
 	const [catalogIsOpen, setCatalogIsOpen] = useState(false);
 
 	const openCatalog = () => {
@@ -30,6 +31,7 @@ export const Categorie = ({ categories, title }) => {
 							key={i}
 							to={`/products/category/${cat}`}
 							className={styles.item}
+							onClick={() => dispatch(setCategory(cat))}
 						>
 							{cat}
 						</Link>

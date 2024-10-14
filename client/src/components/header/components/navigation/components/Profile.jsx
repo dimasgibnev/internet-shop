@@ -1,17 +1,19 @@
-import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { logout } from '../../../../../store/slices/authSlice';
-import { useUser } from '../../../../../hooks/useUser';
+import { useAppSelector } from '../../../../../hooks/hooks';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import { Popup } from '../../../../ui/popup/Popup';
 
-import styles from '../Navigation.module.sass'
+import { resetUser, selectUser } from '../../../../../store/slices/userSlice';
+import { getUserName } from '../../../../../utils/getUserName';
+
+import styles from '../Navigation.module.sass';
 
 export const Profile = () => {
+	const dispatch = useDispatch();
 	const [profileMenuIsOpen, setProfileMenuIsOpen] = useState(false);
-	const dispacth = useDispatch();
-	const navigate = useNavigate();
-	const { user, getUserName } = useUser();
+	const user = useAppSelector(selectUser);
 
 	const openProfileMenu = () => {
 		setProfileMenuIsOpen(true);
@@ -22,13 +24,11 @@ export const Profile = () => {
 	};
 
 	const handleLogout = () => {
-		dispacth(logout()).then(() => {
-			navigate('/');
-		});
+		dispatch(resetUser());
 	};
 
 	const links = [
-		<Link>{user && <b>{getUserName()}</b>}</Link>,
+		<Link>{user && <b>{user.firstName + ' ' + user.lastName}</b>}</Link>,
 		<Link to={'/profile'}>Мой кабинет</Link>,
 		<Link to={'/profile/orders'}>Заказы</Link>,
 		<Link to={'/'} onClick={handleLogout}>
@@ -42,12 +42,8 @@ export const Profile = () => {
 			onMouseEnter={openProfileMenu}
 			onMouseLeave={closeProfileMenu}
 		>
-			<span className="header__link">{getUserName('short')}</span>
-			<Popup
-				className={styles.menu}
-				isOpen={profileMenuIsOpen}
-				links={links}
-			/>
+			<span className="header__link">{getUserName(user)}</span>
+			<Popup className={styles.menu} isOpen={profileMenuIsOpen} links={links} />
 		</div>
 	);
 };

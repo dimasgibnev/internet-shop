@@ -1,5 +1,4 @@
 import { http } from '../http';
-import { addToCart } from '../store/slices/userSlice';
 
 const userService = {
 	addToCart: async (arg) => {

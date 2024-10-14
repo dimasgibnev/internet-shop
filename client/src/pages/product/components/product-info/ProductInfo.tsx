@@ -12,7 +12,7 @@ export const ProductInfo: FC<PropsWithChildren<Props>> = ({ product }) => {
 
 	if (!product) return null;
 
-	const specs = product.specs.split('\\n').map((item) => item.split(': '));
+	const specs = product.specs.split('\n').map((item) => item.split(': '));
 
 	return (
 		<div className={styles.info}>

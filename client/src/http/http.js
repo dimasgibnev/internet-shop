@@ -25,21 +25,10 @@ http.interceptors.response.use(
 	async (config) => {
 		return config;
 	},
-	async (error) => {
-		if (error.response.status === 401 && error.config && !error.config._retry) {
-			const originalRequest = error.config;
-			try {
-				originalRequest._retry = true;
-				const response = await axios.get(`${BASE_URL}/refresh`, {
-					withCredentials: true,
-				});
-				localStorage.setItem('token', response.data.accessToken);
-
-				return http.request(originalRequest);
-			} catch (error) {
-				return Promise.reject(error);
-			}
+	(error) => {
+		if (error.status === 401) {
 		}
-		return error
+
+		return Promise.reject(error);
 	},
 );

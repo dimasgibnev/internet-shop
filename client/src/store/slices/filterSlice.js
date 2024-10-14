@@ -30,8 +30,13 @@ const filterSlice = createSlice({
 		setSearch: (state, action) => {
 			state.search = action.payload;
 		},
+		setFilter: (state, action) => {
+			state = action.payload;
+		},
+		updateFilter: (state, action) => {
+			state = { ...state, ...action.payload };
+		},
 		resetFilter: () => initialState,
-
 	},
 });
 
@@ -57,4 +62,13 @@ export const selectFilter = (state) => {
 	};
 };
 
-export const { setSort, setPage, setLine, setCategory,setSearch, resetFilter } = filterSlice.actions;
+export const {
+	setSort,
+	setPage,
+	setLine,
+	setCategory,
+	setSearch,
+	resetFilter,
+	setFilter,
+	updateFilter
+} = filterSlice.actions;

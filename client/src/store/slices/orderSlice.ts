@@ -9,6 +9,7 @@ interface IOrderState {
 	isLoading: boolean;
 	data: { order: IOrder }[] | null;
 	error: string | undefined;
+	order: IOrder | null;
 }
 
 type Typeorder = {
@@ -37,14 +38,29 @@ export const createOrder = createAsyncThunk(
 	},
 );
 
+export const getOrder = createAsyncThunk(
+	'order/getOrder',
+	async (orderId: string, { rejectWithValue }) => {
+		try {
+			const {order} = await orderService.getOrder(orderId);
+
+			return order;
+		} catch (error: Error | AxiosError | any) {
+			if (!error.response) {
+				throw error;
+			}
+			rejectWithValue(error.response.data);
+		}
+	},
+);
+
 export const getOrders = createAsyncThunk(
 	'order/getOrders',
-	async (_, { rejectWithValue, dispatch }) => {
+	async (_, { rejectWithValue }) => {
 		try {
 			const data = await orderService.getOrders();
 
-
-			return data
+			return data;
 		} catch (error: Error | AxiosError | any) {
 			if (!error.response) {
 				throw error;
@@ -58,6 +74,7 @@ const initialState: IOrderState = {
 	isLoading: false,
 	data: null,
 	error: '',
+	order: null,
 };
 
 export const orderSlice = createSlice({
@@ -86,7 +103,16 @@ export const orderSlice = createSlice({
 
 				state.isLoading = false;
 			})
-			.addCase(getOrders.rejected, (state, action) => {});
+			.addCase(getOrders.rejected, (state, action) => {})
+			.addCase(getOrder.pending, (state) => {
+				state.isLoading = true;
+			})
+			.addCase(getOrder.fulfilled, (state, action) => {
+				state.order = action.payload
+
+				state.isLoading = false;
+			})
+			.addCase(getOrder.rejected, (state, action) => {});
 	},
 });
 

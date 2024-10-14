@@ -8,7 +8,7 @@ export const EmptyCart = () => {
 			<div className={styles['cart-wrapper']}>
 				<div className={styles.products}>
 					<div className={styles['empty-cart']}>
-						<h2>Ваша корзина пуста</h2>
+						<h3>Ваша корзина пуста</h3>
 					</div>
 				</div>
 				<Order cart={[]} />

@@ -1,5 +1,5 @@
 import { FC, useMemo } from 'react';
-import { Button, Stars } from '../../../../components/ui';
+import { Button, FormError, Stars } from '../../../../components/ui';
 import styles from './Rating.module.sass';
 import { useAppSelector } from '../../../../hooks/hooks';
 import { selectUser } from '../../../../store/slices/userSlice';
@@ -21,7 +21,7 @@ export const Rating: FC<Props> = ({ total, reviews }) => {
 		[reviews, user?._id],
 	);
 
-	const { handleSubmit, setActive, setText, active, text } = useAddReview({
+	const { handleSubmit, setActive, handleSetText, active, text, error } = useAddReview({
 		productId,
 		comment: '',
 		star: 0,
@@ -46,8 +46,9 @@ export const Rating: FC<Props> = ({ total, reviews }) => {
 					className={styles.text}
 					name="review"
 					value={text}
-					onChange={(e) => setText(e.target.value)}
+					onChange={handleSetText}
 				></textarea>
+				<div className={styles.error}>{error}</div>
 				<Button className={styles.btn} onClick={handleSubmit}>
 					Оставить отзыв
 				</Button>

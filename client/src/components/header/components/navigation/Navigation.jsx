@@ -1,30 +1,29 @@
-import { Logo } from '../Logo';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { useEffect } from 'react';
-import { useUser } from '../../../../hooks/useUser';
+
+import { Logo } from '../Logo';
 import { LinkWrapper } from '../LinkWrapper';
 import { Profile } from './components/Profile';
 import { SearchPanel } from './components/search-panel/SearchPanel';
 import { Menu } from './components/menu/Menu';
-import { useDispatch, useSelector } from 'react-redux';
+
 import {
 	fetchSearchedProducts,
 	resetProducts,
 } from '../../../../store/slices/productsSlice';
 import { selectSearch, setSearch } from '../../../../store/slices/filterSlice';
-import { selectCart, selectWishes } from '../../../../store/slices/userSlice';
-import { useAppSelector } from '../../../../hooks/hooks';
+import { selectCart, selectUser, selectWishes } from '../../../../store/slices/userSlice';
 
 import styles from './Navigation.module.sass';
 
 export const Navigation = () => {
-	const dispacth = useDispatch();
-	
-	const { user, getUserName } = useUser();
+	const dispacth = useAppDispatch();
+	const user = useAppSelector(selectUser)
 	const wishlist = useAppSelector(selectWishes)
 	const cart = useAppSelector(selectCart);
 
-	const searchPhrase = useSelector(selectSearch);
-	const filter = useSelector((state) => state.filter);
+	const searchPhrase = useAppSelector(selectSearch);
+	const filter = useAppSelector((state) => state.filter);
 
 	const onSearch = ({ target }) => {
 		dispacth(setSearch(target.value));
@@ -61,7 +60,7 @@ export const Navigation = () => {
 			</LinkWrapper>
 
 			{user ? (
-				<Profile user={user} getUserName={getUserName} />
+				<Profile user={user}  />
 			) : (
 				<LinkWrapper path={'/login'} className={styles.link}>
 					Вход

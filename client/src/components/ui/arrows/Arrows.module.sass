@@ -1,0 +1,23 @@
+@mixin arrow
+	position: absolute
+	top: 50%
+	i
+		font-size: 40px
+		&:hover
+			color: var(--color-makita-light)
+
+.products
+	display: flex
+	gap: 20px
+	width: 1280px
+	min-height: 300px
+	overflow: hidden
+	padding-left: 20px
+
+.left
+	@include arrow
+	left: -20px
+
+.right
+	@include arrow
+	right: -20px

@@ -69,8 +69,6 @@ const productService = {
 			throw new Error(error.response.data.message);
 		}
 	},
-
-
 };
 
 export default productService;

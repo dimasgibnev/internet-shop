@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { Categorie } from './Categorie';
 
 import styles from './Menu.module.sass';
-import { LinkWrapper } from '../../../LinkWrapper';
 
 export const Menu = () => {
 	const [catalogIsOpen, setCatalogIsOpen] = useState(false);

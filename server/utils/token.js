@@ -10,7 +10,3 @@ export const generate = (data) => {
 export const verify = (token) => {
   return jwt.verify(token, sign);
 };
-
-export const generateRefreshToken = (data) => {
-  return  jwt.sign(data, sign, { expiresIn: "30d" })
-};

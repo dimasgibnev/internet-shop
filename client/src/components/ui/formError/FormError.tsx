@@ -4,7 +4,7 @@ import './FormError.sass';
 
 interface IFormError {
 	error: string;
-	className: 'server-error' | 'form-error';
+	className?: 'server-error' | 'form-error';
 }
 
 export const FormError: FC<IFormError> = ({ error, className }) => {
