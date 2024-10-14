@@ -6,9 +6,10 @@ import { calculateOrder } from '../../../utils/calculateOrder';
 
 import { formatePrice } from '../../../utils/formatePrice';
 
-import styles from '../Cart.module.sass';
 import { createOrder } from '../../../store/slices/orderSlice';
 import { selectIsAuth } from '../../../store/slices/userSlice';
+
+import styles from '../Cart.module.sass';
 
 export const Order = ({ cart }) => {
 	const dispatch = useAppDispatch();
