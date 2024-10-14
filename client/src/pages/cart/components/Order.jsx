@@ -1,7 +1,7 @@
 import {  useNavigate } from 'react-router-dom';
 import { Button } from '../../../components/ui';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
-import { selectIsAuth } from '../../../store/slices/authSlice';
+import { selectIsAuth } from '../../../store/slices/userSlice';
 
 import { calculateOrder } from '../../../utils/calculateOrder';
 
