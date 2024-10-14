@@ -25,7 +25,6 @@ export const Product = () => {
 	const product: IProduct | null = useAppSelector(selectProduct);
 
 	useEffect(() => {
-		dispatch(resetProduct());
 		dispatch(fetchProduct(params.productId));
 	}, [dispatch, params.productId]);
 
