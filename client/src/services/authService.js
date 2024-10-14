@@ -1,9 +1,9 @@
 import { http } from '../http';
 
 const authService = {
-	signIn: async (arg) => {
+	signIn: async (args) => {
 		try {
-			const { data } = await http.post('/login', { ...arg });
+			const { data } = await http.post('/login', { ...args });
 			localStorage.setItem('token', data.accessToken);
 
 

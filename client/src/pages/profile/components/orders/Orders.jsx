@@ -7,8 +7,9 @@ import { formatePrice } from '../../../../utils/formatePrice';
 
 export const Orders = () => {
 	const orders = useAppSelector(selectOrders);
+console.log(orders);
 
-	if (!orders) return null;
+	if (!orders) return;
 
 	return (
 		<div className={styles.orders}>

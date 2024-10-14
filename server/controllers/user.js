@@ -4,7 +4,6 @@ import { mapUser } from "../helpers/mapUser.js";
 import { generate, verify } from "../utils/token.js";
 import { validateMongoDbId } from "../utils/validateMongoDbId.js";
 import { handleError } from "../utils/handleError.js";
-import { checkList } from "../utils/checkList.js";
 
 export async function register(req, res) {
   try {
@@ -31,11 +30,7 @@ export async function register(req, res) {
 
 export async function login(req, res) {
   try {
-    const {
-      authData: { email, password },
-      cart,
-      wishlist,
-    } = req.body;
+    const { email, password } = req.body;
 
     const user = await UserModel.findOne({ email });
 
@@ -50,10 +45,6 @@ export async function login(req, res) {
     }
 
     const accessToken = generate({ _id: user._id });
-
-    checkList(cart, user);
-
-    checkList(wishlist, user);
 
     const User = await UserModel.findById(user._id)
       .populate({

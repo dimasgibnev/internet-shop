@@ -1,5 +1,4 @@
 import { CategoryModel } from "../models/Category.js";
-import { validateMongoDbId } from "../utils/validateMongoDbId.js";
 import { handleError } from "../utils/handleError.js";
 
 export const getAllCategory = async (req, res) => {

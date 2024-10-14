@@ -14,13 +14,10 @@ interface IAuthState {
 
 export const signIn = createAsyncThunk(
 	'auth/signIn',
-	async (args, { rejectWithValue, dispatch, getState }) => {
+	async (args, { rejectWithValue, dispatch }) => {
 		try {
-			const state = getState() as RootState;
-			const cart = state.user.cart;
-			const wishlist = state.user.wishList;
 
-			const { user } = await authService.signIn({ authData: args, cart, wishlist });
+			const { user } = await authService.signIn(args);
 
 			dispatch(setUser(user));
 

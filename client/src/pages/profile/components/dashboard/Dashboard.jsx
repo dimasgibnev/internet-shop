@@ -5,15 +5,12 @@ import { Orders } from '../orders/Orders';
 import { Order } from '../order/Order';
 
 import { useDispatch } from 'react-redux';
-import { resetUser, selectUser } from '../../../../store/slices/userSlice';
+import { resetUser} from '../../../../store/slices/userSlice';
 
 import styles from './Dashboard.module.sass';
-import { getUserName } from '../../../../utils/getUserName';
-import { useAppSelector } from '../../../../hooks/hooks';
 
 export const Dashboard = () => {
 	const dispatch = useDispatch();
-	const user = useAppSelector(selectUser);
 	const isOrders = useMatch('/profile/orders');
 	const isOrder = useMatch('/profile/orders/:id');
 
