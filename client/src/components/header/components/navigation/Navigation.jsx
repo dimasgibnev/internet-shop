@@ -21,6 +21,7 @@ export const Navigation = () => {
 	const user = useAppSelector(selectUser)
 	const wishlist = useAppSelector(selectWishes)
 	const cart = useAppSelector(selectCart);
+console.log(cart);
 
 	const searchPhrase = useAppSelector(selectSearch);
 	const filter = useAppSelector((state) => state.filter);

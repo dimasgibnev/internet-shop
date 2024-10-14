@@ -48,7 +48,7 @@ export const ProductCard = ({ product }: { product: IProduct }) => {
 					<CartInfo id={product._id} remove={handleRemoveFromCart} />
 				) : (
 					<Icon
-						onClick={() => !isLoading && handleAddToCart(product._id)}
+						onClick={() => !isLoading && handleAddToCart(product)}
 						className="product-card__cart"
 						icon={'add'}
 						weight={'solid'}

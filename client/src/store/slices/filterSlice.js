@@ -52,15 +52,7 @@ export const selectCategory = (state) => state.filter.category;
 
 export const selectSearch = (state) => state.filter.search;
 
-export const selectFilter = (state) => {
-	return {
-		sort: selectSort(state),
-		page: selectPage(state),
-		line: selectLine(state),
-		category: selectCategory(state),
-		search: selectSearch(state),
-	};
-};
+export const selectFilter = (state) => state.filter
 
 export const {
 	setSort,

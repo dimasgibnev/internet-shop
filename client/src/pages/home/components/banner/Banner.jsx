@@ -15,12 +15,12 @@ export const Banner = ({ banner, className }) => {
 						styles['banner__overlay'] + ' ' + styles[`${banner.style}`]
 					}
 				>
-					<div className={styles['banner__info']}>
-						<h1 className={styles['banner__title']}>{banner.title}</h1>
-						<p className={styles['banner__model']}>{banner.model}</p>
+					<div className={styles.info}>
+						<h1 className={styles.title}>{banner.title}</h1>
+						<p className={styles.model}>{banner.model}</p>
 					</div>
 					<Link to={`/products/details/${banner.link}`}>
-						<Button className={styles['banner__btn']}>ПОДРОБНЕЕ</Button>
+						<Button className={styles.btn}>ПОДРОБНЕЕ</Button>
 					</Link>
 				</div>
 			</div>

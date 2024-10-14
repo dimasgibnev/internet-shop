@@ -1,4 +1,3 @@
-import { IProduct } from '../interface/product.interface';
 import { selectUser } from '../store/slices/authSlice';
 import {
 	addToCart,
@@ -9,22 +8,22 @@ import {
 } from '../store/slices/userSlice';
 import { useAppDispatch, useAppSelector } from './hooks';
 
-export const useCart = (product: IProduct) => {
+export const useCart = (product) => {
 	const dispatch = useAppDispatch();
 	const user = useAppSelector(selectUser);
 	const cart = useAppSelector(selectCart);
 	const inCart = cart.some((cartItem) => cartItem.product._id === product?._id);
 
-	const handleAddToCart = (id: string) => {
+	const handleAddToCart = (product) => {
 		if (user) {
-			dispatch(addToCart(id));
-			dispatch(addToCartAsync(id));
+			dispatch(addToCart(product));
+			dispatch(addToCartAsync(product._id));
 		} else {
-			dispatch(addToCart(id));
+			dispatch(addToCart(product));
 		}
 	};
 
-	const handleRemoveFromCart = (id: string): void => {
+	const handleRemoveFromCart = (id) => {
 		if (!user) {
 			dispatch(removeFromCart(id));
 		} else {

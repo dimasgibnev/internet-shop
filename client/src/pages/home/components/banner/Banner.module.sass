@@ -13,27 +13,29 @@
 		img
 			width: 100%
 	&__overlay
+		position: absolute
 		display: flex
 		justify-content: center
 		flex-direction: column
 		width: 50%
+		height: 400px
 		background: rgba(0, 0, 0, 0.5)
 		padding: 40px
-	&__info
-		margin-bottom: 40px
-	&__title
-		color: var(--color-white)
-		margin-bottom: 20px
-	&__model
-		color: var(--color-white)
-	&__btn
-		border-radius: 0
-		width: 200px
-		font-size: 20px
-		&:hover
-			color: var(--color-makita)
-			outline: 1px solid var(--color-makita)
-			background: var(--color-white)
+		.info
+			margin-bottom: 40px
+		.title
+			color: var(--color-white)
+			margin-bottom: 20px
+		.model
+			color: var(--color-white)
+		.btn
+			border-radius: 0
+			width: 200px
+			font-size: 20px
+			&:hover
+				color: var(--color-makita)
+				outline: 1px solid var(--color-makita)
+				background: var(--color-white)
 	animation: slide 1200ms normal
 
 @keyframes slide

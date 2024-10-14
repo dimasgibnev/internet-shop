@@ -18,7 +18,7 @@ export const WishList = () => {
 	}, [dispatch]);
 
 	return (
-	
+
 			<div className={styles.container}>
 				<h2>Избранное</h2>
 				<div className={styles.list}>
@@ -27,7 +27,7 @@ export const WishList = () => {
 							<ProductCard key={product._id} product={product} />
 						))
 					) : (
-						<p>В избранном пока ничего нет</p>
+						<p className={styles.list}>В избранном пока ничего нет</p>
 					)}
 				</div>
 				<Scroll />

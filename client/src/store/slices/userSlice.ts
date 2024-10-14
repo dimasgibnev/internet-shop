@@ -16,7 +16,7 @@ interface IUserState {
 
 export const addToCartAsync = createAsyncThunk(
 	'user/addToCart',
-	async (productId: string, thunkAPI) => {
+	async (productId: string) => {
 		try {
 			const { cart } = await userService.addToCart(productId);
 
@@ -62,7 +62,7 @@ export const clearCartAsync = createAsyncThunk(
 
 export const addToWishListAsync = createAsyncThunk(
 	'product/addToWishList',
-	async (productId: string, { dispatch }) => {
+	async (productId: string) => {
 		try {
 			const { wishList } = await userService.addToWishList(productId);
 
@@ -77,7 +77,7 @@ export const addToWishListAsync = createAsyncThunk(
 
 export const saveAdress = createAsyncThunk(
 	'product/saveAdress',
-	async (productId: string, { dispatch }) => {
+	async (productId: string) => {
 		try {
 			const data = await userService.saveAdress(productId);
 

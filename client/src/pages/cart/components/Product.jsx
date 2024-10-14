@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { findImage } from '../../../utils/findImage';
 
 import { removeFromCartAsync } from '../../../store/slices/userSlice';
 import { formatePrice } from '../../../utils/formatePrice';
@@ -24,7 +23,7 @@ export const Product = ({ product, count  }) => {
 					<div className={styles.img}>
 						<Link to={`/products/details/${_id}`}>
 							<img
-								src={findImage(product.images)}
+								src={product.images[0].url}
 								alt={product.title}
 							></img>
 						</Link>
