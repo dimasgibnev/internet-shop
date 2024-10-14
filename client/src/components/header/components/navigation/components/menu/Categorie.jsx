@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import styles from './Menu.module.sass';
 import { useDispatch } from 'react-redux';
-import { setCategory } from '../../../../../../store/slices/filterSlice';
+import {  updateFilter } from '../../../../../../store/slices/filterSlice';
 
 export const Categorie = ({ categories, title }) => {
 	const dispatch = useDispatch();
@@ -31,7 +31,14 @@ export const Categorie = ({ categories, title }) => {
 							key={i}
 							to={`/products/category/${cat}`}
 							className={styles.item}
-							onClick={() => dispatch(setCategory(cat))}
+							onClick={() =>
+								dispatch(
+									updateFilter({
+										category: cat,
+										line: '',
+									}),
+								)
+							}
 						>
 							{cat}
 						</Link>

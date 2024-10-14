@@ -194,6 +194,8 @@ export const selectCart = (state: RootState) => state.user.cart;
 
 export const selectUser = (state: RootState) => state.user.data;
 
+export const selectIsAuth = (state: RootState) => state.user.isAuth;
+
 export const { addToWishList, addToCart, removeFromCart, setUser, resetUser, clearCart } =
 	userSlice.actions;
 

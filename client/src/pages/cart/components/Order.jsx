@@ -1,7 +1,6 @@
 import {  useNavigate } from 'react-router-dom';
 import { Button } from '../../../components/ui';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
-import { selectIsAuth } from '../../../store/slices/authSlice';
 
 import { calculateOrder } from '../../../utils/calculateOrder';
 
@@ -9,6 +8,7 @@ import { formatePrice } from '../../../utils/formatePrice';
 
 import styles from '../Cart.module.sass';
 import { createOrder } from '../../../store/slices/orderSlice';
+import { selectIsAuth } from '../../../store/slices/userSlice';
 
 export const Order = ({ cart }) => {
 	const dispatch = useAppDispatch();
@@ -48,7 +48,7 @@ export const Order = ({ cart }) => {
 						className={styles['btn-order']}
 						onClick={() => navigate('/login')}
 					>
-						Войдите
+						Войти
 					</Button>
 				) : (
 					<Button className={styles['btn-order']} onClick={handleCreateOrder}>

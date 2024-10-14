@@ -21,7 +21,6 @@ export const Navigation = () => {
 	const user = useAppSelector(selectUser)
 	const wishlist = useAppSelector(selectWishes)
 	const cart = useAppSelector(selectCart);
-console.log(cart);
 
 	const searchPhrase = useAppSelector(selectSearch);
 	const filter = useAppSelector((state) => state.filter);
@@ -38,7 +37,7 @@ console.log(cart);
 		} else if (searchPhrase === '') {
 			dispacth(resetProducts());
 		}
-	}, [dispacth, searchPhrase, filter]);
+	}, [dispacth, searchPhrase]);
 
 	return (
 		<div className={styles.navigation}>

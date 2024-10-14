@@ -9,7 +9,7 @@ export const Orders = () => {
 	const orders = useAppSelector(selectOrders);
 
 	if (!orders) return null;
-	
+
 	return (
 		<div className={styles.orders}>
 			{orders &&
@@ -19,8 +19,8 @@ export const Orders = () => {
 						<div className={styles.product}>
 							<div className={styles.img}>
 								<img
-									src={products[0].images[0].url}
-									alt={products[0].title}
+									src={products.length > 0 && products[0].images[0].url}
+									alt='Инструмент'
 								/>
 								{products.length > 1 && (
 									<div className={styles.more}>
