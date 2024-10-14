@@ -21,7 +21,7 @@ export const Order = ({ cart }) => {
 
 	const handleCreateOrder = () => {
 		if (isEmpty && isAuth) {
-			navigate('/products');
+			navigate('/');
 		} else if(!isAuth) {
 			navigate('/login');
 		} else {
