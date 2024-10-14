@@ -30,7 +30,7 @@ export const Navigation = () => {
 	};
 
 	useEffect(() => {
-		const finalFilter = { ...filter, search: searchPhrase };
+		const finalFilter = { search: searchPhrase };
 
 		if (searchPhrase) {
 			dispacth(fetchSearchedProducts(finalFilter));
