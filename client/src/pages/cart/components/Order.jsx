@@ -1,28 +1,28 @@
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { Button } from '../../../components/ui';
-import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 
 import { calculateOrder } from '../../../utils/calculateOrder';
-
 import { formatePrice } from '../../../utils/formatePrice';
 
 import { createOrder } from '../../../store/slices/orderSlice';
 import { selectIsAuth } from '../../../store/slices/userSlice';
 
 import styles from '../Cart.module.sass';
-import { Navigate, useNavigate } from 'react-router-dom';
 
 export const Order = ({ cart }) => {
-	const dispatch = useAppDispatch();
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const { count, price } = calculateOrder(cart);
-	const isAuth = useAppSelector(selectIsAuth);
-	const order = cart.filter((item) => item.product.quantity > 0);
+	const isAuth = useSelector(selectIsAuth);
+	const order = cart.filter((item) => item.product.quantity > 0 );
 	const isEmpty = cart.length === 0;
 
 	const handleCreateOrder = () => {
 		if (isEmpty && isAuth) {
 			navigate('/');
-		} else if(!isAuth) {
+		} else if (!isAuth) {
 			navigate('/login');
 		} else {
 			dispatch(createOrder({ products: order, totalPrice: price }));

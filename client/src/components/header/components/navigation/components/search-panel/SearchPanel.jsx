@@ -1,3 +1,4 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useRef } from 'react';
 
@@ -5,7 +6,6 @@ import { Input } from '../../../../../ui/input/Input';
 import { Icon } from '../../../../../ui/icon/Icon';
 
 import { selectSearch, setSearch } from '../../../../../../store/slices/filterSlice';
-import { useDispatch, useSelector } from 'react-redux';
 import { selectSearchedProducts } from '../../../../../../store/slices/productsSlice';
 
 import styles from './SearchPanel.module.sass';

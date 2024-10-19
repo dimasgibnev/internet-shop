@@ -1,9 +1,10 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import styles from './Menu.module.sass';
-import { useDispatch } from 'react-redux';
 import {  updateFilter } from '../../../../../../store/slices/filterSlice';
+
+import styles from './Menu.module.sass';
 
 export const Categorie = ({ categories, title }) => {
 	const dispatch = useDispatch();

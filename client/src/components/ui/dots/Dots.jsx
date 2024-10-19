@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styles from './Dots.module.sass';
 
 export const Dots = ({ items, active, handleSetActive, className }) => {

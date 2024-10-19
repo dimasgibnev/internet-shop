@@ -5,9 +5,9 @@ import { selectWishes } from '../../store/slices/userSlice';
 import { resetFilter } from '../../store/slices/filterSlice';
 
 import { ProductCard } from '../../components';
+import { Scroll } from '../../components/ui';
 
 import styles from './Wishlist.module.sass';
-import { Scroll } from '../../components/ui';
 
 export const WishList = () => {
 	const dispatch = useDispatch();

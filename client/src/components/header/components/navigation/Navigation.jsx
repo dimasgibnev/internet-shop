@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
 import { Logo } from '../Logo';
@@ -17,13 +17,12 @@ import { selectCart, selectUser, selectWishes } from '../../../../store/slices/u
 import styles from './Navigation.module.sass';
 
 export const Navigation = () => {
-	const dispacth = useAppDispatch();
-	const user = useAppSelector(selectUser)
-	const wishlist = useAppSelector(selectWishes)
-	const cart = useAppSelector(selectCart);
+	const dispacth = useDispatch();
+	const user = useSelector(selectUser);
+	const wishlist = useSelector(selectWishes);
+	const cart = useSelector(selectCart);
 
-	const searchPhrase = useAppSelector(selectSearch);
-	const filter = useAppSelector((state) => state.filter);
+	const searchPhrase = useSelector(selectSearch);
 
 	const onSearch = ({ target }) => {
 		dispacth(setSearch(target.value));
@@ -56,11 +55,15 @@ export const Navigation = () => {
 			</LinkWrapper>
 
 			<LinkWrapper path={'/wishlist'} className={styles.link}>
-				<i className={wishlist.length > 0 ? `fa-solid fa-heart` : `fa-regular fa-heart`}></i>
+				<i
+					className={
+						wishlist.length > 0 ? `fa-solid fa-heart` : `fa-regular fa-heart`
+					}
+				></i>
 			</LinkWrapper>
 
 			{user ? (
-				<Profile user={user}  />
+				<Profile user={user} />
 			) : (
 				<LinkWrapper path={'/login'} className={styles.link}>
 					Вход

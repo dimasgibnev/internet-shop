@@ -1,5 +1,6 @@
 import { mapProduct } from "../helpers/mapProduct.js";
 import { ProductModel } from "../models/Product.js";
+import { ReviewModel } from "../models/Review.js";
 import { UserModel } from "../models/User.js";
 import { handleError } from "../utils/handleError.js";
 import { validateMongoDbId } from "../utils/validateMongoDbId.js";
@@ -24,14 +25,9 @@ export const getProduct = async (req, res) => {
 
     validateMongoDbId(id);
 
-    const findProduct = await ProductModel.findById(id).populate({
-      path: "reviews",
-      populate: "postedBy",
-    });
-    const totalLength = findProduct.reviews.length;
-    const lastPage = Math.ceil(totalLength / 2);
+    const findProduct = await ProductModel.findById(id);
 
-    res.json({ product: mapProduct(findProduct), lastPage });
+    res.json({ product: mapProduct(findProduct) });
   } catch (error) {
     console.log(error);
     handleError(res, "Ошибка сервера, попробуйте снова");
@@ -40,38 +36,10 @@ export const getProduct = async (req, res) => {
 
 export const getProducts = async (req, res) => {
   try {
-    const filter = {};
-    const sort = {};
-    let skip = 0;
-    let limit = 0;
-
-    if (req.query.line) {
-      filter.line = { $in: req.query.line };
-    }
-
-    if (req.query.category) {
-      filter.category = { $in: req.query.category };
-    }
-
-    if (req.query.sort) {
-      sort[req.query.sort] = req.query.order
-        ? req.query.order === "desc"
-          ? -1
-          : 1
-        : 1;
-    }
-
-    if (req.query.search) {
-      filter["$or"] = [{ title: { $regex: req.query.search, $options: "i" } }];
-    }
-
-    if (req.query.page && req.query.limit) {
-      const pageSize = req.query.limit;
-      const page = req.query.page;
-
-      skip = pageSize * (page - 1);
-      limit = pageSize;
-    }
+    const filter = req.filter;
+    const sort = req.sort;
+    const skip = req.skip;
+    const limit = req.limit;
 
     const productsCount = await ProductModel.countDocuments(filter);
     const products = await ProductModel.find(filter)
@@ -129,68 +97,6 @@ export const addToWishlist = async (req, res) => {
 
       res.json({ wishList: user.wishList });
     }
-  } catch (error) {
-    console.log(error);
-    handleError(res, "Ошибка сервера, попробуйте снова");
-  }
-};
-
-export const getRating = async (req, res) => {
-  const { _id } = req.user;
-  const { star, productId, comment } = req.body;
-  try {
-    const product = await ProductModel.findById(productId);
-    const alreadyRated = product.reviews.find(
-      ({ postedBy }) => postedBy.toString() === _id.toString()
-    );
-
-    if (alreadyRated) {
-      const updateRating = await ProductModel.updateOne(
-        {
-          reviews: { $elemMatch: alreadyRated },
-        },
-        {
-          $set: { "reviews.$.star": star, "reviews.$.comment": comment },
-        },
-        {
-          new: true,
-        }
-      );
-    } else {
-      const rateProduct = await ProductModel.findByIdAndUpdate(
-        productId,
-        {
-          $push: {
-            reviews: {
-              star,
-              postedBy: _id,
-              comment: comment,
-              createdAt: Date.now(),
-            },
-          },
-        },
-        { new: true }
-      );
-    }
-    const getAllreviews = await ProductModel.findById(productId);
-    const totalRating = getAllreviews.reviews.length;
-    const reviewsum = getAllreviews.reviews
-      .map((item) => item.star)
-      .reduce((acc, star) => acc + star, 0);
-    const actualRating = Math.round(reviewsum / totalRating);
-
-    const updatedRatingProduct = await ProductModel.findByIdAndUpdate(
-      productId,
-      {
-        totalRating: actualRating,
-      },
-      { new: true }
-    ).populate({
-      path: "reviews",
-      populate: "postedBy",
-    });
-
-    res.json({ reviews: updatedRatingProduct.reviews });
   } catch (error) {
     console.log(error);
     handleError(res, "Ошибка сервера, попробуйте снова");

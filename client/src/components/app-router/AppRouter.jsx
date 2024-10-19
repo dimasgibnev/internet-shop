@@ -1,9 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
 
 import { routeConfig } from '../../config/route.config';
+import { PrivateRoute } from '../privateRoute/PrivateRoute';
 
 import { Layout } from '../layout/Layout';
-import { PrivateRoute } from '../privateRoute/PrivateRoute';
 
 export const AppRouter = () => {
 	return (

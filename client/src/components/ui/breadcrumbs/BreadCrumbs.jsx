@@ -1,12 +1,14 @@
 import { Link } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { selectCategories } from '../../../store/slices/categorySlice';
-import styles from './BreadCrumbs.module.sass';
 import { updateFilter } from '../../../store/slices/filterSlice';
 
+import styles from './BreadCrumbs.module.sass';
+
 export const BreadCrumbs = ({ product }) => {
-	const dispatch = useAppDispatch();
-	const categories = useAppSelector(selectCategories);
+	const dispatch = useDispatch();
+	const categories = useSelector(selectCategories);
 	const productCategory = categories.find((category) =>
 		category.childCategories.find((child) => child === product?.category),
 	);
@@ -36,7 +38,7 @@ export const BreadCrumbs = ({ product }) => {
 			<span className={styles.text}>{productCategory?.title} / </span>
 			<Link
 				to={`/products/${product.line}`}
-				onClick={() => handleUpdateFilter({ line, category: child })}
+				onClick={() => handleUpdateFilter({ line, category: '' })}
 			>
 				<span className={styles.text}>{line} / </span>
 			</Link>

@@ -1,5 +1,4 @@
-import { useDispatch } from 'react-redux';
-import { useAppSelector } from '../../../../../hooks/hooks';
+import { useDispatch,useSelector } from 'react-redux';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -13,7 +12,7 @@ import styles from '../Navigation.module.sass';
 export const Profile = () => {
 	const dispatch = useDispatch();
 	const [profileMenuIsOpen, setProfileMenuIsOpen] = useState(false);
-	const user = useAppSelector(selectUser);
+	const user = useSelector(selectUser);
 
 	const openProfileMenu = () => {
 		setProfileMenuIsOpen(true);

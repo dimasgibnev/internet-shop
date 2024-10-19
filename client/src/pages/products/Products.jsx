@@ -18,7 +18,7 @@ import {
 	setLine,
 } from '../../store/slices/filterSlice';
 
-import { Sort, Pagination, Button, BreadCrumbs } from '../../components/ui';
+import { Sort, Pagination, Button } from '../../components/ui';
 import { ProductCard } from '../../components';
 import { Lines } from './components/Lines';
 
@@ -66,6 +66,7 @@ export const Products = () => {
 			</div>
 		);
 	}
+	
 	return (
 		<div className={styles.products}>
 			<Sort />

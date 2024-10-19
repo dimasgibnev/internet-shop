@@ -51,20 +51,7 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    reviews: [
-      {
-        star: Number,
-        comment: {
-          type: String,
-        },
-        postedBy: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
-          
-        },
-        createdAt: Date,
-      },
-    ],
+    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
     totalRating: {
       type: String,
       default: "0",

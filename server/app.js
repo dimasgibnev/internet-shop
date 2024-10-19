@@ -4,6 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import "dotenv/config";
 import morgan from "morgan";
+import path from "path";
 
 import { router } from "./routes/index.js";
 
@@ -20,6 +21,10 @@ app.use(
 app.use(morgan("dev"));
 
 app.use("/api", router);
+
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve("..", "client", "build", "index.html"))
+});
 
 dbConnect().then(() => {
   app.listen(port, (e) => {

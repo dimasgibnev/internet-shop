@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { ProductsCarousel } from './components/ProductsCarousel.jsx';
 import { Banners } from './components/Banners.jsx';
@@ -23,7 +23,7 @@ export const Home = () => {
 	useEffect(() => {
 		dispatch(resetFilter());
 		dispatch(fetchProducts(filter));
-	}, []);
+	}, [dispatch, filter]);
 
 	return (
 		<div className={styles.home}>

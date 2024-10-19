@@ -1,3 +1,5 @@
+import { useDispatch, useSelector } from 'react-redux';
+
 import { selectUser } from '../store/slices/authSlice';
 import {
 	addToCart,
@@ -6,12 +8,11 @@ import {
 	removeFromCartAsync,
 	selectCart,
 } from '../store/slices/userSlice';
-import { useAppDispatch, useAppSelector } from './hooks';
 
 export const useCart = (product) => {
-	const dispatch = useAppDispatch();
-	const user = useAppSelector(selectUser);
-	const cart = useAppSelector(selectCart);
+	const dispatch = useDispatch();
+	const user = useSelector(selectUser);
+	const cart = useSelector(selectCart);
 	const inCart = cart.some((cartItem) => cartItem.product._id === product?._id);
 
 	const handleAddToCart = (product) => {

@@ -1,15 +1,15 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 
 import { Icon, Input } from '../../../../components/ui';
 
-import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { saveAdress, selectUser } from '../../../../store/slices/userSlice';
 
 import styles from '../dashboard/Dashboard.module.sass';
 
 export const Info = () => {
-	const dispatch = useAppDispatch();
-	const user = useAppSelector(selectUser);
+	const dispatch = useDispatch();
+	const user = useSelector(selectUser);
 	const [isEdit, setIsEdit] = useState(false);
 	const [adress, setAdress] = useState(user.adress || '');
 

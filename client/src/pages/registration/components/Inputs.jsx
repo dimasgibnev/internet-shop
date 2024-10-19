@@ -1,6 +1,7 @@
-import { useFormContext } from 'react-hook-form';
-import { FormError, Input } from '../../../components/ui';
 import { useDispatch } from 'react-redux';
+import { useFormContext } from 'react-hook-form';
+
+import { FormError, Input } from '../../../components/ui';
 import { clearError } from '../../../store/slices/authSlice';
 
 export const Inputs = () => {

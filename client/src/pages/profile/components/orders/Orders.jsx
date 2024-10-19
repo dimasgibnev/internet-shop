@@ -1,13 +1,30 @@
 import { Link } from 'react-router-dom';
-import { useAppSelector } from '../../../../hooks/hooks';
-import { selectOrders } from '../../../../store/slices/orderSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
-import styles from './Order.module.sass';
+import {
+	deleteOrder,
+	getOrders,
+	selectOrders,
+} from '../../../../store/slices/orderSlice';
 import { formatePrice } from '../../../../utils/formatePrice';
 
+import styles from './Order.module.sass';
+import { ROLES } from '../../../../constants/roles';
+import { Button } from '../../../../components/ui';
+import { useEffect } from 'react';
+
 export const Orders = () => {
-	const orders = useAppSelector(selectOrders);
-console.log(orders);
+	const dispatch = useDispatch();
+	const orders = useSelector(selectOrders);
+	const isAdmin = useSelector((state) => state.user?.data.roleId === ROLES.ADMIN);
+
+	useEffect(() => {
+		dispatch(getOrders());
+	}, [dispatch]);
+
+	const handleDelete = (id) => {
+		dispatch(deleteOrder(id)).then(() => dispatch(getOrders()));
+	};
 
 	if (!orders) return;
 
@@ -20,8 +37,8 @@ console.log(orders);
 						<div className={styles.product}>
 							<div className={styles.img}>
 								<img
-									src={products.length > 0 && products[0].images[0].url}
-									alt='Инструмент'
+									src={products  && products[0]?.images[0].url}
+									alt="Инструмент"
 								/>
 								{products.length > 1 && (
 									<div className={styles.more}>
@@ -49,6 +66,14 @@ console.log(orders);
 							</div>
 						</div>
 						<Link to={`/profile/orders/${_id}`}>Подробнее</Link>
+						{isAdmin && (
+							<Button
+								className={styles.delete}
+								onClick={() => handleDelete(_id)}
+							>
+								Удалить
+							</Button>
+						)}
 					</div>
 				))}
 		</div>

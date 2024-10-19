@@ -1,16 +1,19 @@
-import { useParams } from 'react-router-dom';
-import styles from './Order.module.sass';
-import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+
 import { getOrder } from '../../../../store/slices/orderSlice';
 import { formatePrice } from '../../../../utils/formatePrice';
+
 import { ProductCard } from '../../../../components';
 import { Button } from '../../../../components/ui';
 
+import styles from './Order.module.sass';
+
 export const Order = () => {
 	const params = useParams();
-	const dispatch = useAppDispatch();
-	const order = useAppSelector((state) => state.order.order);
+	const dispatch = useDispatch();
+	const order = useSelector((state) => state.order.order);
 
 	useEffect(() => {
 		dispatch(getOrder(params.id));

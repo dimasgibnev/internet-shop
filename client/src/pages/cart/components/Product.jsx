@@ -1,15 +1,15 @@
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { removeFromCartAsync } from '../../../store/slices/userSlice';
 import { formatePrice } from '../../../utils/formatePrice';
-import { useAppDispatch } from '../../../hooks/hooks';
 
 import { Icon } from '../../../components/ui';
 
 import styles from '../Cart.module.sass';
 
-export const Product = ({ product, count  }) => {
-	const dispatch = useAppDispatch();
+export const Product = ({ product, count }) => {
+	const dispatch = useDispatch();
 	const { _id } = product;
 
 	const handleRemoveFromCart = () => {
@@ -22,10 +22,7 @@ export const Product = ({ product, count  }) => {
 				<div className={styles.product}>
 					<div className={styles.img}>
 						<Link to={`/products/details/${_id}`}>
-							<img
-								src={product.images[0].url}
-								alt={product.title}
-							></img>
+							<img src={product.images[0].url} alt={product.title}></img>
 						</Link>
 					</div>
 					<div className={styles.info}>

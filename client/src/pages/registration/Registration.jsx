@@ -3,6 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { selectIsAuth } from '../../store/slices/userSlice';
 import { signUp } from '../../store/slices/authSlice';
 import { registerSchema } from '../../data/shema';
 
@@ -12,7 +13,7 @@ import { Inputs } from './components/Inputs';
 import './Registration.sass';
 
 export const Registration = () => {
-	const isAuth = useSelector((state) => state.auth?.isAuth);
+	const isAuth = useSelector(selectIsAuth);
 	const methods = useForm({ resolver: yupResolver(registerSchema), mode: 'onChange' });
 	const {
 		formState: { errors },

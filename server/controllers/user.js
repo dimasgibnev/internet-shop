@@ -13,10 +13,12 @@ export async function register(req, res) {
       });
     }
     const password = await bcrypt.hash(req.body.password, 10);
+
     const newUser = await UserModel.create({ ...req.body, password });
+    
     const accessToken = generate({ _id: newUser._id });
 
-    res.json({ user: mapUser(updatedUser), accessToken });
+    res.json({ user: mapUser(newUser), accessToken });
   } catch (error) {
     if (error.code === 11000) {
       return res.status(400).json({

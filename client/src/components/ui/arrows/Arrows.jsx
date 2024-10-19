@@ -1,5 +1,6 @@
-import styles from './Arrows.module.sass';
 import { Icon } from '../icon/Icon';
+
+import styles from './Arrows.module.sass';
 
 export const Arrows = ({ children, page, setPage }) => {
 	const handleClick = () => {
@@ -9,7 +10,7 @@ export const Arrows = ({ children, page, setPage }) => {
 			setPage(1);
 		}
 	};
-	
+
 	return (
 		<div className={styles.arrows}>
 			<Icon

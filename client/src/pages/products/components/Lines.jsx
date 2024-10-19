@@ -1,10 +1,11 @@
+import { useDispatch, useSelector } from 'react-redux';
+
 import { Button } from '../../../components/ui';
 
-import { useDispatch, useSelector } from 'react-redux';
 import { selectFilter } from '../../../store/slices/filterSlice';
+import { fetchProducts } from '../../../store/slices/productsSlice';
 
 import styles from '../Products.module.sass';
-import { fetchProducts } from '../../../store/slices/productsSlice';
 
 export const Lines = () => {
 	const dispatch = useDispatch();

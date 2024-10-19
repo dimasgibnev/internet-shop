@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { loginSchema } from '../../data/shema';
 import { signIn } from '../../store/slices/authSlice';
+import { selectIsAuth } from '../../store/slices/userSlice';
 
 import { FormError, Button } from '../../components/ui';
 import { Inputs } from './components/Inputs';
@@ -14,7 +15,7 @@ import './Authorization.sass';
 export const Authorization = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const isAuth = useSelector((state) => state.auth?.isAuth);
+	const isAuth = useSelector(selectIsAuth);
 	const methods = useForm({ resolver: yupResolver(loginSchema), mode: 'onChange' });
 	const {
 		formState: { errors },
@@ -29,9 +30,10 @@ export const Authorization = () => {
 			.unwrap()
 			.then(() => {
 				navigate('/');
-			}).catch((e) => {
-				setError(error)
 			})
+			.catch((e) => {
+				setError(error);
+			});
 	};
 
 	const isError =

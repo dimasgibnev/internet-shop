@@ -1,10 +1,10 @@
+import { useDispatch } from 'react-redux';
 import { Link, useMatch } from 'react-router-dom';
 
 import { Info } from '../info/Info';
 import { Orders } from '../orders/Orders';
 import { Order } from '../order/Order';
 
-import { useDispatch } from 'react-redux';
 import { resetUser} from '../../../../store/slices/userSlice';
 
 import styles from './Dashboard.module.sass';

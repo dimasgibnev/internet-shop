@@ -1,11 +1,11 @@
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { ProductCard } from '../../../components';
 import { Skeleton } from '../../../components/productCard/components/Skeleton/Skeleton';
+import { Arrows } from '../../../components/ui';
 
 import styles from '../Home.module.sass';
-import { Arrows } from '../../../components/ui';
-import { useState } from 'react';
 
 export const ProductsCarousel = ({ products, title }) => {
 	const [page, setPage] = useState(1);

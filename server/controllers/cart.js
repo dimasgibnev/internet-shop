@@ -10,6 +10,7 @@ export const createCart = async (req, res) => {
     const { _id } = req.user;
     validateMongoDbId(_id);
 
+    console.log(productId);
     const product = await ProductModel.findById(productId);
 
     const cart = {
@@ -119,6 +120,18 @@ export const getOrder = async (req, res) => {
       .exec();
 
     res.json({ order: mapOrder(userorder) });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteOrder = async (req, res) => {
+  const { id } = req.params;
+  const { _id } = req.user;
+  validateMongoDbId(_id);
+  try {
+    await OrderModel.findByIdAndDelete(id);
+    res.json({ message: "Заказ удален" });
   } catch (error) {
     console.log(error);
   }

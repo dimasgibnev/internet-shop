@@ -5,6 +5,6 @@ export * from './cart/Cart';
 export * from './home/Home.jsx';
 export * from './registration/Registration.jsx';
 export * from './products/Products.jsx';
-export * from './product/Product.tsx';
+export * from './product/Product.jsx';
 export * from './profile/Profile.jsx';
 export * from './wishlist/Wishlist.jsx'
