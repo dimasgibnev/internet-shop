@@ -15,7 +15,7 @@ export async function register(req, res) {
     const password = await bcrypt.hash(req.body.password, 10);
 
     const newUser = await UserModel.create({ ...req.body, password });
-    
+
     const accessToken = generate({ _id: newUser._id });
 
     res.json({ user: mapUser(newUser), accessToken });
@@ -32,7 +32,7 @@ export async function register(req, res) {
 
 export async function login(req, res) {
   try {
-    const { email, password } = req.body;
+    const { email, password, cart, wishList } = req.body;
 
     const user = await UserModel.findOne({ email });
 
@@ -48,7 +48,17 @@ export async function login(req, res) {
 
     const accessToken = generate({ _id: user._id });
 
-    const User = await UserModel.findById(user._id)
+    if (cart) {
+      user.cart = cart.filter((item) => !user.cart.some(({ _id }) => _id === item._id));
+    }
+
+    if (wishList) {
+      user.wishList = wishList.filter((item) => !user.wishList.some(({ _id }) => _id === item._id));
+    }
+
+    const User = await UserModel.findByIdAndUpdate(user._id, {
+      $set: { cart: user.cart, wishList: user.wishList },
+    })
       .populate({
         path: "wishList",
         populate: "product",

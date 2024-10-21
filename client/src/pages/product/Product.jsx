@@ -7,8 +7,9 @@ import {
 	selectProduct,
 } from '../../store/slices/productsSlice';
 
-import { Order, ProductInfo, Reviews } from './components';
+
 import { Stars, Scroll, BreadCrumbs } from '../../components/ui';
+import { Order, ProductInfo, Reviews } from './components';
 
 import { Description } from './components/description/Description';
 

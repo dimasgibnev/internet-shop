@@ -5,7 +5,7 @@ import { Button, Stars } from '../../../../components/ui';
 
 import { useReview } from '../../../../hooks/useAddReview';
 import { selectUser } from '../../../../store/slices/userSlice';
-import { selectIsAuth } from '../../../../store/slices/authSlice';
+import { selectIsAuth } from '../../../../store/slices/userSlice';
 import { selectProductId } from '../../../../store/slices/productsSlice';
 
 import styles from './Rating.module.sass';

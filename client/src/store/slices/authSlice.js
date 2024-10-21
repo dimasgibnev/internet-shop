@@ -4,10 +4,13 @@ import { setUser } from './userSlice';
 
 export const signIn = createAsyncThunk(
 	'auth/signIn',
-	async (args, { rejectWithValue, dispatch }) => {
+	async (args, { rejectWithValue, dispatch, getState }) => {
 		try {
+			const state = getState();
+			const cart = state.user?.cart || [];
+			const wishList = state.user?.wishList || [];
 
-			const { user } = await authService.signIn(args);
+			const { user } = await authService.signIn({ ...args, cart, wishList });
 
 			dispatch(setUser(user));
 
@@ -24,9 +27,14 @@ export const signIn = createAsyncThunk(
 
 export const signUp = createAsyncThunk(
 	'auth/signUp',
-	async (args, { rejectWithValue, dispatch }) => {
+	async (args, { rejectWithValue, dispatch, getState }) => {
 		try {
-			const { user } = await authService.signUp(args);
+			const state = getState();
+			const cart = state.user.cart || [];
+			const wishList = state.user.wishList || [];
+
+			const { user } = await authService.signUp({ ...args, cart, wishList });
+
 			dispatch(setUser(user));
 
 			return user;
@@ -108,6 +116,6 @@ export const selectUser = (state) => state.auth.data;
 
 export const selectIsAuth = (state) => state.auth.isAuth;
 
-export const {clearError} = authSlice.actions
+export const { clearError } = authSlice.actions;
 
 export default authSlice.reducer;

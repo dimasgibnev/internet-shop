@@ -1,22 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import userService from '../../services/userService';
 
+export const addToCartAsync = createAsyncThunk('user/addToCart', async (productId) => {
+	try {
+		const { cart } = await userService.addToCart(productId);
 
-
-export const addToCartAsync = createAsyncThunk(
-	'user/addToCart',
-	async (productId) => {
-		try {
-			const { cart } = await userService.addToCart(productId);
-
-			return cart;
-		} catch (error) {
-			if (!error.response) {
-				throw error;
-			}
+		return cart;
+	} catch (error) {
+		if (!error.response) {
+			throw error;
 		}
-	},
-);
+	}
+});
 
 export const removeFromCartAsync = createAsyncThunk(
 	'user/removeFromCart',
@@ -50,7 +45,7 @@ export const clearCartAsync = createAsyncThunk(
 );
 
 export const addToWishListAsync = createAsyncThunk(
-	'product/addToWishList',
+	'user/addToWishList',
 	async (productId) => {
 		try {
 			const { wishList } = await userService.addToWishList(productId);
@@ -64,34 +59,31 @@ export const addToWishListAsync = createAsyncThunk(
 	},
 );
 
-export const saveAdress = createAsyncThunk(
-	'product/saveAdress',
-	async (productId) => {
-		try {
-			const data = await userService.saveAdress(productId);
+export const saveAdress = createAsyncThunk('user/saveAdress', async (productId) => {
+	try {
+		const data = await userService.saveAdress(productId);
 
-			return data;
-		} catch (error) {
-			if (!error.response) {
-				throw error;
-			}
+		return data;
+	} catch (error) {
+		if (!error.response) {
+			throw error;
 		}
-	},
-);
-
-
+	}
+});
 
 const initialState = {
 	isAuth: false,
 	error: '',
-	cart: [],
-	wishList: [],
+	cart: localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [],
+	wishList: localStorage.getItem('wishList')
+		? JSON.parse(localStorage.getItem('wishList'))
+		: [],
 	isLoading: false,
 	data: null,
 };
 
 const userSlice = createSlice({
-	name: 'product',
+	name: 'user',
 	initialState,
 	reducers: {
 		addToWishList: (state, action) => {
@@ -129,10 +121,9 @@ const userSlice = createSlice({
 			localStorage.removeItem('cart');
 		},
 		setUser: (state, action) => {
-			state.cart = action.payload.cart;
-			state.wishList = action.payload.wishList;
+			state.cart = action.payload?.cart || [];
+			state.wishList = action.payload?.wishList || [];
 			state.data = action.payload;
-			state.isAuth = true;
 		},
 		resetUser: (state) => {
 			state.isAuth = false;
