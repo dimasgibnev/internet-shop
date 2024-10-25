@@ -49,11 +49,15 @@ export async function login(req, res) {
     const accessToken = generate({ _id: user._id });
 
     if (cart) {
-      user.cart = cart.filter((item) => !user.cart.some(({ _id }) => _id === item._id));
+      const filtred = cart.filter((item) => !user.cart.some(({ _id }) => _id === item._id));
+
+      user.cart = [...user.cart, ...filtred];
     }
 
     if (wishList) {
-      user.wishList = wishList.filter((item) => !user.wishList.some(({ _id }) => _id === item._id));
+      const filtred = wishList.filter((item) => !user.wishList.some(({ _id }) => _id === item._id));
+
+      user.wishList = [...user.wishList, ...filtred];
     }
 
     const User = await UserModel.findByIdAndUpdate(user._id, {

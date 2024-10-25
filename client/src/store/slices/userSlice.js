@@ -124,6 +124,7 @@ const userSlice = createSlice({
 			state.cart = action.payload?.cart || [];
 			state.wishList = action.payload?.wishList || [];
 			state.data = action.payload;
+			state.isAuth = true;
 		},
 		resetUser: (state) => {
 			state.isAuth = false;

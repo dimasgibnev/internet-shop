@@ -9,7 +9,6 @@ export const Inputs = () => {
 		register,
 		watch,
 		formState: { errors },
-		clearErrors,
 	} = useFormContext();
 	const dispatch = useDispatch();
 
